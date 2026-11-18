@@ -2,6 +2,7 @@ import React from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { BOOK_SECTIONS, SectionItem } from '@/data/productData'
+import { DRIVE_PART_IMAGES, driveImageUrl } from '@/data/driveImages'
 import { BookOpen, Check, Layers, ChevronRight } from 'lucide-react'
 
 export const TableOfContents: React.FC = () => {
@@ -31,6 +32,18 @@ export const TableOfContents: React.FC = () => {
               key={sec.id}
               className="bg-white border-2 border-stone-800 rounded-xl p-5 sm:p-6 shadow-[3px_3px_0px_0px_rgba(28,25,23,0.8)] transition-all hover:translate-x-1"
             >
+              {/* Imagem da parte (Drive) */}
+              {DRIVE_PART_IMAGES[sec.id] ? (
+                <div className="relative aspect-[16/9] rounded-lg overflow-hidden border border-stone-200 mb-4 bg-stone-100">
+                  <img
+                    src={driveImageUrl(DRIVE_PART_IMAGES[sec.id])}
+                    alt={sec.title}
+                    className="w-full h-full object-cover object-top"
+                    loading="lazy"
+                  />
+                </div>
+              ) : null}
+
               <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 pb-4 border-b border-stone-100">
                 <div className="flex items-start gap-3.5">
                   <div className="w-9 h-9 rounded-lg bg-stone-900 text-stone-50 flex items-center justify-center font-black text-sm shrink-0 mt-0.5">

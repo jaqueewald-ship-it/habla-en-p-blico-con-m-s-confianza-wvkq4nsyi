@@ -14,7 +14,7 @@
  * do site abrem a página da Hotmart diretamente (nova aba),
  * sem nenhuma outra alteração no código.
  */
-export const HOTMART_CHECKOUT_URL = ''
+export const HOTMART_CHECKOUT_URL = 'https://pay.hotmart.com/U108550333F?checkoutMode=10'
 
 /** Indica se o checkout real (Hotmart) já está configurado */
 export const isHotmartConfigured = (): boolean =>

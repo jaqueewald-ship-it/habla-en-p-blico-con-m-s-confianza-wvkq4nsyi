@@ -1,45 +1,43 @@
 import React from 'react'
 import { Gift, FileText } from 'lucide-react'
-import { PdfPage } from '@/components/sales/PdfPage'
-import bono3 from '@/assets/bono3presentamananapremium-8ff50.pdf'
-import bono4 from '@/assets/bono4laboratoriodiccionvozpremium-f47b4.pdf'
-import bono5 from '@/assets/bono5comunicacionefectivapremium-8390f.pdf'
-import bono6 from '@/assets/bono6comunicacionasertivapremium-0a86a.pdf'
+import { DRIVE_BONUS_IMAGES, driveImageUrl } from '@/data/driveImages'
 
 /**
  * Cards dos bônus dentro da seção da oferta final (#oferta).
- * A capa de cada card é a página 1 do PDF real do bônus (embarcado no bundle),
- * renderizada em canvas via pdfjs-dist.
+ * A capa de cada card é a imagem do bônus preparada na pasta do Drive,
+ * carregada direto pela URL (endpoint de thumbnail do Drive).
  * Sem valor individual: os bônus são sempre "REGALO" incluído — o preço só aparece no total.
- *
- * Bono 1 (Cuaderno de 21 días) e Bono 2 (30 modelos de discursos) ainda não têm
- * PDF salvo em src/assets — reintroduzi-los aqui quando os arquivos chegarem,
- * seguindo o mesmo formato dos cards abaixo.
  */
 const BONUS_CARDS = [
+  {
+    number: '01',
+    title: 'Cuaderno de 21 días',
+    description: 'Fichas de trabajo para acompañar tu progreso día a día',
+  },
+  {
+    number: '02',
+    title: '30 modelos de discursos',
+    description: 'Plantillas listas para adaptar a cualquier presentación',
+  },
   {
     number: '03',
     title: 'Presenta mañana: prepárate y recupera el hilo',
     description: 'Preparación exprés para una presentación próxima',
-    pdf: bono3,
   },
   {
     number: '04',
     title: 'Laboratorio de dicción y voz',
     description: 'Ejercicios prácticos de articulación, proyección y claridad vocal',
-    pdf: bono4,
   },
   {
     number: '05',
     title: 'Comunicación efectiva: habla y escribe con claridad',
     description: 'Organiza ideas, transmite tu mensaje y confirma la comprensión',
-    pdf: bono5,
   },
   {
     number: '06',
     title: 'Comunicación asertiva en la práctica',
     description: 'Expresa tus ideas, necesidades y límites con claridad y respeto',
-    pdf: bono6,
   },
 ]
 
@@ -62,18 +60,19 @@ export const BonusCards: React.FC = () => {
       </div>
 
       {/* Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
         {BONUS_CARDS.map((bonus) => (
           <figure
             key={bonus.number}
             className="group relative bg-white border-2 border-stone-800 rounded-xl overflow-hidden shadow-[5px_5px_0px_0px_rgba(28,25,23,0.85)] hover:shadow-[7px_7px_0px_0px_rgba(28,25,23,1)] transition-shadow flex flex-col"
           >
-            {/* Capa real do bônus: página 1 do PDF, renderizada via pdfjs */}
+            {/* Capa do bônus: imagem da pasta do Drive */}
             <div className="relative aspect-[3/4] bg-white">
-              <PdfPage
-                pdf={bonus.pdf}
-                pageNumber={1}
+              <img
+                src={driveImageUrl(DRIVE_BONUS_IMAGES[bonus.number])}
+                alt={bonus.title}
                 className="w-full h-full object-cover object-top"
+                loading="lazy"
               />
               {/* Etiqueta REGALO sobre a capa */}
               <span className="absolute top-2.5 left-2.5 inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider bg-amber-400 text-stone-900 px-2 py-1 rounded border border-stone-900">

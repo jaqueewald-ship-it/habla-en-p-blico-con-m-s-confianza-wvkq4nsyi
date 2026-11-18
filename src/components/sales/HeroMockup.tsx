@@ -56,29 +56,7 @@ export const HeroMockup: React.FC = () => {
                 <Headphones className="w-3 h-3 text-sky-600" />
                 Audiobook MP3
               </span>
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-purple-50 text-purple-800 border border-purple-200">
-                <Sparkles className="w-3 h-3 text-purple-600" />2 Cuadernos extra
-              </span>
             </div>
-          </div>
-        </div>
-
-        {/* Floating bonus notification card */}
-        <div className="mt-4 bg-stone-900 text-stone-50 rounded-xl p-3.5 flex items-center justify-between text-xs">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-amber-400 text-stone-900 flex items-center justify-center font-black text-sm shrink-0">
-              +2
-            </div>
-            <div>
-              <p className="font-bold text-white leading-snug">2 Regalos incluidos</p>
-              <p className="text-stone-300 text-[11px]">
-                Cuaderno de práctica + 30 esquemas listos
-              </p>
-            </div>
-          </div>
-          <div className="text-right">
-            <span className="line-through text-stone-400 text-[11px] block">97€</span>
-            <span className="text-amber-400 font-black text-sm">27€</span>
           </div>
         </div>
 

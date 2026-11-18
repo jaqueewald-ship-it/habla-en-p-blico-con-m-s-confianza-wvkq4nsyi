@@ -1,3 +1,5 @@
+import { PRICE } from '@/config/checkout'
+
 export interface SectionItem {
   id: number
   part: string
@@ -7,14 +9,12 @@ export interface SectionItem {
   topics: string[]
 }
 
-export interface PreviewItem {
+export interface PreviewImage {
   id: string
+  src: string
   title: string
   subtitle: string
   badge: string
-  summary: string
-  exercise: string
-  tips: string[]
   color: string
 }
 
@@ -22,7 +22,6 @@ export interface BonusItem {
   id: string
   number: number
   title: string
-  value: number
   description: string
   badge: string
   bullets: string[]
@@ -32,10 +31,10 @@ export const PRODUCT_DATA = {
   title: 'Habla en público con más confianza',
   subtitle:
     'Un plan práctico de 21 días para organizar tus ideas, entrenar tu voz y aprender a manejar los nervios.',
-  totalValue: 97,
-  promoPrice: 27,
-  savings: 70,
-  currency: '€',
+  price: PRICE.amount,
+  priceDisplay: PRICE.display,
+  currency: '$',
+  currencyLabel: PRICE.currencyLabel,
   driveBonusLink:
     'https://drive.google.com/drive/folders/1vExyPUkas-fIgs1-yuar8pJsT4z2j_oV?usp=drive_link',
   stats: [
@@ -50,8 +49,8 @@ export const PRODUCT_DATA = {
       badge: 'Formato visual',
     },
     {
-      title: 'Audiobook + Búsquedas',
-      detail: 'Versión de audio para escuchar camino al trabajo y plantillas listas para usar.',
+      title: 'PDF + Audiobook',
+      detail: 'La guía completa y su versión de audio para escuchar camino al trabajo.',
       badge: 'Audio incluido',
     },
     {
@@ -62,128 +61,47 @@ export const PRODUCT_DATA = {
   ],
 }
 
-export const PREVIEW_CARDS: PreviewItem[] = [
+/* ============================================================
+ * PRÉVIAS REAIS DO MATERIAL — 3 páginas do PDF do produto
+ * ------------------------------------------------------------
+ * Coloque os arquivos em `public/previews/` com os nomes
+ * abaixo (páginas extraídas do PDF "Guia_Habla_con_mas_
+ * confianza_PREMIUM"). Enquanto os arquivos não existirem,
+ * o componente exibe um placeholder ilustrado no lugar.
+ * ============================================================ */
+export const REAL_PAGE_PREVIEWS: PreviewImage[] = [
   {
-    id: 'prev-1',
+    id: 'page-1',
+    src: '/previews/pagina-1.jpg',
     title: 'La agitación que ayuda',
-    subtitle: 'Parte 1: Comprender el miedo',
-    badge: 'Día 1 · El cuerpo en alerta',
-    summary:
-      'Tu corazón late rápido no porque seas incapaz, sino porque tu cuerpo se prepara para rendir. Cómo canalizar la adrenalina a tu favor.',
-    exercise: 'Ejercicio del día: Mapeo de síntomas físicos y reencuadre del estrés (10 min).',
-    tips: [
-      'No luches contra la aceleración del pulso: acéptala como energía útil.',
-      'Identifica en qué parte del cuerpo sientes la tensión.',
-      "Frase ancla: 'Estoy preparado y con energía para comunicar'.",
-    ],
+    subtitle: 'Parte 1 · Comprender el miedo',
+    badge: 'Página real',
     color: 'from-amber-500/10 to-orange-500/5 border-amber-200',
   },
   {
-    id: 'prev-2',
+    id: 'page-2',
+    src: '/previews/pagina-2.jpg',
     title: 'El suspiro fisiológico',
-    subtitle: 'Parte 2: Respiración y cuerpo',
-    badge: 'Día 4 · Calmar el sistema',
-    summary:
-      'Dos inhalaciones cortas por la nariz y una exhalación larga y lenta por la boca. El método neurológico más rápido para bajar pulsaciones.',
-    exercise: 'Ejercicio del día: Ciclo de 5 suspiros antes de entrar a la sala o llamada.',
-    tips: [
-      'Inhalación 1: llena los pulmones al 80%.',
-      'Inhalación 2: pequeño extra para abrir los alvéolos.',
-      'Exhalación bucal prolongada y desinflada por completo.',
-    ],
+    subtitle: 'Parte 2 · Respiración y cuerpo',
+    badge: 'Página real',
     color: 'from-sky-500/10 to-blue-500/5 border-sky-200',
   },
   {
-    id: 'prev-3',
+    id: 'page-3',
+    src: '/previews/pagina-3.jpg',
     title: 'Estructura en 3 partes',
-    subtitle: 'Parte 3: Preparar el discurso',
-    badge: 'Día 8 · Claridad mental',
-    summary:
-      'Apertura magnética (el qué y por qué importa), Desarrollo (máximo 3 puntos clave) y Cierre con llamada a la acción memorable.',
-    exercise: 'Ejercicio del día: Escribir tu discurso en una sola ficha de cartulina.',
-    tips: [
-      'Si tienes 10 minutos, habla solo de 1 gran idea principal.',
-      'Cada punto debe responder a la pregunta: ¿qué gana la audiencia?',
-      'Elimina todo lo que no aporte a tu conclusión final.',
-    ],
+    subtitle: 'Parte 3 · Preparar el discurso',
+    badge: 'Página real',
     color: 'from-emerald-500/10 to-teal-500/5 border-emerald-200',
   },
-  {
-    id: 'prev-4',
-    title: 'Un inicio que captura',
-    subtitle: 'Parte 3: Técnicas de apertura',
-    badge: 'Día 10 · Los primeros 30 seg',
-    summary:
-      "Olvídate de 'buenos días, hoy vengo a hablaros de...'. Inicia con una pregunta provocativa, un dato revelador o una breve historia.",
-    exercise: 'Ejercicio del día: Diseñar 3 comienzos alternativos y grabarlos en video.',
-    tips: [
-      'Empieza directamente con la acción o pregunta sin preámbulos.',
-      'Pausa de 2 segundos de silencio antes de soltar la primera palabra.',
-      'Sonrisa suave y postura anclada.',
-    ],
-    color: 'from-violet-500/10 to-purple-500/5 border-violet-200',
-  },
-  {
-    id: 'prev-5',
-    title: 'Ritmo, volumen y pausas',
-    subtitle: 'Parte 4: La voz',
-    badge: 'Día 13 · Tu instrumento',
-    summary:
-      'El silencio es tu mejor aliado. Las pausas estratégicas demuestran dominio y dan tiempo a la audiencia para procesar tus ideas.',
-    exercise: 'Ejercicio del día: Lectura de 1 página marcando silencios de 2 segundos.',
-    tips: [
-      "Sustituye las muletillas ('ehhh', 'o sea') por silencio puro.",
-      'Varía el volumen: baja la voz para generar intimidad y súbela para enfatizar.',
-      'Articula abriendo la mandíbula y proyectando desde el abdomen.',
-    ],
-    color: 'from-rose-500/10 to-pink-500/5 border-rose-200',
-  },
-  {
-    id: 'prev-6',
-    title: 'La mirada y las manos',
-    subtitle: 'Parte 5: Lenguaje no verbal',
-    badge: 'Día 16 · Conexión humana',
-    summary:
-      'La técnica del triángulo visual y las palmas abiertas: cómo proyectar autoridad sin parecer rígido ni intimidante.',
-    exercise: 'Ejercicio del día: Práctica frente al espejo o cámara manteniendo mirada continua.',
-    tips: [
-      'Mira a una persona durante una idea completa (3-5 segundos) antes de moverte.',
-      'Mantén las manos por encima de la cintura con movimientos naturales.',
-      'Evita refugiarte detrás del atril o cruzar los brazos.',
-    ],
-    color: 'from-indigo-500/10 to-blue-500/5 border-indigo-200',
-  },
-  {
-    id: 'prev-7',
-    title: 'El vacío de memoria',
-    subtitle: 'Parte 6: Manejo de imprevistos',
-    badge: 'Día 18 · Qué hacer si te bloqueas',
-    summary:
-      'El protocolo exacto cuando te quedas en blanco: qué decir, cómo beber un trago de agua con elegancia y cómo retomar el hilo sin pedir disculpas.',
-    exercise: 'Ejercicio del día: Simular un bloqueo y salir de él usando la frase puente.',
-    tips: [
-      "Nunca digas: 'Perdón, me quedé en blanco'.",
-      'Haz una pausa reflexiva: parece que estás buscando el término exacto.',
-      'Usa una pregunta a la audiencia para ganar 10 segundos de calma.',
-    ],
-    color: 'from-amber-500/10 to-yellow-500/5 border-amber-200',
-  },
-  {
-    id: 'prev-8',
-    title: 'Semana 3: Delante de otros',
-    subtitle: 'Parte 7: El plan de 21 días',
-    badge: 'Días 19–21 · El despegue',
-    summary:
-      'La progresión de exposición controlada: de grabarte a ti mismo, pasar a exponer ante una persona de confianza y dar el salto al grupo.',
-    exercise: 'Ejercicio del día: Exposición real de 3 minutos y checklist post-discurso.',
-    tips: [
-      'Revisa la escala de situaciones de menor a mayor exigencia.',
-      'Celebra cada avance: la confianza se construye con repeticiones.',
-      'Tu lista de chequeo para el día de la presentación definitiva.',
-    ],
-    color: 'from-teal-500/10 to-emerald-500/5 border-teal-200',
-  },
 ]
+
+/* Imagem/capa representando o audiobook (incluído junto ao produto principal) */
+export const AUDIOBOOK_IMAGE = {
+  src: '/previews/audiobook.jpg',
+  title: 'Audiobook completo incluido',
+  subtitle: 'PDF + Audio · mismo paquete',
+}
 
 export const BOOK_SECTIONS: SectionItem[] = [
   {
@@ -296,26 +214,12 @@ export const BOOK_SECTIONS: SectionItem[] = [
   },
 ]
 
+/* BÔNUS — aparecem APENAS na seção da oferta final (sem valores individuais) */
 export const BONUSES: BonusItem[] = [
   {
-    id: 'bonus-audiobook',
-    number: 1,
-    title: 'Versión Audiobook Completa (MP3)',
-    value: 29,
-    badge: 'Audio HD',
-    description:
-      'La guía completa narrada en audio de alta fidelidad, para escuchar mientras entrenas, cocinas o vas al trabajo.',
-    bullets: [
-      'Capítulos separados para fácil navegación',
-      'Ejercicios guiados de respiración con pausas reales',
-      'Descargable en Google Drive para escuchar sin conexión',
-    ],
-  },
-  {
     id: 'bonus-cuaderno',
-    number: 2,
+    number: 1,
     title: 'El Cuaderno de Práctica de los 21 Días',
-    value: 19,
     badge: 'Plantillas imprimibles',
     description:
       'Fichas de trabajo en PDF diseñadas para imprimir o rellenar en tablet: seguimiento diario, nivel de ansiedad y progreso.',
@@ -327,9 +231,8 @@ export const BONUSES: BonusItem[] = [
   },
   {
     id: 'bonus-plantillas',
-    number: 3,
+    number: 2,
     title: '30 Esquemas de Discurso Listos para Rellenar',
-    value: 22,
     badge: 'Plantillas probadas',
     description:
       'Estructuras prediseñadas paso a paso para no empezar nunca desde la hoja en blanco. Solo completa con tus datos.',
@@ -380,14 +283,15 @@ export const COMPARISON_DIFF = {
   ],
 }
 
+/* FAQ — sem valores em dólares/euros, garantia de 7 DIAS */
 export const FAQ_ITEMS = [
   {
     q: '¿Cómo y cuándo recibiré el material?',
-    a: 'El acceso es inmediato tras completar tu compra. Serás redirigido a la página de entrega y recibirás acceso directo a la carpeta compartida de Google Drive con la guía en PDF en alta resolución, el audiobook completo en MP3 y los 2 cuadernos de plantillas descargables.',
+    a: 'El acceso es inmediato tras completar tu compra en Hotmart. Serás redirigido a la página de entrega y recibirás acceso directo a la carpeta compartida de Google Drive con la guía en PDF en alta resolución, el audiobook completo en MP3 y los cuadernos de plantillas descargables.',
   },
   {
     q: '¿El pago es único o tiene suscripciones mensuales?',
-    a: 'Es un pago único promocional de 27€. No hay cuotas ocultas, ni cobros recurrentes, ni suscripciones de ningún tipo. Acceso para siempre a todos los materiales.',
+    a: 'Es un pago único. No hay cuotas ocultas, ni cobros recurrentes, ni suscripciones de ningún tipo. Acceso para siempre a todos los materiales.',
   },
   {
     q: '¿En 21 días desaparecerán todos mis nervios?',
@@ -406,7 +310,7 @@ export const FAQ_ITEMS = [
     a: 'Sí, todos los archivos PDF están optimizados en alta resolución tanto para leer cómodamente en móvil, tablet o pantalla de ordenador como para imprimirlos en papel si prefieres rellenarlos a mano.',
   },
   {
-    q: '¿Qué cubre la garantía de 30 días?',
-    a: 'Tienes 30 días naturales completos para poner a prueba el plan. Si revisas el material y sientes que no es para ti, o si tienes cualquier problema técnico para abrir los archivos, escríbenos y te devolveremos el 100% de tu dinero de inmediato. Sin preguntas incómodas.',
+    q: '¿Qué cubre la garantía de 7 días?',
+    a: 'Tienes 7 días naturales completos para poner a prueba el plan. Si revisas el material y sientes que no es para ti, o si tienes cualquier problema técnico para abrir los archivos, escríbenos y te devolveremos el 100% de tu dinero de inmediato. Sin preguntas incómodas.',
   },
 ]

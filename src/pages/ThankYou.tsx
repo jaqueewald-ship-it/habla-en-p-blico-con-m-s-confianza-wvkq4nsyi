@@ -17,14 +17,16 @@ import {
   Calendar,
   Sparkles,
 } from 'lucide-react'
-import { PRODUCT_DATA, BONUSES } from '@/data/productData'
+import { PRODUCT_DATA } from '@/data/productData'
+import { PRICE } from '@/config/checkout'
 
 interface PurchaseState {
   buyerName?: string
   buyerEmail?: string
   purchaseDate?: string
-  amount?: number
 }
+
+const HOTMART_CHECKOUT_URL = 'YOUR_HOTMART_CHECKOUT_URL'
 
 export default function ThankYou() {
   const location = useLocation()
@@ -96,6 +98,13 @@ export default function ThankYou() {
                 {purchaseDate}
               </div>
             </div>
+            <div className="flex items-center gap-2 text-stone-700 sm:col-span-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+              <div>
+                <strong className="block text-stone-900 text-[11px]">Valor pagado:</strong>
+                {PRICE.display} (USD) · Guía PDF + Audiobook incluido
+              </div>
+            </div>
           </div>
 
           {/* Primary Action Button: Link to Google Drive folder */}
@@ -161,7 +170,7 @@ export default function ThankYou() {
                     Audiobook Completo de Alta Fidelidad (MP3)
                   </h3>
                   <Badge variant="outline" className="text-[10px] font-bold border-stone-300">
-                    Bonus #1
+                    Junto al producto
                   </Badge>
                 </div>
                 <p className="text-xs text-stone-600 mt-1">
@@ -181,7 +190,7 @@ export default function ThankYou() {
                     El Cuaderno de los 21 Días (PDF imprimible)
                   </h3>
                   <Badge variant="outline" className="text-[10px] font-bold border-stone-300">
-                    Bonus #2
+                    Regalo #1
                   </Badge>
                 </div>
                 <p className="text-xs text-stone-600 mt-1">
@@ -202,7 +211,7 @@ export default function ThankYou() {
                     30 Esquemas de Discurso Listos para Rellenar (PDF)
                   </h3>
                   <Badge variant="outline" className="text-[10px] font-bold border-stone-300">
-                    Bonus #3
+                    Regalo #2
                   </Badge>
                 </div>
                 <p className="text-xs text-stone-600 mt-1">
@@ -218,7 +227,7 @@ export default function ThankYou() {
         <div className="bg-stone-100 border border-stone-300 rounded-xl p-5 text-xs text-stone-600 space-y-2">
           <div className="flex items-center gap-2 font-bold text-stone-900">
             <ShieldCheck className="w-4 h-4 text-emerald-600" />
-            <span>Soporte y Garantía de 30 días</span>
+            <span>Soporte y Garantía de 7 días</span>
           </div>
           <p>
             Te sugerimos añadir el enlace de Google Drive a tus marcadores favoritos o guardar una

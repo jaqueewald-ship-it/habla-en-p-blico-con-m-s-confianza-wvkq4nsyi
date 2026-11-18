@@ -1,99 +1,136 @@
 import React from 'react'
-import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { CheckCircle2, Lightbulb, FileText, ArrowRight } from 'lucide-react'
-import { PREVIEW_CARDS, PreviewItem } from '@/data/productData'
+import { Button } from '@/components/ui/button'
+import { BookOpen, Headphones, Sparkles, ZoomIn } from 'lucide-react'
 
 interface PagePreviewsProps {
-  onSelectCta?: () => void
+  onSelectCta: () => void
 }
+
+// Caminhos das 3 páginas reais extraídas do PDF "Habla en público con más confianza".
+// Coloque as imagens exportadas do PDF em: public/previews/
+//   public/previews/page-1.jpg  (portada / auto-diagnóstico)
+//   public/previews/page-2.jpg  (página de esquema visual)
+//   public/previews/page-3.jpg  (página del plan de 21 días)
+// Enquanto não existirem, cai no placeholder.svg automaticamente.
+const PREVIEW_PAGES = [
+  { src: '/previews/page-1.jpg', caption: 'Auto-diagnóstico: ¿qué tipo de orador eres?' },
+  { src: '/previews/page-2.jpg', caption: 'Esquema visual: los 4 pilares del habla' },
+  { src: '/previews/page-3.jpg', caption: 'Plan de los 21 días, semana a semana' },
+]
+
+const AUDIOBOOK_IMAGE = '/previews/audiobook-cover.jpg'
 
 export const PagePreviews: React.FC<PagePreviewsProps> = ({ onSelectCta }) => {
   return (
-    <section id="previa" className="py-20 bg-stone-50 border-t border-b border-stone-200">
+    <section id="previa" className="py-20 bg-white border-t border-stone-200">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <Badge
-            variant="outline"
-            className="mb-3 px-3.5 py-1 text-xs uppercase tracking-wider font-bold bg-white text-stone-800 border-stone-300"
-          >
-            Cada tema en una sola página ilustrada
-          </Badge>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-stone-900 tracking-tight leading-tight">
-            Mira cómo son las páginas del plan que vas a descubrir
+        {/* Heading */}
+        <div className="text-center space-y-3 max-w-2xl mx-auto">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-900 border border-amber-300">
+            <Sparkles className="w-3 h-3 text-amber-600" />
+            Así es por dentro
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-black text-stone-900 tracking-tight">
+            Páginas reales del material
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-stone-600 leading-relaxed font-normal">
-            Sin rodeos teóricos interminables: un concepto clave, un esquema visual y recuadros
-            claros con exactamente <strong>qué hacer hoy</strong>.
+          <p className="text-sm sm:text-base text-stone-600 leading-relaxed">
+            Nada de promesas vacías: mira directamente cómo se ve la guía ilustrada por dentro y
+            cómo llega a ti, junto con el audiobook completo.
           </p>
         </div>
 
-        {/* Grid of illustrated page preview cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {PREVIEW_CARDS.map((item: PreviewItem) => (
-            <Card
-              key={item.id}
-              className="bg-white border-2 border-stone-800 rounded-xl overflow-hidden shadow-[4px_4px_0px_0px_rgba(28,25,23,0.9)] hover:translate-y-[-2px] transition-transform flex flex-col"
+        {/* 3 real pages + audiobook cover */}
+        <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+          {PREVIEW_PAGES.map((page, idx) => (
+            <figure
+              key={idx}
+              className="group relative bg-white border-2 border-stone-800 rounded-xl overflow-hidden shadow-[5px_5px_0px_0px_rgba(28,25,23,0.85)] hover:shadow-[7px_7px_0px_0px_rgba(28,25,23,1)] transition-shadow"
             >
-              <div className={`p-4 border-b border-stone-200 bg-gradient-to-br ${item.color}`}>
-                <div className="flex items-center justify-between text-[11px] font-bold text-stone-700">
-                  <span className="flex items-center gap-1">
-                    <FileText className="w-3.5 h-3.5 text-stone-800" />
-                    Página del Guía
-                  </span>
-                  <span className="px-2 py-0.5 rounded bg-white/80 border border-stone-300 text-stone-800 font-bold">
-                    {item.badge}
+              <div className="relative aspect-[3/4] bg-stone-100">
+                <img
+                  src={page.src}
+                  onError={(e) => {
+                    ;(e.target as HTMLImageElement).src = '/placeholder.svg'
+                  }}
+                  alt={`Página del material: ${page.caption}`}
+                  className="w-full h-full object-cover object-top"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-stone-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-3">
+                  <span className="inline-flex items-center gap-1 text-[10px] font-bold text-white bg-stone-900/80 px-2 py-1 rounded">
+                    <ZoomIn className="w-3 h-3" />
+                    Página {idx + 1}
                   </span>
                 </div>
-                <h3 className="mt-3 text-lg font-black text-stone-900 leading-snug">
-                  {item.title}
-                </h3>
-                <p className="text-xs font-semibold text-stone-500 uppercase tracking-wide">
-                  {item.subtitle}
-                </p>
               </div>
-
-              <CardContent className="p-4 flex-1 flex flex-col justify-between text-xs space-y-4">
-                <p className="text-stone-700 leading-relaxed">{item.summary}</p>
-
-                {/* Practical tips block */}
-                <div className="bg-stone-50 p-3 rounded-lg border border-stone-200">
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-stone-600 flex items-center gap-1 mb-2">
-                    <Lightbulb className="w-3 h-3 text-amber-600" />
-                    Puntos clave explicados:
-                  </div>
-                  <ul className="space-y-1.5">
-                    {item.tips.map((tip, idx) => (
-                      <li
-                        key={idx}
-                        className="flex items-start gap-1.5 text-stone-600 leading-tight"
-                      >
-                        <CheckCircle2 className="w-3 h-3 text-stone-800 shrink-0 mt-0.5" />
-                        <span>{tip}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Daily exercise box */}
-                <div className="pt-2 border-t border-stone-100 text-[11px] font-bold text-stone-900 flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 shrink-0" />
-                  <span className="line-clamp-2">{item.exercise}</span>
-                </div>
-              </CardContent>
-            </Card>
+              <figcaption className="p-3 text-[11px] font-semibold text-stone-600 border-t-2 border-stone-800 bg-stone-50">
+                {page.caption}
+              </figcaption>
+            </figure>
           ))}
+
+          {/* Audiobook cover */}
+          <figure className="group relative bg-sky-600 border-2 border-stone-800 rounded-xl overflow-hidden shadow-[5px_5px_0px_0px_rgba(28,25,23,0.85)] hover:shadow-[7px_7px_0px_0px_rgba(28,25,23,1)] transition-shadow text-white">
+            <div className="relative aspect-[3/4] bg-sky-700">
+              <img
+                src={AUDIOBOOK_IMAGE}
+                onError={(e) => {
+                  const el = e.target as HTMLImageElement
+                  el.onerror = null
+                  el.style.display = 'none'
+                  el.parentElement
+                    ?.querySelector('[data-audiobook-fallback]')
+                    ?.removeAttribute('hidden')
+                }}
+                alt="Audiobook: Habla en público con más confianza"
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+              <div
+                data-audiobook-fallback
+                hidden
+                className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-4 text-center"
+              >
+                <div className="w-16 h-16 rounded-full border-4 border-white/70 flex items-center justify-center bg-sky-500/40">
+                  <Headphones className="w-8 h-8" />
+                </div>
+                <span className="text-[10px] font-black uppercase tracking-widest text-sky-100">
+                  Audiobook incluido
+                </span>
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-sky-900/70 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute bottom-3 left-3 right-3 pointer-events-none">
+                <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider bg-white text-sky-800 px-2 py-1 rounded">
+                  <Headphones className="w-3 h-3" />
+                  Audiobook MP3
+                </span>
+              </div>
+            </div>
+            <figcaption className="p-3 text-[11px] font-semibold bg-sky-50 text-sky-900 border-t-2 border-stone-800">
+              Audiobook completo · narración de toda la guía
+            </figcaption>
+          </figure>
         </div>
 
-        {/* Micro CTA under preview grid */}
-        <div className="mt-12 text-center">
-          <button
+        {/* Note: audiobook is part of the main product, NOT a bonus */}
+        <div className="mt-8 max-w-2xl mx-auto flex items-start gap-3 bg-sky-50 border border-sky-200 rounded-xl p-4">
+          <Headphones className="w-5 h-5 text-sky-600 shrink-0 mt-0.5" />
+          <p className="text-xs text-sky-900 leading-relaxed">
+            <strong>El audiobook viene con la guía:</strong> al comprar, recibes juntos el PDF
+            ilustrado y el audiobook completo — no son productos separados ni regalos aparte.
+          </p>
+        </div>
+
+        {/* CTA */}
+        <div className="mt-10 text-center">
+          <Button
             onClick={onSelectCta}
-            className="inline-flex items-center gap-2 text-sm font-bold text-stone-900 hover:text-stone-700 underline underline-offset-4 decoration-2"
+            size="lg"
+            className="px-8 py-6 text-base font-black bg-amber-400 hover:bg-amber-300 text-stone-900 border-2 border-stone-900 rounded-xl shadow-[4px_4px_0px_0px_rgba(28,25,23,1)] transition-transform active:translate-x-0.5 active:translate-y-0.5"
           >
-            Quiero tener las 47 páginas del plan completo en mi pantalla o impresas
-            <ArrowRight className="w-4 h-4" />
-          </button>
+            <BookOpen className="w-5 h-5 mr-2" />
+            VER LA OFERTA COMPLETA
+          </Button>
         </div>
       </div>
     </section>

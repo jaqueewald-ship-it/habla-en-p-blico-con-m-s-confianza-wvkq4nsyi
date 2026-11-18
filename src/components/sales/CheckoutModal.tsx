@@ -1,188 +1,189 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Button } from '@/components/ui/button'
-import { ShieldCheck, Lock, CheckCircle2, Loader2, Sparkles, AlertCircle } from 'lucide-react'
+import { CheckCircle2, Loader2, Lock, ShieldCheck, Sparkles, X } from 'lucide-react'
 import { buyersService } from '@/services/buyers'
-import { PRODUCT_DATA } from '@/data/productData'
+import { extractFieldErrors, getErrorMessage } from '@/lib/pocketbase/errors'
+import { PRICE } from '@/config/checkout'
 
 interface CheckoutModalProps {
   open: boolean
-  onOpenChange: (open: boolean) => void
+  onClose: () => void
+  onSuccess: (data: { name: string; email: string }) => void
 }
 
-export const CheckoutModal: React.FC<CheckoutModalProps> = ({ open, onOpenChange }) => {
-  const navigate = useNavigate()
+export const CheckoutModal: React.FC<CheckoutModalProps> = ({ open, onClose, onSuccess }) => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [errorMsg, setErrorMsg] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  if (!open) return null
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setErrorMsg(null)
+    setError(null)
 
-    if (!name.trim()) {
-      setErrorMsg('Por favor, introduce tu nombre.')
-      return
-    }
-    if (!email.trim() || !email.includes('@')) {
-      setErrorMsg('Por favor, introduce un correo electrónico válido.')
+    if (!name.trim() || !email.trim()) {
+      setError('Por favor, completa tu nombre y tu correo electrónico.')
       return
     }
 
-    setIsSubmitting(true)
-
+    setLoading(true)
     try {
-      const buyer = await buyersService.createBuyer({
-        name: name.trim(),
-        email: email.trim(),
-        amount: PRODUCT_DATA.promoPrice,
-        currency: 'EUR',
+      await buyersService.createBuyer({
+        name,
+        email,
+        amount: PRICE.amount,
+        currency: PRICE.currencyLabel,
       })
-
-      // Close modal and navigate to Thank You page with buyer state
-      onOpenChange(false)
-      navigate('/obrigado', {
-        state: {
-          buyerName: buyer.name,
-          buyerEmail: buyer.email,
-          purchaseDate: buyer.purchase_date,
-          amount: buyer.amount,
-        },
-      })
-    } catch (err: any) {
-      console.error('Error saving buyer record in PocketBase:', err)
-      // Provide a resilient fallback so checkout never completely blocks users
-      navigate('/obrigado', {
-        state: {
-          buyerName: name.trim(),
-          buyerEmail: email.trim(),
-          purchaseDate: new Date().toISOString(),
-          amount: PRODUCT_DATA.promoPrice,
-        },
-      })
+      onSuccess({ name: name.trim(), email: email.trim() })
+      setName('')
+      setEmail('')
+    } catch (err) {
+      const fieldErrors = extractFieldErrors(err)
+      if (Object.keys(fieldErrors).length > 0) {
+        setError(Object.values(fieldErrors)[0])
+      } else {
+        setError(getErrorMessage(err))
+      }
     } finally {
-      setIsSubmitting(false)
+      setLoading(false)
     }
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md border-2 border-stone-800 bg-white p-6 rounded-2xl shadow-[8px_8px_0px_0px_rgba(28,25,23,1)]">
-        <DialogHeader className="text-left space-y-2">
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-amber-100 text-amber-900 border border-amber-300">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/70 backdrop-blur-sm">
+      {/* Card */}
+      <div className="relative w-full max-w-lg bg-white border-2 border-stone-800 rounded-2xl shadow-[8px_8px_0px_0px_rgba(28,25,23,1)] max-h-[90vh] overflow-y-auto">
+        {/* Close */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 flex items-center justify-center text-stone-600 transition-colors"
+          aria-label="Cerrar"
+        >
+          <X className="w-4 h-4" />
+        </button>
+
+        <div className="p-6 sm:p-8">
+          {/* Header */}
+          <div className="text-center space-y-2 pb-5 border-b border-stone-200">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-900 border border-amber-300">
               <Sparkles className="w-3 h-3 text-amber-600" />
-              Checkout de Demostración
+              Pack completo · Guía PDF + Audiobook
             </span>
-          </div>
-          <DialogTitle className="text-xl sm:text-2xl font-black text-stone-900">
-            Completa tu pedido y accede al instante
-          </DialogTitle>
-          <DialogDescription className="text-xs sm:text-sm text-stone-600">
-            Ingresa tu nombre y correo para registrar tu compra y recibir acceso inmediato a la
-            carpeta de Google Drive con todo el material.
-          </DialogDescription>
-        </DialogHeader>
-
-        {/* Product recap box */}
-        <div className="bg-stone-50 border border-stone-200 rounded-xl p-3.5 my-2 flex items-center justify-between text-xs">
-          <div>
-            <p className="font-bold text-stone-900">Habla en público con más confianza</p>
-            <p className="text-stone-500 text-[11px]">Guía PDF + Audiobook + 2 Cuadernos</p>
-          </div>
-          <div className="text-right">
-            <span className="line-through text-stone-400 text-[11px] block">97€</span>
-            <span className="text-base font-black text-stone-900">27€</span>
-          </div>
-        </div>
-
-        {errorMsg && (
-          <div className="bg-rose-50 border border-rose-200 text-rose-700 text-xs p-3 rounded-lg flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 shrink-0" />
-            <span>{errorMsg}</span>
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-4 pt-1">
-          <div className="space-y-1.5 text-left">
-            <Label htmlFor="checkout-name" className="text-xs font-bold text-stone-800">
-              Tu nombre completo
-            </Label>
-            <Input
-              id="checkout-name"
-              type="text"
-              placeholder="Ej. Ana García"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="border-stone-300 focus:border-stone-900 text-sm h-11"
-              required
-              disabled={isSubmitting}
-            />
+            <h2 className="text-2xl font-black text-stone-900 tracking-tight">
+              Confirma tu acceso por {PRICE.display}
+            </h2>
+            <p className="text-xs text-stone-500">
+              Pago único · acceso inmediato a todos los materiales
+            </p>
           </div>
 
-          <div className="space-y-1.5 text-left">
-            <Label htmlFor="checkout-email" className="text-xs font-bold text-stone-800">
-              Tu correo electrónico (para recibir el acceso)
-            </Label>
-            <Input
-              id="checkout-email"
-              type="email"
-              placeholder="ana.garcia@ejemplo.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="border-stone-300 focus:border-stone-900 text-sm h-11"
-              required
-              disabled={isSubmitting}
-            />
+          {/* Summary */}
+          <div className="mt-5 bg-stone-50 border border-stone-200 rounded-xl p-4 space-y-2.5 text-xs">
+            <div className="flex items-center justify-between">
+              <span className="text-stone-600 flex items-center gap-2">
+                <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+                Guía "Habla en público con más confianza" (PDF)
+              </span>
+              <span className="font-bold text-emerald-700">Incluido</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-stone-600 flex items-center gap-2">
+                <Sparkles className="w-3.5 h-3.5 text-sky-600" />
+                Audiobook completo (MP3) — junto al producto
+              </span>
+              <span className="font-bold text-emerald-700">Incluido</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-stone-600 flex items-center gap-2">
+                <Sparkles className="w-3.5 h-3.5 text-purple-600" />
+                Cuaderno de los 21 días + 30 esquemas (regalos)
+              </span>
+              <span className="font-bold text-amber-700">Gratis</span>
+            </div>
+            <div className="pt-2.5 border-t border-stone-200 flex items-center justify-between">
+              <span className="font-black text-stone-900">Total hoy</span>
+              <span className="font-black text-stone-900 text-lg">{PRICE.display}</span>
+            </div>
           </div>
 
-          {/* Demonstration Notice */}
-          <div className="bg-amber-50/70 border border-amber-200/80 rounded-lg p-2.5 text-[11px] text-amber-900 flex items-start gap-2">
-            <Lock className="w-3.5 h-3.5 text-amber-700 shrink-0 mt-0.5" />
-            <span>
-              <strong>Modo demostración activo:</strong> No se solicitarán datos de tarjeta de
-              crédito reales. Al pulsar el botón, tu registro se guardará y accederás de inmediato
-              al material.
-            </span>
-          </div>
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="mt-5 space-y-4">
+            <div className="space-y-1.5">
+              <Label htmlFor="checkout-name" className="text-xs font-bold text-stone-800">
+                Tu nombre
+              </Label>
+              <Input
+                id="checkout-name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="María García"
+                className="border-stone-300 focus-visible:ring-amber-400"
+                disabled={loading}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="checkout-email" className="text-xs font-bold text-stone-800">
+                Tu correo electrónico
+              </Label>
+              <Input
+                id="checkout-email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="maria@ejemplo.com"
+                className="border-stone-300 focus-visible:ring-amber-400"
+                disabled={loading}
+              />
+            </div>
 
-          <Button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full h-12 text-sm font-black bg-amber-400 hover:bg-amber-300 text-stone-900 border-2 border-stone-900 rounded-xl shadow-[3px_3px_0px_0px_rgba(28,25,23,1)] transition-transform active:translate-x-0.5 active:translate-y-0.5"
-          >
-            {isSubmitting ? (
-              <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                <span>Generando acceso al material...</span>
-              </>
-            ) : (
-              <span>CONFIRMAR Y DESCARGAR POR 27€</span>
+            {error && (
+              <div className="text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-3 py-2">
+                {error}
+              </div>
             )}
-          </Button>
 
-          <div className="flex items-center justify-center gap-4 text-[11px] text-stone-500 pt-1">
-            <span className="flex items-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-              Garantía de 30 días
+            <Button
+              type="submit"
+              disabled={loading}
+              className="w-full py-6 text-base font-black bg-amber-400 hover:bg-amber-300 text-stone-900 border-2 border-stone-900 rounded-xl shadow-[4px_4px_0px_0px_rgba(28,25,23,1)] transition-transform active:translate-x-0.5 active:translate-y-0.5"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                  Procesando...
+                </>
+              ) : (
+                `CONFIRMAR Y DESCARGAR POR ${PRICE.display}`
+              )}
+            </Button>
+          </form>
+
+          {/* Footer badges */}
+          <div className="mt-5 pt-4 border-t border-stone-200 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[11px] font-semibold text-stone-600">
+            <span className="flex items-center gap-1.5">
+              <Lock className="w-3.5 h-3.5 text-stone-800" />
+              Compra segura vía Hotmart
             </span>
-            <span className="flex items-center gap-1">
-              <CheckCircle2 className="w-3.5 h-3.5 text-stone-700" />
-              Acceso a Google Drive
+            <span className="flex items-center gap-1.5">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+              Garantía de 7 días
+            </span>
+            <span className="flex items-center gap-1.5">
+              <CheckCircle2 className="w-3.5 h-3.5 text-amber-600" />
+              Entrega instantánea
             </span>
           </div>
-        </form>
-      </DialogContent>
-    </Dialog>
+
+          <p className="mt-3 text-center text-[10px] text-stone-400 leading-relaxed">
+            Al confirmar, guardarás tu nombre y correo para gestionar tu acceso a los materiales
+            entregados en Google Drive.
+          </p>
+        </div>
+      </div>
+    </div>
   )
 }

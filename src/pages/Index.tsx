@@ -1,23 +1,15 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import {
-  ShieldCheck,
-  Sparkles,
-  Lock,
-  ArrowRight,
-  Headphones,
-  BookOpen,
-  Calendar,
-  CheckCircle2,
-  FileText,
-} from 'lucide-react'
+import { ShieldCheck, Sparkles, Lock, ArrowRight, Headphones, BookOpen } from 'lucide-react'
 import { PRODUCT_DATA } from '@/data/productData'
+import { PRICE } from '@/config/checkout'
+import { useCheckoutAction } from '@/hooks/useCheckoutAction'
 import { HeroMockup } from '@/components/sales/HeroMockup'
 import { PagePreviews } from '@/components/sales/PagePreviews'
 import { ComparisonSection } from '@/components/sales/ComparisonSection'
 import { TableOfContents } from '@/components/sales/TableOfContents'
-import { BonusesSection } from '@/components/sales/BonusesSection'
 import { OfferTable } from '@/components/sales/OfferTable'
 import { AudienceSection } from '@/components/sales/AudienceSection'
 import { GuaranteeSection } from '@/components/sales/GuaranteeSection'
@@ -26,10 +18,10 @@ import { CheckoutModal } from '@/components/sales/CheckoutModal'
 
 export default function Index() {
   const [checkoutOpen, setCheckoutOpen] = useState(false)
+  const navigate = useNavigate()
 
-  const handleOpenCheckout = () => {
-    setCheckoutOpen(true)
-  }
+  // Se a Hotmart estiver configurada, abre o link direto; senão, abre o modal demo
+  const { handleBuyClick } = useCheckoutAction(() => setCheckoutOpen(true))
 
   return (
     <div className="min-h-screen bg-[#fafaf9] text-stone-900 font-sans selection:bg-amber-200">
@@ -40,11 +32,11 @@ export default function Index() {
             Oferta Especial
           </span>
           <span>
-            Acceso digital vitalicio + Audiobook + 2 Cuadernos de regalo por solo{' '}
-            <strong>27€</strong>
+            Guía PDF + Audiobook incluido, acceso digital vitalicio por solo{' '}
+            <strong>{PRICE.display}</strong>
           </span>
           <button
-            onClick={handleOpenCheckout}
+            onClick={handleBuyClick}
             className="underline underline-offset-2 hover:text-amber-300 ml-1 text-[11px] font-bold"
           >
             Aprovechar oferta →
@@ -76,9 +68,6 @@ export default function Index() {
             <a href="#temario" className="hover:text-stone-900 transition-colors">
               Las 7 partes
             </a>
-            <a href="#bonus" className="hover:text-stone-900 transition-colors">
-              Regalos
-            </a>
             <a href="#oferta" className="hover:text-stone-900 transition-colors">
               Oferta
             </a>
@@ -89,11 +78,11 @@ export default function Index() {
 
           <div>
             <Button
-              onClick={handleOpenCheckout}
+              onClick={handleBuyClick}
               size="sm"
               className="bg-amber-400 hover:bg-amber-300 text-stone-900 font-black border-2 border-stone-900 text-xs shadow-[2px_2px_0px_0px_rgba(28,25,23,1)] rounded-lg px-4"
             >
-              Comprar (27€)
+              Comprar ({PRICE.display})
             </Button>
           </div>
         </div>
@@ -128,7 +117,7 @@ export default function Index() {
               {/* Primary CTA */}
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                 <Button
-                  onClick={handleOpenCheckout}
+                  onClick={handleBuyClick}
                   size="lg"
                   className="w-full sm:w-auto px-8 py-6 text-base font-black bg-amber-400 hover:bg-amber-300 text-stone-900 border-2 border-stone-900 rounded-xl shadow-[4px_4px_0px_0px_rgba(28,25,23,1)] transition-transform active:translate-x-0.5 active:translate-y-0.5"
                 >
@@ -136,7 +125,9 @@ export default function Index() {
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
                 <div className="text-xs text-stone-500 font-semibold text-center sm:text-left">
-                  <span className="block text-stone-800 font-bold">Pago único · 27€</span>
+                  <span className="block text-stone-800 font-bold">
+                    Pago único · {PRICE.display}
+                  </span>
                   <span>Sin suscripción ni cargos extra</span>
                 </div>
               </div>
@@ -149,7 +140,11 @@ export default function Index() {
                 </span>
                 <span className="flex items-center gap-1.5">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                  Garantía de 30 días
+                  Garantía de 7 días
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <BookOpen className="w-3.5 h-3.5 text-amber-600" />
+                  Guía PDF HD
                 </span>
                 <span className="flex items-center gap-1.5">
                   <Headphones className="w-3.5 h-3.5 text-sky-600" />
@@ -183,7 +178,7 @@ export default function Index() {
       </section>
 
       {/* PAGE PREVIEWS SECTION */}
-      <PagePreviews onSelectCta={handleOpenCheckout} />
+      <PagePreviews onSelectCta={handleBuyClick} />
 
       {/* COMPARISON OLD VS NEW WAY */}
       <ComparisonSection />
@@ -206,27 +201,24 @@ export default function Index() {
           </p>
           <div className="pt-2">
             <Button
-              onClick={handleOpenCheckout}
+              onClick={handleBuyClick}
               size="lg"
               className="bg-amber-400 hover:bg-amber-300 text-stone-900 font-black px-8 py-6 rounded-xl border-2 border-amber-300 shadow-[4px_4px_0px_0px_rgba(245,158,11,1)]"
             >
-              VER LA OFERTA Y DESCARGAR POR 27€
+              VER LA OFERTA COMPLETA
             </Button>
           </div>
         </div>
       </section>
 
-      {/* BONUSES SECTION */}
-      <BonusesSection />
-
       {/* AUDIENCE SECTION: FOR WHOM */}
       <AudienceSection />
 
-      {/* OFFER TABLE & PRICING */}
-      <OfferTable onOpenCheckout={handleOpenCheckout} />
+      {/* OFFER TABLE & PRICING (aqui aparecem os bônus e o preço) */}
+      <OfferTable onOpenCheckout={handleBuyClick} />
 
-      {/* GUARANTEE 30 DAYS */}
-      <GuaranteeSection onOpenCheckout={handleOpenCheckout} />
+      {/* GUARANTEE 7 DAYS */}
+      <GuaranteeSection onOpenCheckout={handleBuyClick} />
 
       {/* FAQ SECTION */}
       <FaqSection />
@@ -255,18 +247,18 @@ export default function Index() {
 
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button
-              onClick={handleOpenCheckout}
+              onClick={handleBuyClick}
               size="lg"
               className="w-full sm:w-auto px-10 py-6 text-base font-black bg-amber-400 hover:bg-amber-300 text-stone-900 border-2 border-stone-900 rounded-xl shadow-[4px_4px_0px_0px_rgba(255,255,255,0.9)]"
             >
-              SÍ, QUIERO HABLAR EN PÚBLICO CON MÁS CONFIANZA POR 27€
+              SÍ, QUIERO HABLAR EN PÚBLICO CON MÁS CONFIANZA POR {PRICE.display}
             </Button>
           </div>
 
-          <div className="pt-4 flex flex-wrap items-center justify-center gap-6 text-xs text-stone-400">
-            <span>Precio único: 27€</span>
+          <div className="pt-4 flex flex-wrap items-center justify-center gap-3 text-xs text-stone-400">
+            <span>Precio único: {PRICE.display}</span>
             <span>·</span>
-            <span>Garantía total de 30 días</span>
+            <span>Garantía total de 7 días</span>
             <span>·</span>
             <span>Acceso inmediato en Google Drive</span>
           </div>
@@ -292,8 +284,17 @@ export default function Index() {
         </div>
       </footer>
 
-      {/* Simple Demo Checkout Modal */}
-      <CheckoutModal open={checkoutOpen} onOpenChange={setCheckoutOpen} />
+      {/* Demo Checkout Modal (usado enquanto o link da Hotmart não está configurado) */}
+      <CheckoutModal
+        open={checkoutOpen}
+        onClose={() => setCheckoutOpen(false)}
+        onSuccess={({ name, email }) => {
+          setCheckoutOpen(false)
+          navigate('/obrigado', {
+            state: { buyerName: name, buyerEmail: email, purchaseDate: new Date().toISOString() },
+          })
+        }}
+      />
     </div>
   )
 }

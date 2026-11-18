@@ -1,27 +1,71 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" viewBox="0 0 900 1200">
+  <!-- Capa do audiobook — visual baseado no print do app (habla-audiolivro):
+       fundo escuro marrom/acastanhado, destaque âmbar/amarelo, ícone de alto-falante -->
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#1e3a5f"/>
-      <stop offset="100%" stop-color="#0f2542"/>
+    <radialGradient id="glow" cx="30%" cy="18%" r="90%">
+      <stop offset="0%" stop-color="#2a2422"/>
+      <stop offset="45%" stop-color="#1f1a18"/>
+      <stop offset="100%" stop-color="#120e0d"/>
+    </radialGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4a3826" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#3a2c1e" stop-opacity="0.55"/>
     </linearGradient>
-    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#f59e0b"/>
-      <stop offset="100%" stop-color="#f97316"/>
+    <linearGradient id="btn" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
     </linearGradient>
+    <radialGradient id="spkbg" cx="50%" cy="40%" r="70%">
+      <stop offset="0%" stop-color="#fde68a"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </radialGradient>
   </defs>
-  <rect width="900" height="1200" fill="url(#bg)"/>
-  <circle cx="450" cy="430" r="210" fill="none" stroke="#f59e0b" stroke-width="3" opacity="0.6"/>
-  <circle cx="450" cy="430" r="160" fill="none" stroke="#f59e0b" stroke-width="2" opacity="0.4"/>
-  <g transform="translate(450,430)">
-    <path d="M -60 0 a 60 60 0 0 1 120 0 v 60 a 20 20 0 0 1 -40 0 v -50 a 40 40 0 0 0 -80 0 v 50 a 20 20 0 0 1 -40 0 z" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" transform="scale(1.6) translate(0,-30)"/>
-    <rect x="-30" y="-10" width="60" height="60" rx="12" fill="#ffffff" transform="translate(0,55)"/>
-    <rect x="-18" y="10" width="10" height="60" rx="5" fill="#ffffff" transform="translate(-42,-55)"/>
-    <rect x="8" y="10" width="10" height="60" rx="5" fill="#ffffff" transform="translate(42,-55)"/>
+
+  <rect width="900" height="1200" fill="url(#glow)"/>
+
+  <!-- Badge do alto-falante (canto superior esquerdo) -->
+  <rect x="48" y="48" width="84" height="84" rx="22" fill="url(#spkbg)" opacity="0.95"/>
+  <g transform="translate(90,90)" fill="none" stroke="#1c1917" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M -16 -8 v 16 h 12 l 16 14 v -44 l -16 14 z" fill="#1c1917" stroke="none"/>
+    <path d="M 18 -10 a 16 16 0 0 1 0 20"/>
+    <path d="M 26 -18 a 27 27 0 0 1 0 36" opacity="0.7"/>
   </g>
-  <text x="450" y="740" font-family="Georgia, serif" font-size="34" fill="#94a3b8" letter-spacing="6" text-anchor="middle">HABLA EN PÚBLICO</text>
-  <text x="450" y="830" font-family="Georgia, serif" font-size="58" font-weight="bold" fill="#ffffff" text-anchor="middle">con más confianza</text>
-  <text x="450" y="900" font-family="Georgia, serif" font-size="30" fill="#f59e0b" letter-spacing="4" text-anchor="middle">AUDIOBOOK</text>
-  <rect x="320" y="940" width="260" height="4" fill="url(#accent)"/>
-  <text x="450" y="1010" font-family="Helvetica, Arial, sans-serif" font-size="24" fill="#cbd5e1" letter-spacing="2" text-anchor="middle">Plan práctico de 21 días · versión en audio</text>
-  <text x="450" y="1060" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#64748b" letter-spacing="3" text-anchor="middle">PDF + AUDIO · MISMO PAQUETE</text>
+
+  <!-- Título -->
+  <text x="60" y="230" font-family="Helvetica, Arial, sans-serif" font-size="34" font-weight="bold" fill="#fbbf24" letter-spacing="6">AUDIOBOOK</text>
+  <text x="60" y="300" font-family="Georgia, serif" font-size="56" fill="#e7e5e4" letter-spacing="1">Audiolibro</text>
+  <text x="60" y="366" font-family="Georgia, serif" font-size="56" fill="#e7e5e4" letter-spacing="1">Guiado en Español</text>
+
+  <!-- Subtítulo -->
+  <text x="60" y="440" font-family="Helvetica, Arial, sans-serif" font-size="30" fill="#d6d3d1">Treine falar em público</text>
+  <text x="60" y="482" font-family="Helvetica, Arial, sans-serif" font-size="30" fill="#d6d3d1">ouvindo e praticando.</text>
+
+  <!-- Card de progresso -->
+  <rect x="60" y="560" width="780" height="230" rx="28" fill="url(#card)" stroke="#fbbf24" stroke-opacity="0.35" stroke-width="2"/>
+  <text x="100" y="630" font-family="Helvetica, Arial, sans-serif" font-size="27" fill="#fbbf24">Você parou em:</text>
+  <text x="100" y="672" font-family="Helvetica, Arial, sans-serif" font-size="27" fill="#f5f5f4">Introducción: Cómo usar este libro</text>
+  <text x="800" y="630" font-family="Helvetica, Arial, sans-serif" font-size="30" font-weight="bold" fill="#fbbf24" text-anchor="end">0%</text>
+  <text x="800" y="672" font-family="Helvetica, Arial, sans-serif" font-size="26" fill="#fbbf24" text-anchor="end">concluído</text>
+  <rect x="100" y="720" width="700" height="16" rx="8" fill="#57534e" opacity="0.6"/>
+  <rect x="100" y="720" width="10" height="16" rx="5" fill="#fbbf24"/>
+
+  <!-- Botão principal amarelo -->
+  <rect x="60" y="860" width="780" height="96" rx="18" fill="url(#btn)"/>
+  <g transform="translate(116,908)" fill="#1c1917">
+    <path d="M -14 -16 v 32 l 26 -16 z"/>
+  </g>
+  <text x="500" y="921" font-family="Helvetica, Arial, sans-serif" font-size="34" font-weight="bold" fill="#1c1917" text-anchor="middle">Continuar de onde parei</text>
+
+  <!-- Botão secundário (contorno) -->
+  <rect x="60" y="980" width="780" height="96" rx="18" fill="none" stroke="#fbbf24" stroke-width="3"/>
+  <text x="450" y="1041" font-family="Helvetica, Arial, sans-serif" font-size="34" fill="#fbbf24" text-anchor="middle">Ver Sumário Completo</text>
+
+  <!-- Plano 21 dias -->
+  <g transform="translate(400,1120)" fill="#fbbf24">
+    <rect x="0" y="4" width="34" height="32" rx="6" fill="none" stroke="#fbbf24" stroke-width="4"/>
+    <line x1="0" y1="14" x2="34" y2="14" stroke="#fbbf24" stroke-width="4"/>
+    <line x1="10" y1="0" x2="10" y2="8" stroke="#fbbf24" stroke-width="4" stroke-linecap="round"/>
+    <line x1="24" y1="0" x2="24" y2="8" stroke="#fbbf24" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <text x="470" y="1146" font-family="Helvetica, Arial, sans-serif" font-size="32" fill="#fbbf24" text-anchor="middle">Plano 21 Dias</text>
 </svg>

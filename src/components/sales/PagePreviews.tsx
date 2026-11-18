@@ -7,8 +7,8 @@ interface PagePreviewsProps {
   onSelectCta: () => void
 }
 
-// Páginas REAIS do PDF do produto, renderizadas por pdf.js (PdfPage):
-//   1  → portada
+// Páginas REAIS do PDF corrigido do produto, renderizadas por pdf.js (PdfPage):
+//   1  → portada "Guía ilustrada de oratoria"
 //   3  → "Cómo usar este libro" (introducción)
 //   26 → "Día 01 · Tu punto de partida" (plan de 21 días)
 const PREVIEW_PAGES = [
@@ -61,24 +61,24 @@ export const PagePreviews: React.FC<PagePreviewsProps> = ({ onSelectCta }) => {
             </figure>
           ))}
 
-          {/* Audiobook cover */}
-          <figure className="group relative bg-sky-600 border-2 border-stone-800 rounded-xl overflow-hidden shadow-[5px_5px_0px_0px_rgba(28,25,23,0.85)] hover:shadow-[7px_7px_0px_0px_rgba(28,25,23,1)] transition-shadow text-white">
-            <div className="relative aspect-[3/4] bg-sky-700">
+          {/* Audiobook cover — visual do app (fundo escuro, âmbar) */}
+          <figure className="group relative bg-stone-900 border-2 border-stone-800 rounded-xl overflow-hidden shadow-[5px_5px_0px_0px_rgba(28,25,23,0.85)] hover:shadow-[7px_7px_0px_0px_rgba(28,25,23,1)] transition-shadow text-white">
+            <div className="relative aspect-[3/4] bg-stone-900">
               <img
                 src="/previews/audiobook.svg"
                 alt="Audiobook: Habla en público con más confianza"
                 className="w-full h-full object-cover"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-sky-900/70 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-stone-900/70 via-transparent to-transparent pointer-events-none" />
               <div className="absolute bottom-3 left-3 right-3 pointer-events-none">
-                <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider bg-white text-sky-800 px-2 py-1 rounded">
+                <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider bg-amber-400 text-stone-900 px-2 py-1 rounded">
                   <Headphones className="w-3 h-3" />
                   Audiobook MP3
                 </span>
               </div>
             </div>
-            <figcaption className="p-3 text-[11px] font-semibold bg-sky-50 text-sky-900 border-t-2 border-stone-800">
+            <figcaption className="p-3 text-[11px] font-semibold bg-amber-50 text-stone-900 border-t-2 border-stone-800">
               Audiobook completo · narración de toda la guía
             </figcaption>
           </figure>

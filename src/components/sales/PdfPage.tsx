@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { getDocument, GlobalWorkerOptions, type PDFDocumentProxy } from 'pdfjs-dist'
 import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url'
-import guiaPdf from '@/assets/guiahablaconmasconfianzapremium-2-d7a98.pdf'
+import guiaPdf from '@/assets/guiahablaconmasconfianzacorregido-7d9c9.pdf'
 
 GlobalWorkerOptions.workerSrc = workerUrl
 

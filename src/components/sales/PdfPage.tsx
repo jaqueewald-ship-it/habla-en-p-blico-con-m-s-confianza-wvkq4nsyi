@@ -6,15 +6,18 @@ import guiaPdf from '@/assets/guiahablaconmasconfianzacorregido-7d9c9.pdf'
 GlobalWorkerOptions.workerSrc = workerUrl
 
 /**
- * Renderiza uma página REAL do PDF do produto dentro de um <canvas>,
+ * Renderiza uma página REAL de um PDF dentro de um <canvas>,
  * com a mesma proporção 3:4 usada pelas figuras do PagePreviews.
- * Não há placeholder: se a página não renderizar, o espaço fica em branco
- * dentro do cartão (o PDF é embarcado no bundle, o erro não é esperado).
+ * Por padrão usa o PDF do guia; `pdf` permite apontar outro arquivo
+ * (ex.: capas dos bônus). Não há placeholder: se a página não renderizar,
+ * o espaço fica em branco dentro do cartão (o PDF é embarcado no bundle,
+ * o erro não é esperado).
  */
 export const PdfPage: React.FC<{
   pageNumber: number
+  pdf?: string
   className?: string
-}> = ({ pageNumber, className }) => {
+}> = ({ pageNumber, pdf = guiaPdf, className }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [error, setError] = useState(false)
 
@@ -24,7 +27,7 @@ export const PdfPage: React.FC<{
 
     const render = async () => {
       try {
-        doc = await getDocument({ data: guiaPdf }).promise
+        doc = await getDocument({ data: pdf }).promise
         if (cancelled) return
         const page = await doc.getPage(pageNumber)
         if (cancelled) return
@@ -57,11 +60,11 @@ export const PdfPage: React.FC<{
       cancelled = true
       doc?.destroy()
     }
-  }, [pageNumber])
+  }, [pageNumber, pdf])
 
   if (error) return <div className={className} aria-hidden="true" />
 
   return (
-    <canvas ref={canvasRef} className={className} aria-label={`Página ${pageNumber} da guia`} />
+    <canvas ref={canvasRef} className={className} aria-label={`Página ${pageNumber} do material`} />
   )
 }

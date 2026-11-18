@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Check, Gift, Headphones, FileText, Lock, ShieldCheck, Zap, ArrowRight } from 'lucide-react'
 import { PRODUCT_DATA, BONUSES } from '@/data/productData'
 import { PRICE } from '@/config/checkout'
+import { BonusCards } from '@/components/sales/BonusCards'
 
 interface OfferTableProps {
   onOpenCheckout: () => void
@@ -144,6 +145,11 @@ export const OfferTable: React.FC<OfferTableProps> = ({ onOpenCheckout }) => {
               </div>
               <div className="text-right shrink-0 ml-4 font-bold text-emerald-700">Incluido</div>
             </div>
+          </div>
+
+          {/* Bônus 03-06: cards com capa real (mesma seção #oferta, sem valores) */}
+          <div className="p-6 sm:p-10 border-t-2 border-stone-800">
+            <BonusCards />
           </div>
 
           {/* Total & Price Bar */}

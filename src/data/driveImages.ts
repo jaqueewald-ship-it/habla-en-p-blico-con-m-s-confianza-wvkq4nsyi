@@ -44,19 +44,19 @@ export const DRIVE_PAGE_PREVIEWS: { id: string; label: string; caption: string; 
       id: 'preview-portada',
       label: 'Portada',
       caption: 'Portada: guía práctica de 21 días',
-      fileId: '1PORTADAPLACEHOLDER0000000000000000',
+      fileId: '1hu8mosj51sUlh6ozDsShB3uLxJR2VNni',
     },
     {
       id: 'preview-introduccion',
       label: 'Introducción',
       caption: 'Introducción: cómo usar el plan',
-      fileId: '1INTRODUCCIONPLACEHOLDER000000000000',
+      fileId: '1sG7_iJdln1G7YbQrK02oSjkiMbZ3O2to',
     },
     {
       id: 'preview-dia01',
       label: 'Día 01',
       caption: 'Día 01 del plan: tu punto de partida',
-      fileId: '1DIA01PLACEHOLDER0000000000000000000',
+      fileId: '1QNm09Uz3vRpx7ngiV2PkqebrLrJwyzza',
     },
   ]
 
@@ -65,23 +65,23 @@ export const DRIVE_PAGE_PREVIEWS: { id: string; label: string; caption: string; 
  * (placeholders enquanto os fileIds reais não são colados aqui)
  * ------------------------------------------------------------ */
 export const DRIVE_PART_IMAGES: Record<number, string> = {
-  1: '1PARTE1PLACEHOLDER00000000000000000000',
-  2: '1PARTE2PLACEHOLDER00000000000000000000',
-  3: '1PARTE3PLACEHOLDER00000000000000000000',
-  4: '1PARTE4PLACEHOLDER00000000000000000000',
-  5: '1PARTE5PLACEHOLDER00000000000000000000',
-  6: '1PARTE6PLACEHOLDER00000000000000000000',
-  7: '1PARTE7PLACEHOLDER00000000000000000000',
+  1: '1mqCW22MkNvAIOyLInbnua811o0uwNpqQ',
+  2: '1wsqRneXOkosSCbS_tOFOt28U5HsT0RhX',
+  3: '1tmFAyQpKPnj7NsBiNB-v_QnAWOSTcl_Q',
+  4: '1evFk_g-KFNACHEROiSBq9N36Q1nFNQCN',
+  5: '1Za765NGmbCJjAKsdLhWXaAuurMB9YAt6',
+  6: '1TWolnI822LKE4AJkvar1nfMjEqY1mX3e',
+  7: '1F-C4SYVz1kzFQxFN7lpSBYuOBmiDls7B',
 }
 
 /* ------------------------------------------------------------
  * Capas dos 6 bônus
  * ------------------------------------------------------------ */
 export const DRIVE_BONUS_IMAGES: Record<string, string> = {
-  '01': '1BONO01PLACEHOLDER00000000000000000000',
-  '02': '1BONO02PLACEHOLDER00000000000000000000',
-  '03': '1BONO03PLACEHOLDER00000000000000000000',
-  '04': '1BONO04PLACEHOLDER00000000000000000000',
-  '05': '1BONO05PLACEHOLDER00000000000000000000',
-  '06': '1BONO06PLACEHOLDER00000000000000000000',
+  '01': '19wkV0bJsWeYP9GkZf8ExrrEjEFCFADeo',
+  '02': '1Obq24tK6xJy8emNGEYvRnBtFdp7LmF3s',
+  '03': '1X3ofMXXLUFPQnquiR2-wevPQMbbiQbBS',
+  '04': '1--pZdRuXeXxZidwIQ_KqBZBUIfJJUNk7',
+  '05': '1EbfCAlxwXLDhKbG6DBDnerkb0rGU_e6m',
+  '06': '1NgBktpD_BDf2cogFYklcJ4nO_equ29A9',
 }

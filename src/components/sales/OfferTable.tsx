@@ -21,9 +21,8 @@ export const OfferTable: React.FC<OfferTableProps> = ({ onOpenCheckout }) => {
             Todo lo que te llevas hoy por solo {PRICE.display}
           </h2>
           <p className="mt-3 text-stone-600 text-sm sm:text-base">
-            El producto principal (guía PDF + audiobook) y los regalos exclusivos, con acceso
-            vitalicio inmediato en Google Drive. Todo por un único pago de {PRICE.display} — sin
-            suscripciones.
+            El producto principal (guía PDF + audiobook) y los regalos exclusivos, con entrega
+            inmediata vía Hotmart. Todo por un único pago — sin suscripciones.
           </p>
         </div>
 
@@ -136,7 +135,7 @@ export const OfferTable: React.FC<OfferTableProps> = ({ onOpenCheckout }) => {
                 </span>
                 <div>
                   <span className="font-bold text-stone-900 block">
-                    Entrega inmediata en carpeta Google Drive + PDF alta resolución
+                    Entrega inmediata del PDF por Hotmart + alta resolución
                   </span>
                   <span className="text-xs text-stone-500">
                     Descarga en todos tus dispositivos y opción de imprimir sin restricciones
@@ -189,7 +188,7 @@ export const OfferTable: React.FC<OfferTableProps> = ({ onOpenCheckout }) => {
               </span>
               <span className="flex items-center gap-1.5">
                 <Zap className="w-3.5 h-3.5 text-amber-600" />
-                Entrega instantánea en Google Drive
+                Entrega instantánea por Hotmart
               </span>
             </div>
           </div>

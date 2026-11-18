@@ -25,8 +25,8 @@ export const FaqSection: React.FC = () => {
             Resolvemos todas tus dudas antes de empezar
           </h2>
           <p className="mt-3 text-stone-600 text-sm sm:text-base">
-            Todo lo que necesitas saber sobre el formato, la entrega en Google Drive y el método de
-            los 21 días.
+            Todo lo que necesitas saber sobre el formato, la entrega del PDF por Hotmart y el método
+            de los 21 días.
           </p>
         </div>
 

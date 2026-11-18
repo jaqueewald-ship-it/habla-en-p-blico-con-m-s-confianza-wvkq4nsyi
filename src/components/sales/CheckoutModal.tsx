@@ -179,8 +179,8 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({ open, onClose, onS
           </div>
 
           <p className="mt-3 text-center text-[10px] text-stone-400 leading-relaxed">
-            Al confirmar, guardarás tu nombre y correo para gestionar tu acceso a los materiales
-            entregados en Google Drive.
+            Al confirmar, recibirás el PDF, el audiobook y los materiales directamente por Hotmart,
+            en tu área de comprador.
           </p>
         </div>
       </div>

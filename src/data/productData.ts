@@ -35,8 +35,7 @@ export const PRODUCT_DATA = {
   priceDisplay: PRICE.display,
   currency: '$',
   currencyLabel: PRICE.currencyLabel,
-  driveBonusLink:
-    'https://drive.google.com/drive/folders/1vExyPUkas-fIgs1-yuar8pJsT4z2j_oV?usp=drive_link',
+
   stats: [
     {
       title: 'Un ejercicio al día',
@@ -287,7 +286,7 @@ export const COMPARISON_DIFF = {
 export const FAQ_ITEMS = [
   {
     q: '¿Cómo y cuándo recibiré el material?',
-    a: 'El acceso es inmediato tras completar tu compra en Hotmart. Serás redirigido a la página de entrega y recibirás acceso directo a la carpeta compartida de Google Drive con la guía en PDF en alta resolución, el audiobook completo en MP3 y los cuadernos de plantillas descargables.',
+    a: 'El acceso es inmediato tras completar tu compra en Hotmart. Después del pago, la propia Hotmart te libera la entrega: descargas directamente la guía en PDF en alta resolución, el audiobook completo en MP3 y los cuadernos de plantillas, todo desde tu área de compras de Hotmart.',
   },
   {
     q: '¿El pago es único o tiene suscripciones mensuales?',

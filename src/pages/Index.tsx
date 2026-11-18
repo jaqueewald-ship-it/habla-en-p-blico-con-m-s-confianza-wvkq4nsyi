@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { ShieldCheck, Sparkles, Lock, ArrowRight, Headphones, BookOpen } from 'lucide-react'
 import { PRODUCT_DATA } from '@/data/productData'
-import { PRICE } from '@/config/checkout'
 import { useCheckoutAction } from '@/hooks/useCheckoutAction'
 import { HeroMockup } from '@/components/sales/HeroMockup'
 import { PagePreviews } from '@/components/sales/PagePreviews'
@@ -31,10 +30,7 @@ export default function Index() {
           <span className="inline-flex items-center gap-1 bg-amber-400 text-stone-900 px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider">
             Oferta Especial
           </span>
-          <span>
-            Guía PDF + Audiobook incluido, acceso digital vitalicio por solo{' '}
-            <strong>{PRICE.display}</strong>
-          </span>
+          <span>Guía PDF + Audiobook incluido, acceso digital vitalicio</span>
           <button
             onClick={handleBuyClick}
             className="underline underline-offset-2 hover:text-amber-300 ml-1 text-[11px] font-bold"
@@ -76,13 +72,18 @@ export default function Index() {
             </a>
           </div>
 
+          <div className="hidden md:flex items-center gap-6 text-xs font-bold text-stone-600">
+            <a href="#oferta" className="hover:text-stone-900 transition-colors">
+              Oferta
+            </a>
+          </div>
           <div>
             <Button
               onClick={handleBuyClick}
               size="sm"
               className="bg-amber-400 hover:bg-amber-300 text-stone-900 font-black border-2 border-stone-900 text-xs shadow-[2px_2px_0px_0px_rgba(28,25,23,1)] rounded-lg px-4"
             >
-              Comprar ({PRICE.display})
+              Comprar
             </Button>
           </div>
         </div>
@@ -125,9 +126,7 @@ export default function Index() {
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
                 <div className="text-xs text-stone-500 font-semibold text-center sm:text-left">
-                  <span className="block text-stone-800 font-bold">
-                    Pago único · {PRICE.display}
-                  </span>
+                  <span className="block text-stone-800 font-bold">Pago único</span>
                   <span>Sin suscripción ni cargos extra</span>
                 </div>
               </div>
@@ -251,24 +250,22 @@ export default function Index() {
               size="lg"
               className="w-full sm:w-auto px-10 py-6 text-base font-black bg-amber-400 hover:bg-amber-300 text-stone-900 border-2 border-stone-900 rounded-xl shadow-[4px_4px_0px_0px_rgba(255,255,255,0.9)]"
             >
-              SÍ, QUIERO HABLAR EN PÚBLICO CON MÁS CONFIANZA POR {PRICE.display}
+              SÍ, QUIERO HABLAR EN PÚBLICO CON MÁS CONFIANZA
             </Button>
           </div>
 
           <div className="pt-4 flex flex-wrap items-center justify-center gap-3 text-xs text-stone-400">
-            <span>Precio único: {PRICE.display}</span>
-            <span>·</span>
             <span>Garantía total de 7 días</span>
             <span>·</span>
-            <span>Acceso inmediato en Google Drive</span>
+            <span>Entrega del PDF por Hotmart</span>
           </div>
         </div>
       </section>
 
       {/* FOOTER */}
       <footer className="bg-stone-950 text-stone-400 py-10 text-xs border-t border-stone-800">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="text-center sm:text-left">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-between gap-4 text-center">
+          <div>
             <span className="font-bold text-stone-200 block text-sm">
               Habla en público con más confianza
             </span>
@@ -277,9 +274,9 @@ export default function Index() {
             </span>
           </div>
 
-          <div className="text-center sm:text-right text-[11px] text-stone-500">
+          <div className="text-[11px] text-stone-500">
             <p>Todos los derechos reservados © {new Date().getFullYear()}</p>
-            <p className="mt-0.5">Entrega digital instantánea vía Google Drive.</p>
+            <p className="mt-0.5">Entrega digital instantánea por Hotmart.</p>
           </div>
         </div>
       </footer>

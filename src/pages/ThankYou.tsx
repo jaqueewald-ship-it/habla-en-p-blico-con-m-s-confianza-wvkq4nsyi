@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, Link } from 'react-router-dom'
-import { Card, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import {
   CheckCircle2,
   ExternalLink,
-  FolderOpen,
   Headphones,
   BookOpen,
   FileSpreadsheet,
@@ -17,7 +14,6 @@ import {
   Calendar,
   Sparkles,
 } from 'lucide-react'
-import { PRODUCT_DATA } from '@/data/productData'
 import { PRICE } from '@/config/checkout'
 
 interface PurchaseState {
@@ -77,9 +73,9 @@ export default function ThankYou() {
           </h1>
 
           <p className="text-stone-600 text-sm sm:text-base max-w-xl mx-auto">
-            Tu acceso a <strong>"Habla en público con más confianza"</strong> ha quedado activado
-            con éxito. Ya puedes abrir y descargar todos tus materiales desde la carpeta protegida
-            de Google Drive.
+            Tu pago ha quedado confirmado con éxito. La propia Hotmart libera el acceso: descarga
+            allí la guía <strong>"Habla en público con más confianza"</strong> en PDF, el audiobook
+            y todos los materiales incluidos.
           </p>
 
           {/* Buyer recap strip */}
@@ -107,20 +103,20 @@ export default function ThankYou() {
             </div>
           </div>
 
-          {/* Primary Action Button: Link to Google Drive folder */}
+          {/* Primary Action Button: link to Hotmart consumer area */}
           <div className="pt-4">
             <a
-              href={PRODUCT_DATA.driveBonusLink}
+              href="https://consumer.hotmart.com"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-5 text-base font-black bg-amber-400 hover:bg-amber-300 text-stone-900 border-2 border-stone-900 rounded-xl shadow-[4px_4px_0px_0px_rgba(28,25,23,1)] transition-transform active:translate-x-0.5 active:translate-y-0.5"
             >
-              <FolderOpen className="w-6 h-6" />
-              <span>ABRIR CARPETA EN GOOGLE DRIVE Y DESCARGAR</span>
-              <ExternalLink className="w-4 h-4 ml-1" />
+              <ExternalLink className="w-6 h-6" />
+              <span>ACCEDER A TUS ARCHIVOS EN HOTMART</span>
             </a>
             <p className="text-xs text-stone-500 mt-2">
-              Haz clic para abrir de inmediato la carpeta compartida con todo el contenido.
+              Entra en tu área de comprador de Hotmart con el mismo correo de la compra para
+              descargar el PDF, el audiobook y los regalos.
             </p>
           </div>
         </div>
@@ -130,7 +126,7 @@ export default function ThankYou() {
           <div>
             <h2 className="text-xl sm:text-2xl font-black text-stone-900 flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-amber-600" />
-              Contenido listo para ti dentro de la carpeta:
+              Contenido disponible en tu área de Hotmart:
             </h2>
             <p className="text-xs sm:text-sm text-stone-600 mt-1">
               Encontrarás cada archivo listo para descargar a tu ordenador, móvil o tablet.
@@ -230,12 +226,12 @@ export default function ThankYou() {
             <span>Soporte y Garantía de 7 días</span>
           </div>
           <p>
-            Te sugerimos añadir el enlace de Google Drive a tus marcadores favoritos o guardar una
-            copia local en tu dispositivo para tener acceso permanente incluso sin conexión a
+            Te sugerimos guardar una copia local de los archivos en tu dispositivo después de
+            descargarlos desde Hotmart, para tener acceso permanente incluso sin conexión a
             internet.
           </p>
           <p>
-            Si tienes cualquier duda técnica o problema para acceder a la carpeta, estamos
+            Si tienes cualquier duda técnica o problema para acceder a tu compra, estamos
             disponibles para ayudarte en todo momento.
           </p>
         </div>

@@ -1,14 +1,20 @@
 import React from 'react'
 import { Button } from '@/components/ui/button'
 import { BookOpen, Headphones, Sparkles, ZoomIn } from 'lucide-react'
-import { GALLERY_IMAGES, driveImageUrl } from '@/data/driveImages'
+import { PdfPage } from '@/components/sales/PdfPage'
 
 interface PagePreviewsProps {
   onSelectCta: () => void
 }
 
-// Mockups originais do material (pasta 01_Galeria no Google Drive):
-// portada, introducción y día 01.
+// Prévias "por dentro": 3 páginas reais do PDF do guia (embarcado no bundle),
+// renderizadas em canvas via pdfjs-dist — páginas 1 (capa), 3 (cómo usar) e 26 (día 01).
+
+const PREVIEW_PAGES = [
+  { pageNumber: 1, caption: 'Portada: guía práctica de 21 días' },
+  { pageNumber: 3, caption: 'Cómo usar este libro' },
+  { pageNumber: 26, caption: 'Día 01 del plan: tu punto de partida' },
+]
 
 export const PagePreviews: React.FC<PagePreviewsProps> = ({ onSelectCta }) => {
   return (
@@ -29,19 +35,17 @@ export const PagePreviews: React.FC<PagePreviewsProps> = ({ onSelectCta }) => {
           </p>
         </div>
 
-        {/* 3 mockups do material + audiobook cover */}
+        {/* 3 páginas reais do PDF + audiobook cover */}
         <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
-          {GALLERY_IMAGES.map((page, idx) => (
+          {PREVIEW_PAGES.map((page, idx) => (
             <figure
-              key={page.id}
+              key={page.pageNumber}
               className="group relative bg-white border-2 border-stone-800 rounded-xl overflow-hidden shadow-[5px_5px_0px_0px_rgba(28,25,23,0.85)] hover:shadow-[7px_7px_0px_0px_rgba(28,25,23,1)] transition-shadow"
             >
               <div className="relative aspect-[3/4] bg-white">
-                <img
-                  src={driveImageUrl(page.id)}
-                  alt={page.caption}
+                <PdfPage
+                  pageNumber={page.pageNumber}
                   className="w-full h-full object-cover object-top"
-                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-stone-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-3">
                   <span className="inline-flex items-center gap-1 text-[10px] font-bold text-white bg-stone-900/80 px-2 py-1 rounded">

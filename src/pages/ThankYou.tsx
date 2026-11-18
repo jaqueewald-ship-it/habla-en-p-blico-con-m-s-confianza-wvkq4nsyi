@@ -149,8 +149,7 @@ export default function ThankYou() {
                   </Badge>
                 </div>
                 <p className="text-xs text-stone-600 mt-1">
-                  Las 7 partes ilustradas con esquemas, autodiagnóstico y el plan de los 21 días
-                  completo.
+                  Las 7 partes con esquemas, autodiagnóstico y el plan de los 21 días completo.
                 </p>
               </div>
             </div>

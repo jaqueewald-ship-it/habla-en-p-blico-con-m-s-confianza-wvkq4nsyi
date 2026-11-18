@@ -24,8 +24,8 @@ export const PagePreviews: React.FC<PagePreviewsProps> = ({ onSelectCta }) => {
             Páginas reales del material
           </h2>
           <p className="text-sm sm:text-base text-stone-600 leading-relaxed">
-            Nada de promesas vacías: mira directamente cómo se ve la guía ilustrada por dentro y
-            cómo llega a ti, junto con el audiobook completo.
+            Nada de promesas vacías: mira directamente cómo se ve la guía por dentro y cómo llega a
+            ti, junto con el audiobook completo.
           </p>
         </div>
 
@@ -85,8 +85,8 @@ export const PagePreviews: React.FC<PagePreviewsProps> = ({ onSelectCta }) => {
         <div className="mt-8 max-w-2xl mx-auto flex items-start gap-3 bg-sky-50 border border-sky-200 rounded-xl p-4">
           <Headphones className="w-5 h-5 text-sky-600 shrink-0 mt-0.5" />
           <p className="text-xs text-sky-900 leading-relaxed">
-            <strong>El audiobook viene con la guía:</strong> al comprar, recibes juntos el PDF
-            ilustrado y el audiobook completo — no son productos separados ni regalos aparte.
+            <strong>El audiobook viene con la guía:</strong> al comprar, recibes juntos el PDF y el
+            audiobook completo — no son productos separados ni regalos aparte.
           </p>
         </div>
 

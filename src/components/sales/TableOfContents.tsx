@@ -20,8 +20,8 @@ export const TableOfContents: React.FC = () => {
             Echa un vistazo a las 7 partes y los 38 capítulos del plan
           </h2>
           <p className="mt-4 text-base sm:text-lg text-stone-600 font-normal">
-            47 páginas ilustradas organizadas de lo pequeño a lo grande, diseñadas para que
-            cualquier persona pueda avanzar a su ritmo.
+            47 páginas organizadas de lo pequeño a lo grande, diseñadas para que cualquier persona
+            pueda avanzar a su ritmo.
           </p>
         </div>
 
@@ -72,7 +72,7 @@ export const TableOfContents: React.FC = () => {
               <div className="mt-4 pt-3 border-t border-dashed border-stone-200">
                 <div className="text-[11px] font-bold text-stone-700 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                   <Layers className="w-3.5 h-3.5 text-stone-400" />
-                  Capítulos ilustrados incluidos:
+                  Capítulos incluidos:
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {sec.topics.map((t, idx) => (

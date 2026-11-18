@@ -43,9 +43,9 @@ export const PRODUCT_DATA = {
       badge: '21 días',
     },
     {
-      title: 'Guía completa ilustrada',
-      detail: '7 partes con esquemas visuales, explicaciones directas y resúmenes aplicables.',
-      badge: 'Formato visual',
+      title: 'Guía completa en 7 partes',
+      detail: '7 partes con esquemas, explicaciones directas y resúmenes aplicables.',
+      badge: 'Formato práctico',
     },
     {
       title: 'PDF + Audiobook',
@@ -223,7 +223,7 @@ export const BONUSES: BonusItem[] = [
     description:
       'Fichas de trabajo en PDF diseñadas para imprimir o rellenar en tablet: seguimiento diario, nivel de ansiedad y progreso.',
     bullets: [
-      'Escala visual de situaciones estresantes',
+      'Escala de situaciones estresantes',
       'Diario de los 21 días con registro de avances',
       'Checklist de preparación de 1 hora antes de hablar',
     ],
@@ -262,7 +262,7 @@ export const AUDIENCE_CARDS = [
     title: 'Personas que evitan el centro de atención',
     subtitle: 'Brindis, eventos sociales y conferencias',
     description:
-      "Sientes taquicardia cada vez que dicen 'ahora dinos unas palabras'. Buscas un método paso a paso, visual y sin juicios para sentirte cómodo hablando.",
+      "Sientes taquicardia cada vez que dicen 'ahora dinos unas palabras'. Buscas un método paso a paso, práctico y sin juicios para sentirte cómodo hablando.",
     icon: 'sparkles',
   },
 ]
@@ -276,7 +276,7 @@ export const COMPARISON_DIFF = {
   ],
   newWay: [
     'Un ejercicio guiado al día de 10 a 20 minutos durante 3 semanas.',
-    'Técnicas neurológicas y corporales explicadas con esquemas visuales claros.',
+    'Técnicas neurológicas y corporales explicadas con esquemas claros.',
     'Exposición gradual del pequeño al gran escenario, controlando la respuesta al estrés.',
     'Aprender a estructurar ideas sólidas en 3 pasos con plantillas rellenables.',
   ],
@@ -302,7 +302,7 @@ export const FAQ_ITEMS = [
   },
   {
     q: '¿Necesito experiencia previa en oratoria?',
-    a: 'Ninguna. El método parte de cero absoluto y utiliza un lenguaje claro, cercano y visual. Cada concepto está diseñado para entenderse en 2 minutos y practicarse de inmediato.',
+    a: 'Ninguna. El método parte de cero absoluto y utiliza un lenguaje claro y cercano. Cada concepto está diseñado para entenderse en 2 minutos y practicarse de inmediato.',
   },
   {
     q: '¿Puedo imprimir los cuadernos y las plantillas?',

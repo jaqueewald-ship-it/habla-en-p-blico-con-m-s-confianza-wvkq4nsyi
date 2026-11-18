@@ -13,7 +13,7 @@ export const ComparisonSection: React.FC = () => {
             variant="outline"
             className="mb-3 px-3.5 py-1 text-xs uppercase tracking-wider font-bold bg-amber-50 text-amber-900 border-amber-300"
           >
-            La diferencia es visual y progresiva
+            La diferencia es práctica y progresiva
           </Badge>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-stone-900 tracking-tight leading-tight">
             Deja de esperar a que «esta vez salga mejor por arte de magia»

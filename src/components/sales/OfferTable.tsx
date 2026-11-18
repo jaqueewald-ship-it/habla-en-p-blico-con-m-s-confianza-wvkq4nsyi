@@ -62,7 +62,7 @@ export const OfferTable: React.FC<OfferTableProps> = ({ onOpenCheckout }) => {
                     Guía "Habla en público con más confianza" (PDF)
                   </span>
                   <span className="text-xs text-stone-500">
-                    47 páginas ilustradas en 7 partes con esquemas visuales
+                    47 páginas en 7 partes con esquemas claros
                   </span>
                 </div>
               </div>

@@ -96,8 +96,8 @@ export default function Index() {
             {/* Left Copy */}
             <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300 text-xs font-black uppercase tracking-wider">
-                <Sparkles className="w-3.5 h-3.5 text-amber-700" />
-                Método visual · 1 ejercicio al día
+                <Sparkles className="w-3.5 h-3.5 text-amber-700" />1 ejercicio al día · Plan de 21
+                días
               </div>
 
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-stone-900 tracking-tight leading-[1.08]">
@@ -112,7 +112,7 @@ export default function Index() {
               <p className="text-sm sm:text-base text-stone-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
                 Reuniones de trabajo, exámenes orales, presentaciones o brindis: el corazón
                 acelerado y la voz temblorosa no son un defecto; son una alarma fisiológica que se
-                puede entrenar con esquemas visuales claros.
+                puede entrenar con esquemas claros.
               </p>
 
               {/* Primary CTA */}
@@ -189,10 +189,10 @@ export default function Index() {
       <section className="py-12 bg-stone-900 text-stone-50 border-t-2 border-b-2 border-stone-900">
         <div className="max-w-4xl mx-auto px-4 text-center space-y-4">
           <Badge className="bg-amber-400 text-stone-900 font-bold uppercase tracking-wider text-xs hover:bg-amber-400">
-            Paso a paso ilustrado
+            Paso a paso, a tu ritmo
           </Badge>
           <h2 className="text-2xl sm:text-3xl font-black text-white">
-            ¿Y si cada tema entrara en una sola página visual?
+            ¿Y si cada tema entrara en una sola página?
           </h2>
           <p className="text-stone-300 text-sm max-w-2xl mx-auto">
             En lugar de esperar a que la angustia desaparezca por sí sola, sigue el método: una
@@ -240,7 +240,7 @@ export default function Index() {
             .
           </p>
           <p className="text-stone-300 text-sm sm:text-base">
-            Hay un camino más sencillo, visual y respaldado por la fisiología. Y está a un clic de
+            Hay un camino más sencillo, práctico y respaldado por la fisiología. Y está a un clic de
             distancia.
           </p>
 
@@ -270,7 +270,7 @@ export default function Index() {
               Habla en público con más confianza
             </span>
             <span className="text-stone-500 text-[11px]">
-              El plan práctico de 21 días · Guía ilustrada, audiobook y fichas de trabajo.
+              El plan práctico de 21 días · Guía en PDF, audiobook y fichas de trabajo.
             </span>
           </div>
 

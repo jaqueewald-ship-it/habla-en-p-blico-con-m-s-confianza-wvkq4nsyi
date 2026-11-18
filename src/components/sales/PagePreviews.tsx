@@ -1,24 +1,21 @@
 import React from 'react'
 import { Button } from '@/components/ui/button'
+import { PdfPage } from '@/components/sales/PdfPage'
 import { BookOpen, Headphones, Sparkles, ZoomIn } from 'lucide-react'
 
 interface PagePreviewsProps {
   onSelectCta: () => void
 }
 
-// Caminhos das 3 páginas reais extraídas do PDF "Habla en público con más confianza".
-// Coloque as imagens exportadas do PDF em: public/previews/
-//   public/previews/page-1.jpg  (portada / auto-diagnóstico)
-//   public/previews/page-2.jpg  (página de esquema visual)
-//   public/previews/page-3.jpg  (página del plan de 21 días)
-// Enquanto não existirem, cai no placeholder.svg automaticamente.
+// Páginas REAIS do PDF do produto, renderizadas por pdf.js (PdfPage):
+//   1  → portada
+//   3  → "Cómo usar este libro" (introducción)
+//   26 → "Día 01 · Tu punto de partida" (plan de 21 días)
 const PREVIEW_PAGES = [
-  { src: '/previews/page-1.jpg', caption: 'Auto-diagnóstico: ¿qué tipo de orador eres?' },
-  { src: '/previews/page-2.jpg', caption: 'Esquema visual: los 4 pilares del habla' },
-  { src: '/previews/page-3.jpg', caption: 'Plan de los 21 días, semana a semana' },
+  { pageNumber: 1, caption: 'Portada: guía práctica de 21 días' },
+  { pageNumber: 3, caption: 'Introducción: cómo usar este libro' },
+  { pageNumber: 26, caption: 'Día 01 del plan: tu punto de partida' },
 ]
-
-const AUDIOBOOK_IMAGE = '/previews/audiobook-cover.jpg'
 
 export const PagePreviews: React.FC<PagePreviewsProps> = ({ onSelectCta }) => {
   return (
@@ -46,15 +43,10 @@ export const PagePreviews: React.FC<PagePreviewsProps> = ({ onSelectCta }) => {
               key={idx}
               className="group relative bg-white border-2 border-stone-800 rounded-xl overflow-hidden shadow-[5px_5px_0px_0px_rgba(28,25,23,0.85)] hover:shadow-[7px_7px_0px_0px_rgba(28,25,23,1)] transition-shadow"
             >
-              <div className="relative aspect-[3/4] bg-stone-100">
-                <img
-                  src={page.src}
-                  onError={(e) => {
-                    ;(e.target as HTMLImageElement).src = '/placeholder.svg'
-                  }}
-                  alt={`Página del material: ${page.caption}`}
+              <div className="relative aspect-[3/4] bg-white">
+                <PdfPage
+                  pageNumber={page.pageNumber}
                   className="w-full h-full object-cover object-top"
-                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-stone-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-3">
                   <span className="inline-flex items-center gap-1 text-[10px] font-bold text-white bg-stone-900/80 px-2 py-1 rounded">
@@ -73,31 +65,11 @@ export const PagePreviews: React.FC<PagePreviewsProps> = ({ onSelectCta }) => {
           <figure className="group relative bg-sky-600 border-2 border-stone-800 rounded-xl overflow-hidden shadow-[5px_5px_0px_0px_rgba(28,25,23,0.85)] hover:shadow-[7px_7px_0px_0px_rgba(28,25,23,1)] transition-shadow text-white">
             <div className="relative aspect-[3/4] bg-sky-700">
               <img
-                src={AUDIOBOOK_IMAGE}
-                onError={(e) => {
-                  const el = e.target as HTMLImageElement
-                  el.onerror = null
-                  el.style.display = 'none'
-                  el.parentElement
-                    ?.querySelector('[data-audiobook-fallback]')
-                    ?.removeAttribute('hidden')
-                }}
+                src="/previews/audiobook.svg"
                 alt="Audiobook: Habla en público con más confianza"
                 className="w-full h-full object-cover"
                 loading="lazy"
               />
-              <div
-                data-audiobook-fallback
-                hidden
-                className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-4 text-center"
-              >
-                <div className="w-16 h-16 rounded-full border-4 border-white/70 flex items-center justify-center bg-sky-500/40">
-                  <Headphones className="w-8 h-8" />
-                </div>
-                <span className="text-[10px] font-black uppercase tracking-widest text-sky-100">
-                  Audiobook incluido
-                </span>
-              </div>
               <div className="absolute inset-0 bg-gradient-to-t from-sky-900/70 via-transparent to-transparent pointer-events-none" />
               <div className="absolute bottom-3 left-3 right-3 pointer-events-none">
                 <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider bg-white text-sky-800 px-2 py-1 rounded">

@@ -1,21 +1,14 @@
 import React from 'react'
 import { Button } from '@/components/ui/button'
-import { PdfPage } from '@/components/sales/PdfPage'
 import { BookOpen, Headphones, Sparkles, ZoomIn } from 'lucide-react'
+import { GALLERY_IMAGES, driveImageUrl } from '@/data/driveImages'
 
 interface PagePreviewsProps {
   onSelectCta: () => void
 }
 
-// Páginas REAIS do PDF corrigido do produto, renderizadas por pdf.js (PdfPage):
-//   1  → portada "Guía ilustrada de oratoria"
-//   3  → "Cómo usar este libro" (introducción)
-//   26 → "Día 01 · Tu punto de partida" (plan de 21 días)
-const PREVIEW_PAGES = [
-  { pageNumber: 1, caption: 'Portada: guía práctica de 21 días' },
-  { pageNumber: 3, caption: 'Introducción: cómo usar este libro' },
-  { pageNumber: 26, caption: 'Día 01 del plan: tu punto de partida' },
-]
+// Mockups originais do material (pasta 01_Galeria no Google Drive):
+// portada, introducción y día 01.
 
 export const PagePreviews: React.FC<PagePreviewsProps> = ({ onSelectCta }) => {
   return (
@@ -36,17 +29,19 @@ export const PagePreviews: React.FC<PagePreviewsProps> = ({ onSelectCta }) => {
           </p>
         </div>
 
-        {/* 3 real pages + audiobook cover */}
+        {/* 3 mockups do material + audiobook cover */}
         <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
-          {PREVIEW_PAGES.map((page, idx) => (
+          {GALLERY_IMAGES.map((page, idx) => (
             <figure
-              key={idx}
+              key={page.id}
               className="group relative bg-white border-2 border-stone-800 rounded-xl overflow-hidden shadow-[5px_5px_0px_0px_rgba(28,25,23,0.85)] hover:shadow-[7px_7px_0px_0px_rgba(28,25,23,1)] transition-shadow"
             >
               <div className="relative aspect-[3/4] bg-white">
-                <PdfPage
-                  pageNumber={page.pageNumber}
+                <img
+                  src={driveImageUrl(page.id)}
+                  alt={page.caption}
                   className="w-full h-full object-cover object-top"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-stone-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-3">
                   <span className="inline-flex items-center gap-1 text-[10px] font-bold text-white bg-stone-900/80 px-2 py-1 rounded">

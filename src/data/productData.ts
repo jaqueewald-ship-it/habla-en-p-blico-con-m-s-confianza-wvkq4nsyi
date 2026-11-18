@@ -218,7 +218,7 @@ export const BONUSES: BonusItem[] = [
   {
     id: 'bonus-cuaderno',
     number: 1,
-    title: 'El Cuaderno de Práctica de los 21 Días',
+    title: 'Cuaderno de 21 días',
     badge: 'Plantillas imprimibles',
     description:
       'Fichas de trabajo en PDF diseñadas para imprimir o rellenar en tablet: seguimiento diario, nivel de ansiedad y progreso.',
@@ -231,7 +231,7 @@ export const BONUSES: BonusItem[] = [
   {
     id: 'bonus-plantillas',
     number: 2,
-    title: '30 Esquemas de Discurso Listos para Rellenar',
+    title: '30 modelos de discursos',
     badge: 'Plantillas probadas',
     description:
       'Estructuras prediseñadas paso a paso para no empezar nunca desde la hoja en blanco. Solo completa con tus datos.',

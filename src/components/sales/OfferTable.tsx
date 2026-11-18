@@ -1,8 +1,8 @@
 import React from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Check, Gift, Headphones, FileText, Lock, ShieldCheck, Zap, ArrowRight } from 'lucide-react'
-import { PRODUCT_DATA, BONUSES } from '@/data/productData'
+import { Check, Headphones, FileText, Lock, ShieldCheck, Zap, ArrowRight } from 'lucide-react'
+import { PRODUCT_DATA } from '@/data/productData'
 import { PRICE } from '@/config/checkout'
 import { BonusCards } from '@/components/sales/BonusCards'
 
@@ -100,34 +100,6 @@ export const OfferTable: React.FC<OfferTableProps> = ({ onOpenCheckout }) => {
               </div>
             </div>
 
-            {/* Bonos (apenas aqui, na oferta final) */}
-            {BONUSES.map((bonus) => (
-              <div
-                key={bonus.id}
-                className="p-4 sm:p-5 flex items-center justify-between hover:bg-stone-50 transition-colors"
-              >
-                <div className="flex items-start gap-3">
-                  <span className="w-5 h-5 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 mt-0.5">
-                    <Gift className="w-3.5 h-3.5" />
-                  </span>
-                  <div>
-                    <span className="font-bold text-stone-900 block flex items-center gap-2">
-                      Regalo #{bonus.number}: {bonus.title}
-                      <span className="text-[10px] bg-amber-100 text-amber-800 font-bold px-1.5 py-0.2 rounded">
-                        Gratis
-                      </span>
-                    </span>
-                    <span className="text-xs text-stone-500">{bonus.description}</span>
-                  </div>
-                </div>
-                <div className="text-right shrink-0 ml-4">
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-amber-50 text-amber-800 text-xs font-bold border border-amber-200">
-                    Regalo
-                  </span>
-                </div>
-              </div>
-            ))}
-
             {/* Extra: entrega inmediata */}
             <div className="p-4 sm:p-5 flex items-center justify-between hover:bg-stone-50 transition-colors">
               <div className="flex items-start gap-3">
@@ -147,7 +119,7 @@ export const OfferTable: React.FC<OfferTableProps> = ({ onOpenCheckout }) => {
             </div>
           </div>
 
-          {/* Bônus 03-06: cards com capa real (mesma seção #oferta, sem valores) */}
+          {/* Bônus 1-6: cards com capa real vinda do Google Drive (sem valores) */}
           <div className="p-6 sm:p-10 border-t-2 border-stone-800">
             <BonusCards />
           </div>

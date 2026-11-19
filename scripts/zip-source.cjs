@@ -1,11 +1,14 @@
 /**
- * One-shot (roda manualmente nesta sessão): empacota o CÓDIGO-FONTE do
- * projeto em public/site-export.zip — o arquivo fica no repositório e é
- * servido como estático pelo preview (public/ → dist/ no build).
+ * Empacota o projeto em ZIPs prontos para hospedagem:
  *
- * Uso: npm run build && node scripts/zip-source.cjs
- * O ZIP do site compilado (public/dist-export.zip) só é gerado por este script,
- * nunca durante o build — o build de produção não depende dele.
+ * 1. generateDistZip() — roda NO BUILD via gancho no tailwind.config.ts
+ *    (import estático + chamada síncrona no evento 'exit' do processo, pois o
+ *    Tailwind carrega a config antes de o Vite gravar dist/). Gera
+ *    dist/dist-export.zip e pocketbase/hooks/files/dist-export.zip, servido
+ *    pela rota do backend /backend/v1/download/dist-export.
+ *
+ * 2. generateSiteZip() — código-fonte em public/site-export.zip; só roda
+ *    manualmente: node scripts/zip-source.cjs
  */
 const fs = require('node:fs')
 const path = require('node:path')
@@ -233,12 +236,29 @@ function generateDistZip() {
       fs.mkdirSync(path.dirname(target), { recursive: true })
       fs.writeFileSync(target, zip)
     }
+    // Relatório em texto: prova visível (fora de artefatos binários) de que o
+    // gancho rodou no build, com a lista exata do que foi empacotado.
+    const report = [
+      `gerado em: ${new Date().toISOString()}`,
+      `origem: ${distDir}`,
+      `arquivos: ${entries.length}`,
+      `bytes: ${zip.length}`,
+      'conteúdo:',
+      ...entries.map((en) => `  - ${en.name} (${en.data.length} bytes)`),
+    ].join('\n')
+    fs.writeFileSync(path.join(ROOT, 'zip-build-report.txt'), report)
     console.log(
       `[zip-source] dist-export.zip gerado a partir de dist/: ${entries.length} arquivos, ${(zip.length / 1024).toFixed(1)} KB`,
     )
     return { entries: entries.length, bytes: zip.length }
   } catch (err) {
     console.warn(`[zip-source] dist-export falhou (não bloqueia o build): ${err.message}`)
+    try {
+      fs.writeFileSync(
+        path.join(ROOT, 'zip-build-report.txt'),
+        `FALHOU em ${new Date().toISOString()}: ${err.stack || err.message}`,
+      )
+    } catch (_) {}
     return null
   }
 }

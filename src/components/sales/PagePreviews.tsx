@@ -1,22 +1,24 @@
 import React from 'react'
 import { Button } from '@/components/ui/button'
 import { BookOpen, Headphones, Sparkles, ZoomIn } from 'lucide-react'
-import { PdfPage } from '@/components/sales/PdfPage'
+import page10 from '@/assets/habla-pagina-10-d5e6f.webp'
+import page21 from '@/assets/habla-pagina-21-e3829.webp'
+import page44 from '@/assets/habla-pagina-44-3bd72.webp'
 
 interface PagePreviewsProps {
   onSelectCta: () => void
 }
 
-// Prévias "por dentro": 3 páginas REAIS do PDF do guia, renderizadas em
-// runtime pelo PdfPage (pdf.js). Páginas 10, 21 e 44 — a legenda usa o NOME
-// REAL da parte à qual cada página pertence, extraído do próprio PDF:
+// Prévias "por dentro": 3 páginas REAIS do guia, exportadas como IMAGEM
+// (o render em runtime via pdf.js ficava em branco). Páginas 10, 21 e 44 —
+// a legenda usa o NOME REAL da parte à qual cada página pertence:
 //   - p. 10  → Parte 2 · La respiración y el cuerpo
 //   - p. 21  → Parte 4 · La voz y su presencia
 //   - p. 44  → Parte 7 · El plan de los 21 días
-const PREVIEW_PAGES: { id: string; pageNumber: number; caption: string }[] = [
-  { id: 'pdf-p10', pageNumber: 10, caption: 'Parte 2 · La respiración y el cuerpo' },
-  { id: 'pdf-p21', pageNumber: 21, caption: 'Parte 4 · La voz y su presencia' },
-  { id: 'pdf-p44', pageNumber: 44, caption: 'Parte 7 · El plan de los 21 días' },
+const PREVIEW_PAGES: { id: string; pageNumber: number; src: string; caption: string }[] = [
+  { id: 'pdf-p10', pageNumber: 10, src: page10, caption: 'Parte 2 · La respiración y el cuerpo' },
+  { id: 'pdf-p21', pageNumber: 21, src: page21, caption: 'Parte 4 · La voz y su presencia' },
+  { id: 'pdf-p44', pageNumber: 44, src: page44, caption: 'Parte 7 · El plan de los 21 días' },
 ]
 
 export const PagePreviews: React.FC<PagePreviewsProps> = ({ onSelectCta }) => {
@@ -47,7 +49,14 @@ export const PagePreviews: React.FC<PagePreviewsProps> = ({ onSelectCta }) => {
             >
               <div className="relative aspect-[3/4] bg-white p-2">
                 <div className="relative w-full h-full flex items-center justify-center">
-                  <PdfPage pageNumber={page.pageNumber} />
+                  <img
+                    src={page.src}
+                    alt={`Página ${page.pageNumber} de la guía: ${page.caption}`}
+                    width={1200}
+                    height={1600}
+                    className="max-w-full max-h-full object-contain"
+                    loading="lazy"
+                  />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-stone-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-3 pointer-events-none">
                   <span className="inline-flex items-center gap-1 text-[10px] font-bold text-white bg-stone-900/80 px-2 py-1 rounded">

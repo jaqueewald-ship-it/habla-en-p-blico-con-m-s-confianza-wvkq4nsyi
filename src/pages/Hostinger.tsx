@@ -70,8 +70,9 @@ export default function Hostinger() {
             Monta e baixa um arquivo <strong>hostinger-kit.zip</strong> com o site compilado
             (index.html, assets/, .htaccess), as imagens e um leia-me com o passo a passo da
             Hostinger. As capas dos 6 bônus são embutidas na pasta <strong>bonus-covers/</strong> do
-            pacote (Bono 04–06 do próprio build; Bono 01–03 ainda do Google Drive). Após baixar,
-            extraia o conteúdo na pasta <strong>public_html</strong> pelo Gerenciador de Arquivos.
+            pacote (Bono 04–06 do próprio build; Bono 01–03 baixadas de URL fixa e embutidas). Após
+            baixar, extraia o conteúdo na pasta <strong>public_html</strong> pelo Gerenciador de
+            Arquivos.
           </p>
 
           <Button
@@ -112,13 +113,11 @@ export default function Hostinger() {
                     <p>
                       <strong>
                         {state.result.coverFailures.length} capa(s) de bônus não puderam ser
-                        buscadas do Google Drive
+                        embutidas
                       </strong>{' '}
-                      (o Drive pode ter bloqueado o acesso ou a pasta não está mais pública). Para
-                      essas, o ZIP mantém o hotlink do Drive no site publicado: se o Drive voltar a
-                      servir as imagens, as capas voltam a aparecer na Hostinger sem novo pacote. Se
-                      preferir garanti-las localmente, compartilhe a pasta do Drive como
-                      &quot;qualquer pessoa com o link&quot; e gere o pacote de novo.
+                      (a origem da capa pode estar indisponível neste momento). Para essas, o site
+                      publicado pode ficar sem a capa do card. Gere o pacote de novo mais tarde; se
+                      o problema persistir, verifique a origem da capa listada abaixo.
                     </p>
                     <ul className="list-disc list-inside">
                       {state.result.coverFailures.map((f) => (

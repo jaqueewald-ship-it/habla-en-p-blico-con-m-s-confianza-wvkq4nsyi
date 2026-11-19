@@ -1,15 +1,11 @@
 import React from 'react'
 import { Gift, FileText } from 'lucide-react'
-import { DRIVE_BONUS_IMAGES } from '@/data/driveImages'
-import { LOCAL_BONUS_COVER_IMAGES } from '@/data/bonusCoverImages'
-import { DriveImage } from '@/components/sales/DriveImage'
+import { getBonusCoverUrl, REMOTE_BONUS_COVER_IMAGES } from '@/data/bonusCoverImages'
 
 /**
  * Cards dos bônus dentro da seção da oferta final (#oferta).
- * A capa de cada card é, quando existe, o asset LOCAL do bundle
- * (src/assets) — nunca depende do Google Drive. Para os bônus que
- * ainda não têm asset local (Bono 01–03), a capa vem da pasta do
- * Drive via DriveImage com cascata de URLs.
+ * A capa de cada card vem de LOCAL_BONUS_COVER_IMAGES / REMOTE_BONUS_COVER_IMAGES
+ * (src/data/bonusCoverImages.ts) — nenhuma capa carrega do Google Drive.
  * Sem valor individual: os bônus são sempre "REGALO" incluído — o preço só aparece no total.
  */
 const BONUS_CARDS = [
@@ -45,20 +41,17 @@ const BONUS_CARDS = [
   },
 ]
 
-/** Capa de um card: asset local (primário) ou Drive (Bono 01–03) */
+/** Capa de um card: local (Bono 04–06) ou URL fixa do storage (Bono 01–03) — nunca Drive.
+ *  No site publicado via hostinger-kit.zip, a capa embutida em bonus-covers/
+ *  (injetada via window.__BONUS_COVER_FILES) tem prioridade sobre a URL remota. */
 const BonusCover: React.FC<{ number: string; alt: string }> = ({ number, alt }) => {
-  const local = LOCAL_BONUS_COVER_IMAGES[number]
-  if (local) {
-    return (
-      <img src={local} alt={alt} loading="lazy" className="w-full h-full object-cover object-top" />
-    )
-  }
+  const remoteUrl = REMOTE_BONUS_COVER_IMAGES[number]
+  const embedded =
+    typeof window !== 'undefined' && remoteUrl ? window.__BONUS_COVER_FILES?.[number] : undefined
+  const src = embedded ?? getBonusCoverUrl(number)
+  if (!src) return null
   return (
-    <DriveImage
-      fileId={DRIVE_BONUS_IMAGES[number]}
-      alt={alt}
-      className="w-full h-full object-cover object-top"
-    />
+    <img src={src} alt={alt} loading="lazy" className="w-full h-full object-cover object-top" />
   )
 }
 
@@ -87,7 +80,7 @@ export const BonusCards: React.FC = () => {
             key={bonus.number}
             className="group relative bg-white border-2 border-stone-800 rounded-xl overflow-hidden shadow-[5px_5px_0px_0px_rgba(28,25,23,0.85)] hover:shadow-[7px_7px_0px_0px_rgba(28,25,23,1)] transition-shadow flex flex-col"
           >
-            {/* Capa do bônus: asset local do bundle (ou Drive p/ Bono 01–03) */}
+            {/* Capa do bônus: local ou URL fixa do storage — nunca Drive */}
             <div className="relative aspect-[3/4] bg-white">
               <BonusCover number={bonus.number} alt={bonus.title} />
               {/* Etiqueta REGALO sobre a capa */}

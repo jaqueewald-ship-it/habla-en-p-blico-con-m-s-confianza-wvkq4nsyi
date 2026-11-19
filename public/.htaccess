@@ -2,6 +2,11 @@
 # Arquivos e pastas reais (assets/, imagens, dist-export.zip) são servidos direto.
 Options -MultiViews
 
+# ZIPs exportados (dist-export.zip) são baixados com o tipo correto.
+<IfModule mod_mime.c>
+  AddType application/zip .zip
+</IfModule>
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /

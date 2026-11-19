@@ -4,16 +4,21 @@
  * ============================================================
  *
  * Página utilitária (#/hostinger): busca os arquivos do deploy
- * atual por fetch relativo e empacota com JSZip. O mecanismo é o
- * mesmo do projeto "Materiales de Apoyo Profesional" que o
- * usuário referenciou como modelo.
+ * atual por fetch relativo e empacota com JSZip. A raiz do ZIP é
+ * o conteúdo de dist/ (index.html, assets/, .htaccess na raiz —
+ * pronto para subir em public_html).
  *
- * A raiz do ZIP é o conteúdo de dist/ (index.html, assets/,
- * .htaccess na raiz — pronto para subir em public_html).
- * O index.html de produção referencia os assets com caminhos
- * absolutos (/assets/...), então esses arquivos são resolvidos
- * a partir da raiz do deploy; os demais partem do diretório da
- * página.
+ * A lista do ZIP vem de três fontes combinadas:
+ *   1. dist/file-manifest.json — manifesto com a lista COMPLETA de
+ *      arquivos de dist/, gravado pelo gancho de build
+ *      (scripts/zip-source.cjs). Resolve imagens importadas no
+ *      código (hero, prévias) que aparecem só dentro dos bundles
+ *      JS com nomes hasheados.
+ *   2. Varredura dos bundles JS/CSS por referências a /assets/* —
+ *      fallback caso o manifesto não exista (deploy antigo) ou
+ *      tenha ficado incompleto.
+ *   3. Lista fixa de arquivos soltos da raiz (favicon, og-image…)
+ *      que sempre existem em public/.
  *
  * Se algum arquivo falhar, a página avisa na tela quais faltaram
  * em vez de gerar um ZIP quebrado.
@@ -21,7 +26,13 @@
  */
 import JSZip from 'jszip'
 
-/** Manifesto dos arquivos de imagem do site (além dos assets do build) */
+/** Manifesto gravado no build pelo gancho em scripts/zip-source.cjs */
+const MANIFEST_PATH = 'file-manifest.json'
+
+/**
+ * Arquivos da raiz de public/ que sempre entram no ZIP, mesmo sem
+ * manifesto e sem aparecer no HTML ou nos bundles.
+ */
 export const SITE_IMAGE_FILES = [
   'favicon.ico',
   'og-image.png',
@@ -48,7 +59,7 @@ export function buildDeployReadme(): string {
 Este ZIP contém o site JÁ COMPILADO, pronto para subir na Hostinger:
 
   - index.html        → página principal (fica na RAIZ do ZIP)
-  - assets/           → JavaScript e CSS compilados
+  - assets/           → JavaScript e CSS compilados, e as imagens do site
   - .htaccess         → regras de SPA (rotas caem no index.html)
   - imagens do site   → favicon, og-image, previews, etc.
   - README-DEPLOY.txt → este arquivo
@@ -147,6 +158,69 @@ export function extractAssetPaths(html: string): string[] {
 }
 
 /**
+ * Fallback: varre bundles JS/CSS em busca de referências a arquivos
+ * do build (caminhos absolutos /assets/xxx.ext com nome hasheado do
+ * Vite, ou relativos ./assets/...). Só aceita caminhos com extensão
+ * de arquivo estático para não capturar rotas da SPA.
+ */
+export function extractBundleAssetRefs(jsOrCss: string): string[] {
+  const paths = new Set<string>()
+  const re = /["'(](\/?assets\/[\w@./-]+\.[a-zA-Z0-9]{1,8})["')]/g
+  let m: RegExpExecArray | null
+  while ((m = re.exec(jsOrCss)) !== null) {
+    const clean = m[1].split('?')[0].split('#')[0]
+    if (!clean || clean.endsWith('/')) continue
+    paths.add(clean.replace(/^\//, ''))
+  }
+  return Array.from(paths)
+}
+
+/** True quando a string parece ser um bundle JS/CSS do Vite */
+function isCodeAsset(rel: string): boolean {
+  return rel.startsWith('assets/') && /(\.m?js|\.css)$/i.test(rel)
+}
+
+/**
+ * Monta a lista completa de arquivos do deploy:
+ *   manifesto do build → + assets do HTML → + refs dentro dos bundles.
+ */
+async function collectDeployFiles(html: string): Promise<string[]> {
+  const files = new Set<string>()
+
+  // 1. Manifesto gerado no build (lista completa de dist/)
+  const manifestBlob = await fetchDeployFile(MANIFEST_PATH)
+  if (manifestBlob) {
+    try {
+      const list = JSON.parse(await manifestBlob.text()) as unknown
+      if (Array.isArray(list)) {
+        for (const entry of list) {
+          if (typeof entry === 'string' && entry && !entry.includes('..')) {
+            files.add(entry.replace(/^\//, ''))
+          }
+        }
+      }
+    } catch {
+      // manifesto inválido → segue com o fallback
+    }
+  }
+
+  // 2. Assets referenciados no HTML (JS, CSS, favicon, og-image…)
+  for (const p of extractAssetPaths(html)) files.add(p)
+
+  // 3. Fallback: referências DENTRO dos bundles JS/CSS (imagens
+  //    importadas no código têm nomes hasheados e só aparecem aqui).
+  for (const p of Array.from(files)) {
+    if (!isCodeAsset(p)) continue
+    const blob = await fetchDeployFile(p)
+    if (!blob) continue
+    const text = await blob.text()
+    for (const ref of extractBundleAssetRefs(text)) files.add(ref)
+  }
+
+  return Array.from(files).sort()
+}
+
+/**
  * Monta o hostinger-kit.zip e devolve o Blob pronto para download.
  * Arquivos que falharem voltam em `failed` — o chamador decide
  * avisar na tela em vez de gerar um ZIP quebrado.
@@ -161,9 +235,14 @@ export async function buildHostingerKit(): Promise<{ blob: Blob; result: KitResu
   const html = await htmlRes.text()
 
   const failed: string[] = []
+  const added = new Set<string>()
   const addOrTrack = (name: string, data: Blob | string | null) => {
-    if (data === null) failed.push(name)
-    else zip.file(name, data)
+    if (data === null) {
+      failed.push(name)
+    } else {
+      added.add(name)
+      zip.file(name, data)
+    }
   }
 
   // 1. index.html na raiz do ZIP
@@ -172,14 +251,16 @@ export async function buildHostingerKit(): Promise<{ blob: Blob; result: KitResu
   // 2. .htaccess na raiz do ZIP (SPA)
   addOrTrack('.htaccess', await fetchDeployFile('.htaccess'))
 
-  // 3. assets listados no HTML compilado
-  const assetPaths = extractAssetPaths(html)
-  for (const p of assetPaths) {
+  // 3. Todos os arquivos do deploy: manifesto + HTML + bundles JS
+  const deployFiles = await collectDeployFiles(html)
+  for (const p of deployFiles) {
+    if (p === MANIFEST_PATH || added.has(p)) continue
     addOrTrack(p, await fetchDeployFile(p))
   }
 
-  // 4. imagens do site (favicon, og-image, previews, etc.)
+  // 4. Arquivos fixos da raiz de public/ (podem não estar em lugar nenhum)
   for (const p of SITE_IMAGE_FILES) {
+    if (added.has(p) || failed.includes(p)) continue
     addOrTrack(p, await fetchDeployFile(p))
   }
 
@@ -197,7 +278,7 @@ export async function buildHostingerKit(): Promise<{ blob: Blob; result: KitResu
   })
   return {
     blob,
-    result: { ok: true, failed, fileCount: assetPaths.length + SITE_IMAGE_FILES.length + 3 },
+    result: { ok: true, failed, fileCount: added.size + 2 },
   }
 }
 

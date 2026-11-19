@@ -230,7 +230,28 @@ function generateDistZip() {
       return null
     }
     const files = walkAll(distDir) // inclui dotfiles como .htaccess; ignora dist-export.zip antigo
+
+    // Manifesto da lista completa de dist/ (consumido pela página #/hostinger:
+    // hostingerKit.ts busca cada arquivo listado, inclusive imagens referenciadas
+    // só dentro dos bundles JS). Exclui os próprios artefatos de empacotamento.
+    const manifestFiles = files
+      .map((f) => f.rel)
+      .filter(
+        (rel) =>
+          rel !== 'file-manifest.json' && rel !== 'dist-export.zip' && rel !== 'site-export.zip',
+      )
+    fs.writeFileSync(
+      path.join(distDir, 'file-manifest.json'),
+      JSON.stringify(manifestFiles, null, 2),
+    )
+
+    const manifestPath = path.join(distDir, 'file-manifest.json')
     const entries = files.map((f) => ({ name: f.rel, data: fs.readFileSync(f.full) }))
+    // O manifesto entra também no dist-export.zip (a página #/hostinger o consome
+    // do site publicado; dentro do ZIP ele é inofensivo e ajuda na depuração).
+    if (fs.existsSync(manifestPath)) {
+      entries.push({ name: 'file-manifest.json', data: fs.readFileSync(manifestPath) })
+    }
     const zip = buildZip(entries)
     for (const target of DIST_ZIP_TARGETS) {
       fs.mkdirSync(path.dirname(target), { recursive: true })

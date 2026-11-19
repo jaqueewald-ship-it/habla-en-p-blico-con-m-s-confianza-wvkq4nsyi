@@ -3,17 +3,16 @@ import type { Config } from 'tailwindcss'
 import animatePlugin from 'tailwindcss-animate'
 import typographyPlugin from '@tailwindcss/typography'
 import aspectRatioPlugin from '@tailwindcss/aspect-ratio'
-// @ts-ignore -- script utilitário em CJS, sem tipos
-import { generateSiteZipOnExit } from './scripts/zip-source.cjs'
 
-// Agenda a geração de public/site-export.zip (código-fonte + pasta dist
-// compilada, para subir na Hostinger) para o fim do processo, quando o build
-// do Vite já escreveu a dist. Import estático: o Tailwind carrega este config
-// via jiti, e top-level await não é válido nele.
+// Gancho OPCIONAL de exportação do ZIP do site (só para o ambiente de
+// desenvolvimento). Carregado com require síncrono dentro de try/catch: se o
+// script não existir ou falhar (ex.: build na Hostinger), o build segue normal.
+declare const require: (id: string) => any
 try {
-  generateSiteZipOnExit()
+  const zipScript = require('./scripts/zip-source.cjs')
+  zipScript.generateSiteZipOnExit()
 } catch {
-  // silencioso: o ZIP não pode quebrar o build
+  // silencioso: o ZIP nunca pode quebrar o build
 }
 
 export default {

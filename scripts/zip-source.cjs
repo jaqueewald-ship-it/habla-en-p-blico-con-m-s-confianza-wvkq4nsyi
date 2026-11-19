@@ -125,11 +125,26 @@ const EXCLUDED = new Set([
   'bun.lockb',
   'pnpm-lock.yaml',
   'pnpm-workspace.yaml',
-  'pocketbase',
   'site-export.zip',
   'imagem-do-chatgpt-17-de-nov.de-2026-223139-f4cc2.jpg', // não usada no app
-  'scripts', // utilitário desta sessão, não faz parte do app
   'README-DEPLOY.txt', // vai para a raiz do ZIP
+])
+
+// Exclusões válidas apenas na raiz do projeto. "pocketbase" aqui é a pasta do
+// backend (migrations/hooks); src/lib/pocketbase é código do app e entra no ZIP.
+const ROOT_ONLY_EXCLUDED = new Set([
+  'node_modules',
+  'dist',
+  'dev-dist',
+  '.git',
+  '.env',
+  'bun.lockb',
+  'pnpm-lock.yaml',
+  'pnpm-workspace.yaml',
+  'pocketbase',
+  'site-export.zip',
+  'imagem-do-chatgpt-17-de-nov.de-2026-223139-f4cc2.jpg',
+  'README-DEPLOY.txt',
 ])
 
 const INCLUDED_DOTFILES = new Set(['.env.example'])
@@ -150,7 +165,7 @@ function walkAll(dir, base = '') {
 function walk(dir, base = '') {
   const out = []
   for (const name of fs.readdirSync(dir)) {
-    if (EXCLUDED.has(name)) continue
+    if (base === '' ? ROOT_ONLY_EXCLUDED.has(name) : EXCLUDED.has(name)) continue
     if (name.startsWith('.') && !INCLUDED_DOTFILES.has(name)) continue
     const full = path.join(dir, name)
     const rel = base ? `${base}/${name}` : name

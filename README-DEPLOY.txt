@@ -4,8 +4,14 @@
 
 Este ZIP contém:
   - dist/            → site JÁ COMPILADO (pronto para subir)
-  - código-fonte     → src/, public/, package.json etc. (para referência
-                       ou para recompilar), sem node_modules e sem segredos.
+  - código-fonte     → src/, public/, scripts/, package.json, index.html,
+                       vite.config.ts, tailwind.config.ts etc. ficam NA RAIZ
+                       do ZIP (para referência ou para recompilar), sem
+                       node_modules e sem segredos.
+
+O `npm run build` compila o site sem depender de nenhum script de export:
+o gancho opcional do tailwind.config.ts só gera o ZIP no ambiente de
+desenvolvimento e, se o script faltar ou falhar, o build segue normalmente.
 
 Você tem dois caminhos. O CAMINHO SIMPLES não exige nada instalado.
 

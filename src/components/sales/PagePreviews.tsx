@@ -1,14 +1,20 @@
 import React from 'react'
 import { Button } from '@/components/ui/button'
 import { BookOpen, Headphones, Sparkles, ZoomIn } from 'lucide-react'
-import { DRIVE_PAGE_PREVIEWS, driveImageUrl } from '@/data/driveImages'
+import { PdfPage } from '@/components/sales/PdfPage'
 
 interface PagePreviewsProps {
   onSelectCta: () => void
 }
 
-// Prévias "por dentro": 3 imagens oficiais do material, vindas da
-// pasta do Drive via endpoint de thumbnail (ver src/data/driveImages.ts).
+// Prévias "por dentro": 3 páginas REAIS do PDF do guia (src/assets), renderizadas
+// com PdfPage. Escolhidas entre as páginas de conteúdo que trazem imagens embutidas
+// (2 por página): 13 = Parte 4, 16 = Parte 5, 20 = Parte 6.
+const PREVIEW_PAGES: { id: string; pageNumber: number; caption: string }[] = [
+  { id: 'pdf-p13', pageNumber: 13, caption: 'Parte 4 · La voz' },
+  { id: 'pdf-p16', pageNumber: 16, caption: 'Parte 5 · La mirada y los gestos' },
+  { id: 'pdf-p20', pageNumber: 20, caption: 'Parte 6 · Las situaciones' },
+]
 
 export const PagePreviews: React.FC<PagePreviewsProps> = ({ onSelectCta }) => {
   return (
@@ -29,24 +35,19 @@ export const PagePreviews: React.FC<PagePreviewsProps> = ({ onSelectCta }) => {
           </p>
         </div>
 
-        {/* 3 imagens oficiais (Drive) + audiobook cover */}
+        {/* 3 páginas reais do PDF + capa do audiobook */}
         <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
-          {DRIVE_PAGE_PREVIEWS.map((page, idx) => (
+          {PREVIEW_PAGES.map((page) => (
             <figure
               key={page.id}
               className="group relative bg-white border-2 border-stone-800 rounded-xl overflow-hidden shadow-[5px_5px_0px_0px_rgba(28,25,23,0.85)] hover:shadow-[7px_7px_0px_0px_rgba(28,25,23,1)] transition-shadow"
             >
               <div className="relative aspect-[3/4] bg-white">
-                <img
-                  src={driveImageUrl(page.fileId)}
-                  alt={page.label}
-                  className="w-full h-full object-cover object-top"
-                  loading="lazy"
-                />
+                <PdfPage pageNumber={page.pageNumber} className="w-full h-full" />
                 <div className="absolute inset-0 bg-gradient-to-t from-stone-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-3">
                   <span className="inline-flex items-center gap-1 text-[10px] font-bold text-white bg-stone-900/80 px-2 py-1 rounded">
                     <ZoomIn className="w-3 h-3" />
-                    Página {idx + 1}
+                    Página {page.pageNumber}
                   </span>
                 </div>
               </div>
@@ -56,7 +57,7 @@ export const PagePreviews: React.FC<PagePreviewsProps> = ({ onSelectCta }) => {
             </figure>
           ))}
 
-          {/* Audiobook cover — visual do app (fundo escuro, âmbar) */}
+          {/* Audiobook cover — capa do app (fundo escuro, âmbar) */}
           <figure className="group relative bg-stone-900 border-2 border-stone-800 rounded-xl overflow-hidden shadow-[5px_5px_0px_0px_rgba(28,25,23,0.85)] hover:shadow-[7px_7px_0px_0px_rgba(28,25,23,1)] transition-shadow text-white">
             <div className="relative aspect-[3/4] bg-stone-900">
               <img

@@ -306,7 +306,13 @@ async function embedBonusCovers(
   for (const [bonusNum, fileId] of Object.entries(DRIVE_BONUS_IMAGES)) {
     const localRel = localAssets.get(bonusNum)
     if (localRel) {
-      const blob = await fetchAsset(localRel)
+      // Asset emitido pelo Vite (dist/assets/…) ou inlined como data: URI
+      // (imports < 4 KB o Vite embute em base64 no bundle — fetch resolve ambos)
+      const blob = await (localRel.startsWith('data:')
+        ? fetch(localRel)
+            .then((r) => (r.ok ? r.blob() : null))
+            .catch(() => null)
+        : fetchAsset(localRel))
       if (blob) {
         const name = `bonus-covers/bono-${bonusNum}.${extFromType(blob.type)}`
         zip.file(name, blob)

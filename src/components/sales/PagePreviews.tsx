@@ -8,12 +8,15 @@ interface PagePreviewsProps {
 }
 
 // Prévias "por dentro": 3 páginas REAIS do PDF do guia (src/assets), renderizadas
-// com PdfPage. Escolhidas entre as páginas de conteúdo que trazem imagens embutidas
-// (2 por página): 13 = Parte 4, 16 = Parte 5, 20 = Parte 6.
+// com PdfPage. Páginas 10, 21 e 44 — a legenda usa o NOME REAL da parte à qual
+// cada página pertence, extraído do próprio PDF:
+//   - p. 10  → Parte 2 · La respiración y el cuerpo
+//   - p. 21  → Parte 4 · La voz y su presencia
+//   - p. 44  → Parte 7 · El plan de los 21 días
 const PREVIEW_PAGES: { id: string; pageNumber: number; caption: string }[] = [
-  { id: 'pdf-p13', pageNumber: 13, caption: 'Parte 4 · La voz' },
-  { id: 'pdf-p16', pageNumber: 16, caption: 'Parte 5 · La mirada y los gestos' },
-  { id: 'pdf-p20', pageNumber: 20, caption: 'Parte 6 · Las situaciones' },
+  { id: 'pdf-p10', pageNumber: 10, caption: 'Parte 2 · La respiración y el cuerpo' },
+  { id: 'pdf-p21', pageNumber: 21, caption: 'Parte 4 · La voz y su presencia' },
+  { id: 'pdf-p44', pageNumber: 44, caption: 'Parte 7 · El plan de los 21 días' },
 ]
 
 export const PagePreviews: React.FC<PagePreviewsProps> = ({ onSelectCta }) => {

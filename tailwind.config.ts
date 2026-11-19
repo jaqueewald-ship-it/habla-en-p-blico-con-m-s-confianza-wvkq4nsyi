@@ -3,6 +3,19 @@ import type { Config } from 'tailwindcss'
 import animatePlugin from 'tailwindcss-animate'
 import typographyPlugin from '@tailwindcss/typography'
 import aspectRatioPlugin from '@tailwindcss/aspect-ratio'
+// Gancho de build: gera dist/dist-export.zip e pocketbase/hooks/files/dist-export.zip.
+// Import ESTÁTICO + chamada SÍNCRONA: o jiti (carregador do Tailwind) rejeita
+// top-level await e import dinâmico dentro de IIFE.
+// A chamada fica no evento 'exit' do processo: o Tailwind carrega esta config
+// ANTES de o Vite gravar dist/, então rodar agora empacotaria o build anterior.
+// @ts-ignore -- script CommonJS sem declaração de tipos
+import { generateDistZip } from './scripts/zip-source.cjs'
+
+declare const process: { once(event: 'exit', listener: () => void): unknown }
+
+process.once('exit', () => {
+  generateDistZip()
+})
 
 export default {
   darkMode: ['class'],

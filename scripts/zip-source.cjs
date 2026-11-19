@@ -211,23 +211,30 @@ function generateSiteZip() {
 }
 
 // ZIP SOMENTE com o conteúdo de dist/ (index.html, assets/, .htaccess na raiz do
-// ZIP, sem pasta "dist" embrulhando). Publicado em public/dist-export.zip para
-// download direto na Hostinger. Sem dist/ (antes do build), não gera nada.
+// ZIP, sem pasta "dist" embrulhando). Gravado em dist/dist-export.zip e numa cópia
+// em pocketbase/hooks/files/dist-export.zip (servida pela rota do backend
+// /backend/v1/download/dist-export). Sem dist/index.html, não gera nada.
+const DIST_ZIP_TARGETS = [
+  path.join(ROOT, 'dist', 'dist-export.zip'),
+  path.join(ROOT, 'pocketbase', 'hooks', 'files', 'dist-export.zip'),
+]
+
 function generateDistZip() {
   try {
     const distDir = path.join(ROOT, 'dist')
     if (!fs.existsSync(path.join(distDir, 'index.html'))) {
-      console.warn('[zip-source] dist/index.html ausente: public/dist-export.zip não gerado')
+      console.warn('[zip-source] dist/index.html ausente: dist-export.zip não gerado')
       return null
     }
-    const files = walkAll(distDir) // inclui dotfiles como .htaccess
+    const files = walkAll(distDir) // inclui dotfiles como .htaccess; ignora dist-export.zip antigo
     const entries = files.map((f) => ({ name: f.rel, data: fs.readFileSync(f.full) }))
     const zip = buildZip(entries)
-    // Grava SOMENTE em public/ (asset estático commitado, como site-export.zip).
-    // Não escreve em dist/: o build não roda mais este script.
-    fs.writeFileSync(path.join(ROOT, 'public', 'dist-export.zip'), zip)
+    for (const target of DIST_ZIP_TARGETS) {
+      fs.mkdirSync(path.dirname(target), { recursive: true })
+      fs.writeFileSync(target, zip)
+    }
     console.log(
-      `[zip-source] public/dist-export.zip gerado a partir de dist/: ${entries.length} arquivos, ${(zip.length / 1024).toFixed(1)} KB`,
+      `[zip-source] dist-export.zip gerado a partir de dist/: ${entries.length} arquivos, ${(zip.length / 1024).toFixed(1)} KB`,
     )
     return { entries: entries.length, bytes: zip.length }
   } catch (err) {
@@ -238,8 +245,8 @@ function generateDistZip() {
 
 module.exports = { generateSiteZip, generateDistZip }
 
-// Execução manual, após `npm run build`: atualiza public/dist-export.zip
-// (e public/site-export.zip). Commitar os dois arquivos depois.
+// Execução manual, após `npm run build`: atualiza dist/dist-export.zip,
+// pocketbase/hooks/files/dist-export.zip e public/site-export.zip.
 if (require.main === module) {
   generateSiteZip()
   generateDistZip()

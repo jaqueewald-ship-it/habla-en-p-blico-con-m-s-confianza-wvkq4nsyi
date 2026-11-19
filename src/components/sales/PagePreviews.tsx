@@ -7,9 +7,9 @@ interface PagePreviewsProps {
   onSelectCta: () => void
 }
 
-// Prévias "por dentro": 3 páginas REAIS do PDF do guia (src/assets), renderizadas
-// com PdfPage. Páginas 10, 21 e 44 — a legenda usa o NOME REAL da parte à qual
-// cada página pertence, extraído do próprio PDF:
+// Prévias "por dentro": 3 páginas REAIS do PDF do guia, renderizadas em
+// runtime pelo PdfPage (pdf.js). Páginas 10, 21 e 44 — a legenda usa o NOME
+// REAL da parte à qual cada página pertence, extraído do próprio PDF:
 //   - p. 10  → Parte 2 · La respiración y el cuerpo
 //   - p. 21  → Parte 4 · La voz y su presencia
 //   - p. 44  → Parte 7 · El plan de los 21 días
@@ -45,9 +45,11 @@ export const PagePreviews: React.FC<PagePreviewsProps> = ({ onSelectCta }) => {
               key={page.id}
               className="group relative bg-white border-2 border-stone-800 rounded-xl overflow-hidden shadow-[5px_5px_0px_0px_rgba(28,25,23,0.85)] hover:shadow-[7px_7px_0px_0px_rgba(28,25,23,1)] transition-shadow"
             >
-              <div className="relative aspect-[3/4] bg-white">
-                <PdfPage pageNumber={page.pageNumber} className="w-full h-full" />
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-3">
+              <div className="relative aspect-[3/4] bg-white p-2">
+                <div className="relative w-full h-full flex items-center justify-center">
+                  <PdfPage pageNumber={page.pageNumber} />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-stone-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-3 pointer-events-none">
                   <span className="inline-flex items-center gap-1 text-[10px] font-bold text-white bg-stone-900/80 px-2 py-1 rounded">
                     <ZoomIn className="w-3 h-3" />
                     Página {page.pageNumber}

@@ -69,9 +69,9 @@ export default function Hostinger() {
           <p className="text-sm text-stone-600 leading-relaxed">
             Monta e baixa um arquivo <strong>hostinger-kit.zip</strong> com o site compilado
             (index.html, assets/, .htaccess), as imagens e um leia-me com o passo a passo da
-            Hostinger. As capas dos 6 bônus são buscadas do Google Drive e embutidas na pasta{' '}
-            <strong>bonus-covers/</strong> do pacote. Após baixar, extraia o conteúdo na pasta{' '}
-            <strong>public_html</strong> pelo Gerenciador de Arquivos.
+            Hostinger. As capas dos 6 bônus são embutidas na pasta <strong>bonus-covers/</strong> do
+            pacote (Bono 04–06 do próprio build; Bono 01–03 ainda do Google Drive). Após baixar,
+            extraia o conteúdo na pasta <strong>public_html</strong> pelo Gerenciador de Arquivos.
           </p>
 
           <Button

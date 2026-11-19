@@ -20,14 +20,16 @@
  *   3. Lista fixa de arquivos soltos da raiz (favicon, og-image…)
  *      que sempre existem em public/.
  *
- * As capas dos 6 bônus são HOTLINKS da pasta do Google Drive (não são
- * assets do build) — sem elas o site publicado na Hostinger ficaria
- * sem as capas. Elas são buscadas no navegador e embutidas na pasta
- * bonus-covers/ do ZIP; um <script> gravado no index.html do pacote
- * injeta window.__BONUS_COVER_FILES, e o driveImageUrl do site usa a
- * cópia local em vez do hotlink. Se alguma capa não puder ser baixada
- * do Drive, o kit segue com hotlinks para essa capa e a página
- * avisa na tela (o aviso não bloqueia o download).
+ * As capas dos 6 bônus são embutidas na pasta bonus-covers/ do ZIP.
+ * Bono 04–06 têm asset LOCAL (import estático em src/assets, emitido
+ * pelo Vite em dist/assets/) — o blob é copiado do próprio deploy,
+ * sem tocar no Drive. Bono 01–03 ainda são hotlinks da pasta do
+ * Google Drive (não são assets do build): buscados no navegador e
+ * embutidos; um <script> gravado no index.html do pacote injeta
+ * window.__BONUS_COVER_FILES e o driveImageUrl do site usa a cópia
+ * local em vez do hotlink. Se alguma capa não puder ser baixada do
+ * Drive, o kit segue com hotlinks para essa capa e a página avisa
+ * na tela (o aviso não bloqueia o download).
  *
  * Se um arquivo DEPLOY falhar, a página avisa na tela quais faltaram
  * em vez de gerar um ZIP quebrado.
@@ -35,6 +37,7 @@
  */
 import JSZip from 'jszip'
 import { DRIVE_BONUS_IMAGES } from '@/data/driveImages'
+import { LOCAL_BONUS_COVER_IMAGES } from '@/data/bonusCoverImages'
 
 /** Manifesto gravado no build pelo gancho em scripts/zip-source.cjs */
 const MANIFEST_PATH = 'file-manifest.json'
@@ -276,10 +279,16 @@ async function fetchBonusCover(fileId: string): Promise<Blob | null> {
  * Baixa as capas dos bônus e as embute no ZIP (bonus-covers/), além de
  * gravar o <script> de injeção no index.html. Devolve quantas entraram
  * e a lista das que ficaram de fora (para aviso na tela).
+ *
+ * Capas com asset LOCAL (Bono 04–06): o blob já vem do próprio build
+ * (nome hasheado em dist/assets/ via import estático) — nada é buscado
+ * no Drive. Capas sem asset local (Bono 01–03): busca no Drive como
+ * antes; se falhar, ficam como hotlink e a página avisa.
  */
 async function embedBonusCovers(
   zip: JSZip,
   indexHtml: string,
+  fetchAsset: (rel: string) => Promise<Blob | null>,
 ): Promise<{
   embeddedCovers: number
   coverFailures: string[]
@@ -287,7 +296,26 @@ async function embedBonusCovers(
 }> {
   const coverMap: Record<string, string> = {}
   const failures: string[] = []
+  // fileId → asset local emitido pelo Vite, indexado por prefixo do nome
+  const localAssets = new Map<string, string>()
+  for (const [bonusNum, localUrl] of Object.entries(LOCAL_BONUS_COVER_IMAGES)) {
+    if (!localUrl) continue
+    const rel = localUrl.startsWith('/') ? localUrl.slice(1) : localUrl
+    localAssets.set(bonusNum, rel)
+  }
   for (const [bonusNum, fileId] of Object.entries(DRIVE_BONUS_IMAGES)) {
+    const localRel = localAssets.get(bonusNum)
+    if (localRel) {
+      const blob = await fetchAsset(localRel)
+      if (blob) {
+        const name = `bonus-covers/bono-${bonusNum}.${extFromType(blob.type)}`
+        zip.file(name, blob)
+        coverMap[fileId] = name
+        continue
+      }
+      failures.push(`bonus-covers/bono-${bonusNum} (asset local ${localRel} não acessível)`)
+      continue
+    }
     const blob = await fetchBonusCover(fileId)
     if (!blob) {
       failures.push(`bonus-covers/bono-${bonusNum} (capa do Drive não acessível)`)
@@ -327,8 +355,9 @@ export async function buildHostingerKit(): Promise<{ blob: Blob; result: KitResu
   const failed: string[] = []
   const added = new Set<string>()
 
-  // 0. Capas dos bônus (hotlinks do Drive) → embutidas localmente no pacote
-  const coverResult = await embedBonusCovers(zip, html)
+  // 0. Capas dos bônus: assets locais (Bono 04–06) + Drive (Bono 01–03)
+  //    → embutidas localmente no pacote em bonus-covers/
+  const coverResult = await embedBonusCovers(zip, html, fetchDeployFile)
   html = coverResult.html
   const coverFailures = coverResult.coverFailures
   const addOrTrack = (name: string, data: Blob | string | null) => {

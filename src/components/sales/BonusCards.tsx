@@ -1,12 +1,15 @@
 import React from 'react'
 import { Gift, FileText } from 'lucide-react'
 import { DRIVE_BONUS_IMAGES } from '@/data/driveImages'
+import { LOCAL_BONUS_COVER_IMAGES } from '@/data/bonusCoverImages'
 import { DriveImage } from '@/components/sales/DriveImage'
 
 /**
  * Cards dos bônus dentro da seção da oferta final (#oferta).
- * A capa de cada card é a imagem do bônus preparada na pasta do Drive,
- * carregada direto pela URL (endpoint de thumbnail do Drive).
+ * A capa de cada card é, quando existe, o asset LOCAL do bundle
+ * (src/assets) — nunca depende do Google Drive. Para os bônus que
+ * ainda não têm asset local (Bono 01–03), a capa vem da pasta do
+ * Drive via DriveImage com cascata de URLs.
  * Sem valor individual: os bônus são sempre "REGALO" incluído — o preço só aparece no total.
  */
 const BONUS_CARDS = [
@@ -42,6 +45,23 @@ const BONUS_CARDS = [
   },
 ]
 
+/** Capa de um card: asset local (primário) ou Drive (Bono 01–03) */
+const BonusCover: React.FC<{ number: string; alt: string }> = ({ number, alt }) => {
+  const local = LOCAL_BONUS_COVER_IMAGES[number]
+  if (local) {
+    return (
+      <img src={local} alt={alt} loading="lazy" className="w-full h-full object-cover object-top" />
+    )
+  }
+  return (
+    <DriveImage
+      fileId={DRIVE_BONUS_IMAGES[number]}
+      alt={alt}
+      className="w-full h-full object-cover object-top"
+    />
+  )
+}
+
 export const BonusCards: React.FC = () => {
   return (
     <div className="mt-14">
@@ -67,13 +87,9 @@ export const BonusCards: React.FC = () => {
             key={bonus.number}
             className="group relative bg-white border-2 border-stone-800 rounded-xl overflow-hidden shadow-[5px_5px_0px_0px_rgba(28,25,23,0.85)] hover:shadow-[7px_7px_0px_0px_rgba(28,25,23,1)] transition-shadow flex flex-col"
           >
-            {/* Capa do bônus: imagem da pasta do Drive */}
+            {/* Capa do bônus: asset local do bundle (ou Drive p/ Bono 01–03) */}
             <div className="relative aspect-[3/4] bg-white">
-              <DriveImage
-                fileId={DRIVE_BONUS_IMAGES[bonus.number]}
-                alt={bonus.title}
-                className="w-full h-full object-cover object-top"
-              />
+              <BonusCover number={bonus.number} alt={bonus.title} />
               {/* Etiqueta REGALO sobre a capa */}
               <span className="absolute top-2.5 left-2.5 inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider bg-amber-400 text-stone-900 px-2 py-1 rounded border border-stone-900">
                 <Gift className="w-3 h-3" />

@@ -4,24 +4,16 @@ import animatePlugin from 'tailwindcss-animate'
 import typographyPlugin from '@tailwindcss/typography'
 import aspectRatioPlugin from '@tailwindcss/aspect-ratio'
 // @ts-ignore -- script utilitário em CJS, sem tipos
-import { generateSiteZip } from './scripts/zip-source.cjs'
+import { generateSiteZipOnExit } from './scripts/zip-source.cjs'
 
-// Gera public/site-export.zip (código-fonte para hospedar na Hostinger) uma
-// única vez durante o build (v0.0.26: ZIP regenerado com o pixel da Syncar,
-// imagens reais das páginas 10/21/44, checkout Hotmart, bônus com capas do
-// Drive, preço só na oferta final e garantia de 7 dias).
-// Import estático: o Tailwind carrega este config
-// via jiti (transpila o import para require, executado na carga do config) e
-// num carregador ESM real o import estático também roda antes do corpo.
-// (top-level await não é válido no jiti; eval('require') dá ReferenceError
-// em escopo ESM.)
-if (!(globalThis as { __siteZipGenerated?: boolean }).__siteZipGenerated) {
-  ;(globalThis as { __siteZipGenerated?: boolean }).__siteZipGenerated = true
-  try {
-    generateSiteZip()
-  } catch {
-    // silencioso: o ZIP não pode quebrar o build
-  }
+// Agenda a geração de public/site-export.zip (código-fonte + pasta dist
+// compilada, para subir na Hostinger) para o fim do processo, quando o build
+// do Vite já escreveu a dist. Import estático: o Tailwind carrega este config
+// via jiti, e top-level await não é válido nele.
+try {
+  generateSiteZipOnExit()
+} catch {
+  // silencioso: o ZIP não pode quebrar o build
 }
 
 export default {

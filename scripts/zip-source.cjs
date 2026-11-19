@@ -134,6 +134,19 @@ const EXCLUDED = new Set([
 
 const INCLUDED_DOTFILES = new Set(['.env.example'])
 
+// Coleta tudo de uma pasta (inclusive dotfiles, ex.: .htaccess), sem exclusões do código-fonte.
+function walkAll(dir, base = '') {
+  const out = []
+  for (const name of fs.readdirSync(dir)) {
+    if (name === 'site-export.zip') continue // cópia antiga vinda de public/
+    const full = path.join(dir, name)
+    const rel = base ? `${base}/${name}` : name
+    if (fs.statSync(full).isDirectory()) out.push(...walkAll(full, rel))
+    else out.push({ rel, full })
+  }
+  return out
+}
+
 function walk(dir, base = '') {
   const out = []
   for (const name of fs.readdirSync(dir)) {
@@ -157,8 +170,13 @@ function generateSiteZip() {
   try {
     const files = walk(ROOT)
     const readmePath = path.join(ROOT, 'README-DEPLOY.txt')
+    // Pasta dist já compilada (caminho simples na Hostinger). Só existe depois de
+    // um build; quando ausente, o ZIP sai só com o código-fonte.
+    const distDir = path.join(ROOT, 'dist')
+    const distFiles = fs.existsSync(distDir) ? walkAll(distDir, 'dist') : []
     const entries = [
       { name: 'README-DEPLOY.txt', data: fs.readFileSync(readmePath) },
+      ...distFiles.map((f) => ({ name: f.rel, data: fs.readFileSync(f.full) })),
       ...files.map((f) => ({ name: f.rel, data: fs.readFileSync(f.full) })),
     ]
     const zip = buildZip(entries)
@@ -174,7 +192,17 @@ function generateSiteZip() {
   }
 }
 
-module.exports = { generateSiteZip }
+// Agenda a geração do ZIP para o fim do processo (após o build do Vite ter
+// escrito a dist). Chamado do tailwind.config.ts; executa uma única vez.
+function generateSiteZipOnExit() {
+  if (globalThis.__siteZipOnExit) return
+  globalThis.__siteZipOnExit = true
+  process.on('exit', () => {
+    generateSiteZip()
+  })
+}
+
+module.exports = { generateSiteZip, generateSiteZipOnExit }
 
 if (require.main === module) {
   generateSiteZip()

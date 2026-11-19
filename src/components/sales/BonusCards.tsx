@@ -1,11 +1,11 @@
 import React from 'react'
 import { Gift, FileText } from 'lucide-react'
-import { getBonusCoverUrl, REMOTE_BONUS_COVER_IMAGES } from '@/data/bonusCoverImages'
+import { getBonusCoverUrl } from '@/data/bonusCoverImages'
 
 /**
  * Cards dos bônus dentro da seção da oferta final (#oferta).
- * A capa de cada card vem de LOCAL_BONUS_COVER_IMAGES / REMOTE_BONUS_COVER_IMAGES
- * (src/data/bonusCoverImages.ts) — nenhuma capa carrega do Google Drive.
+ * A capa de cada card vem de LOCAL_BONUS_COVER_IMAGES (src/data/bonusCoverImages.ts)
+ * — todas as capas são assets locais, nenhuma usa URL externa.
  * Sem valor individual: os bônus são sempre "REGALO" incluído — o preço só aparece no total.
  */
 const BONUS_CARDS = [
@@ -41,13 +41,10 @@ const BONUS_CARDS = [
   },
 ]
 
-/** Capa de um card: local (Bono 04–06) ou URL fixa do storage (Bono 01–03) — nunca Drive.
- *  No site publicado via hostinger-kit.zip, a capa embutida em bonus-covers/
- *  (injetada via window.__BONUS_COVER_FILES) tem prioridade sobre a URL remota. */
+/** Capa de um card: local do bundle. No site publicado via hostinger-kit.zip, a capa
+ *  embutida em bonus-covers/ (window.__BONUS_COVER_FILES) tem prioridade. */
 const BonusCover: React.FC<{ number: string; alt: string }> = ({ number, alt }) => {
-  const remoteUrl = REMOTE_BONUS_COVER_IMAGES[number]
-  const embedded =
-    typeof window !== 'undefined' && remoteUrl ? window.__BONUS_COVER_FILES?.[number] : undefined
+  const embedded = typeof window !== 'undefined' ? window.__BONUS_COVER_FILES?.[number] : undefined
   const src = embedded ?? getBonusCoverUrl(number)
   if (!src) return null
   return (
@@ -80,7 +77,7 @@ export const BonusCards: React.FC = () => {
             key={bonus.number}
             className="group relative bg-white border-2 border-stone-800 rounded-xl overflow-hidden shadow-[5px_5px_0px_0px_rgba(28,25,23,0.85)] hover:shadow-[7px_7px_0px_0px_rgba(28,25,23,1)] transition-shadow flex flex-col"
           >
-            {/* Capa do bônus: local ou URL fixa do storage — nunca Drive */}
+            {/* Capa do bônus: asset local */}
             <div className="relative aspect-[3/4] bg-white">
               <BonusCover number={bonus.number} alt={bonus.title} />
               {/* Etiqueta REGALO sobre a capa */}

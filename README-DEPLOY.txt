@@ -1,49 +1,30 @@
-=====================================================================
-  GUIA DE PUBLICAÇÃO NA HOSTINGER — "Habla en público con más confianza"
-=====================================================================
+====================================================================
+ HABLA EN PÚBLICO CON MÁS CONFIANZA — GUIA DE PUBLICAÇÃO (HOSTINGER)
+====================================================================
 
-Este ZIP contém o CÓDIGO-FONTE do site (React + Vite + TypeScript +
-Tailwind). Siga os passos abaixo para publicá-lo na Hostinger (ou
-qualquer hospedagem com Apache/nginx).
+Este ZIP contém o CÓDIGO-FONTE completo do site (SPA React + Vite +
+Tailwind), sem node_modules e sem segredos.
 
----------------------------------------------------------------------
-1. INSTALAR E COMPILAR
----------------------------------------------------------------------
-
-Requisitos: Node.js 20 ou superior (https://nodejs.org).
-
-Abra o terminal NA PASTA EXTRAÍDA do ZIP e rode:
+--------------------------------------------------------------------
+ 1. GERAR O BUILD DE PRODUÇÃO
+--------------------------------------------------------------------
+Na raiz do projeto (onde está este README):
 
     npm install
     npm run build
 
-Isso cria a pasta `dist/` — é ELA que vai para a hospedagem.
+Isso cria a pasta `dist/` com o site estático pronto.
 
----------------------------------------------------------------------
-2. ENVIAR PARA A HOSTINGER
----------------------------------------------------------------------
-
-No painel da Hostinger (hPanel > Arquivos > Gerenciador de Arquivos),
-abra a pasta pública do domínio (normalmente `public_html`) e envie
-TODO O CONTEÚDO de dentro da pasta `dist/` (e não a pasta dist em si):
-
-    index.html
-    assets/...
-    favicon.ico
-    (demais arquivos)
-
-Dica: compacte o conteúdo da `dist/` num ZIP, envie esse ZIP pelo
-Gerenciador de Arquivos e use a opção "Extrair".
-
----------------------------------------------------------------------
-3. .HTACCESS — ROTAS DA SPA (OBRIGATÓRIO)
----------------------------------------------------------------------
-
-O site é uma SPA (React Router): sem o arquivo abaixo, atualizar a
-página em /obrigado (rota de agradecimento) retorna erro 404.
-
-Crie o arquivo `.htaccess` NA RAIZ do `public_html` (mesmo nível do
-index.html) com exatamente este conteúdo:
+--------------------------------------------------------------------
+ 2. PUBLICAR NA HOSTINGER
+--------------------------------------------------------------------
+1. No hPanel da Hostinger, abra "Gerenciador de Arquivos" e vá até
+   `public_html` (ou a pasta do domínio/subdomínio).
+2. Envie TODO o conteúdo da pasta `dist/` (index.html, assets/, etc.)
+   para dentro dela — não a pasta em si, e sim o que há dentro.
+3. Crie/edite o arquivo `.htaccess` em `public_html` com o conteúdo
+   abaixo (necessário porque o site é SPA — rotas como /obrigado
+   precisam cair no index.html):
 
     <IfModule mod_rewrite.c>
       RewriteEngine On
@@ -54,30 +35,28 @@ index.html) com exatamente este conteúdo:
       RewriteRule . /index.html [L]
     </IfModule>
 
----------------------------------------------------------------------
-4. VARIÁVEL DE AMBIENTE (OPCIONAL)
----------------------------------------------------------------------
+--------------------------------------------------------------------
+ 3. VARIÁVEIS DE AMBIENTE
+--------------------------------------------------------------------
+Copie `.env.example` para `.env` e preencha antes do build:
 
-O arquivo .env não vem no ZIP (nunca deve ir). O único valor que o
-site pode usar é:
+    HOTMART_CHECKOUT_URL   → link de checkout da Hotmart
+                             (ex.: pay.hotmart.com/U108550333F?checkoutMode=10)
+                             vazio = modal demo como fallback.
 
-    VITE_POCKETBASE_URL=<url do backend, se usar o cadastro de compradores>
+O pixel da Syncar já está embutido no index.html.
 
-Sem essa variável o site funciona normalmente — a única função que
-deixa de operar é o registro de compradores no PocketBase; a página
-de vendas e o checkout da Hotmart não dependem dela.
+--------------------------------------------------------------------
+ 4. ESTRUTURA DO PROJETO (RESUMO)
+--------------------------------------------------------------------
+src/pages/Index.tsx        → página de vendas (monta todas as seções)
+src/components/sales/      → seções: Hero, Previews, Bônus, Oferta, FAQ…
+src/data/productData.ts    → textos/dados do produto
+src/data/driveImages.ts    → URLs de imagens do Google Drive
+src/config/checkout.ts     → link Hotmart + preço
+public/                    → estáticos servidos na raiz
+                             (inclui previews/, favicon etc.)
 
----------------------------------------------------------------------
-5. CONFERIR DEPOIS DE PUBLICAR
----------------------------------------------------------------------
-
-    [ ] A home abre em https://seudominio.com
-    [ ] Recarregar https://seudominio.com/obrigado NÃO dá 404
-        (prova de que o .htaccess está ativo)
-    [ ] Os botões de compra abrem o checkout da Hotmart
-
-Dúvidas comuns:
-- Página em branco após publicar: confirme que enviou o CONTEÚDO da
-  dist/ e não a pasta dist inteira.
-- 404 ao recarregar rotas: o .htaccess não está ativo (verifique se
-  o nome do arquivo começa com ponto e está na raiz do public_html).
+Dependências: veja package.json (React 18, Vite, Tailwind v3,
+shadcn/ui). Não há backend obrigatório para publicar: o site é
+100% estático.

@@ -222,8 +222,12 @@ function generateDistZip() {
     const entries = files.map((f) => ({ name: f.rel, data: fs.readFileSync(f.full) }))
     const zip = buildZip(entries)
     fs.writeFileSync(path.join(ROOT, 'public', 'dist-export.zip'), zip)
+    // O Vite copia public/ para dist/ ANTES deste gancho rodar (no exit do
+    // processo), então o ZIP também é gravado dentro de dist/ para ser servido
+    // como estático no build publicado.
+    fs.writeFileSync(path.join(distDir, 'dist-export.zip'), zip)
     console.log(
-      `[zip-source] public/dist-export.zip gerado: ${entries.length} arquivos, ${(zip.length / 1024).toFixed(1)} KB`,
+      `[zip-source] dist-export.zip gerado em public/ e dist/: ${entries.length} arquivos, ${(zip.length / 1024).toFixed(1)} KB`,
     )
     return { entries: entries.length, bytes: zip.length }
   } catch (err) {

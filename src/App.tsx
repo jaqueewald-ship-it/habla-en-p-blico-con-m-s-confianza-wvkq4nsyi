@@ -6,10 +6,19 @@ import { TooltipProvider } from '@/components/ui/tooltip'
 import Index from './pages/Index'
 import ThankYou from './pages/ThankYou'
 import NotFound from './pages/NotFound'
+import Hostinger from './pages/Hostinger'
 import Layout from './components/Layout'
 
 // ONLY IMPORT AND RENDER WORKING PAGES, NEVER ADD PLACEHOLDER COMPONENTS OR PAGES IN THIS FILE
 // AVOID REMOVING ANY CONTEXT PROVIDERS FROM THIS FILE (e.g. TooltipProvider, Toaster, Sonner)
+
+// A página utilitária /#/hostinger não faz parte do site de vendas: é um redirect
+// de hash para quem acessa via URL com #/hostinger (link do rodapé, favoritos).
+function hashToPath() {
+  const h = window.location.hash
+  if (h.startsWith('#/')) window.location.replace(h.slice(1))
+}
+hashToPath()
 
 const App = () => (
   <BrowserRouter>
@@ -20,6 +29,7 @@ const App = () => (
         <Route element={<Layout />}>
           <Route path="/" element={<Index />} />
           <Route path="/obrigado" element={<ThankYou />} />
+          <Route path="/hostinger" element={<Hostinger />} />
           {/* ADD ALL CUSTOM ROUTES MUST BE ADDED HERE */}
         </Route>
         <Route path="*" element={<NotFound />} />

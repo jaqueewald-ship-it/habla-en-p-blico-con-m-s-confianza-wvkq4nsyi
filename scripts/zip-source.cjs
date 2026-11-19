@@ -126,6 +126,7 @@ const EXCLUDED = new Set([
   'pnpm-lock.yaml',
   'pnpm-workspace.yaml',
   'site-export.zip',
+  'dist-export.zip',
   'imagem-do-chatgpt-17-de-nov.de-2026-223139-f4cc2.jpg', // não usada no app
   'README-DEPLOY.txt', // vai para a raiz do ZIP
 ])
@@ -153,7 +154,7 @@ const INCLUDED_DOTFILES = new Set(['.env.example'])
 function walkAll(dir, base = '') {
   const out = []
   for (const name of fs.readdirSync(dir)) {
-    if (name === 'site-export.zip') continue // cópia antiga vinda de public/
+    if (name === 'site-export.zip' || name === 'dist-export.zip') continue // cópias antigas vindas de public/
     const full = path.join(dir, name)
     const rel = base ? `${base}/${name}` : name
     if (fs.statSync(full).isDirectory()) out.push(...walkAll(full, rel))
@@ -207,18 +208,44 @@ function generateSiteZip() {
   }
 }
 
-// Agenda a geração do ZIP para o fim do processo (após o build do Vite ter
+// ZIP SOMENTE com o conteúdo de dist/ (index.html, assets/, .htaccess na raiz do
+// ZIP, sem pasta "dist" embrulhando). Publicado em public/dist-export.zip para
+// download direto na Hostinger. Sem dist/ (antes do build), não gera nada.
+function generateDistZip() {
+  try {
+    const distDir = path.join(ROOT, 'dist')
+    if (!fs.existsSync(path.join(distDir, 'index.html'))) {
+      console.warn('[zip-source] dist/index.html ausente: public/dist-export.zip não gerado')
+      return null
+    }
+    const files = walkAll(distDir) // inclui dotfiles como .htaccess
+    const entries = files.map((f) => ({ name: f.rel, data: fs.readFileSync(f.full) }))
+    const zip = buildZip(entries)
+    fs.writeFileSync(path.join(ROOT, 'public', 'dist-export.zip'), zip)
+    console.log(
+      `[zip-source] public/dist-export.zip gerado: ${entries.length} arquivos, ${(zip.length / 1024).toFixed(1)} KB`,
+    )
+    return { entries: entries.length, bytes: zip.length }
+  } catch (err) {
+    console.warn(`[zip-source] dist-export falhou (não bloqueia o build): ${err.message}`)
+    return null
+  }
+}
+
+// Agenda a geração dos ZIPs para o fim do processo (após o build do Vite ter
 // escrito a dist). Chamado do tailwind.config.ts; executa uma única vez.
 function generateSiteZipOnExit() {
   if (globalThis.__siteZipOnExit) return
   globalThis.__siteZipOnExit = true
   process.on('exit', () => {
     generateSiteZip()
+    generateDistZip()
   })
 }
 
-module.exports = { generateSiteZip, generateSiteZipOnExit }
+module.exports = { generateSiteZip, generateDistZip, generateSiteZipOnExit }
 
 if (require.main === module) {
   generateSiteZip()
+  generateDistZip()
 }

@@ -1,3 +1,7 @@
+# Redirecionamento para SPA React: qualquer rota desconhecida cai no index.html.
+# Arquivos e pastas reais (assets/, imagens, dist-export.zip) são servidos direto.
+Options -MultiViews
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /

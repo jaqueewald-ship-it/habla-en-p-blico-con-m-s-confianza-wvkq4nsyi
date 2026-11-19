@@ -4,14 +4,6 @@ import animatePlugin from 'tailwindcss-animate'
 import typographyPlugin from '@tailwindcss/typography'
 import aspectRatioPlugin from '@tailwindcss/aspect-ratio'
 
-// Gancho de exportação do ZIP do site. Import ESTÁTICO + chamada síncrona:
-// o carregador do Tailwind (jiti) não executa require dinâmico nem import
-// dentro de IIFE. A função só agenda a geração para o 'exit' do processo, então
-// nunca quebra o build (erros são capturados dentro do próprio script).
-// @ts-ignore - script CommonJS sem declaração de tipos
-import * as zipScript from './scripts/zip-source.cjs'
-zipScript.generateSiteZipOnExit()
-
 export default {
   darkMode: ['class'],
   content: [

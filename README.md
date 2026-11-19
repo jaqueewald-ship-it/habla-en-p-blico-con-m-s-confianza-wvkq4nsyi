@@ -129,3 +129,14 @@ npm run build
 ```
 
 Os arquivos otimizados serão gerados na pasta `dist/` e estarão prontos para deploy.
+
+### Atualizar os ZIPs do site (`public/dist-export.zip`)
+
+O ZIP do site compilado é um asset estático commitado em `public/`. Ele NÃO é gerado durante o build. Para atualizá-lo depois de mudar o site:
+
+```bash
+npm run build
+node scripts/zip-source.cjs
+```
+
+Depois, commite `public/dist-export.zip` (e `public/site-export.zip`, que o mesmo script regenera). O conteúdo do ZIP é o da pasta `dist/` gerada pelo build anterior, com `index.html`, `assets/` e `.htaccess` na raiz.

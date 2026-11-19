@@ -3,7 +3,9 @@
  * projeto em public/site-export.zip — o arquivo fica no repositório e é
  * servido como estático pelo preview (public/ → dist/ no build).
  *
- * Uso: node scripts/zip-source.cjs
+ * Uso: npm run build && node scripts/zip-source.cjs
+ * O ZIP do site compilado (public/dist-export.zip) só é gerado por este script,
+ * nunca durante o build — o build de produção não depende dele.
  */
 const fs = require('node:fs')
 const path = require('node:path')
@@ -221,13 +223,11 @@ function generateDistZip() {
     const files = walkAll(distDir) // inclui dotfiles como .htaccess
     const entries = files.map((f) => ({ name: f.rel, data: fs.readFileSync(f.full) }))
     const zip = buildZip(entries)
+    // Grava SOMENTE em public/ (asset estático commitado, como site-export.zip).
+    // Não escreve em dist/: o build não roda mais este script.
     fs.writeFileSync(path.join(ROOT, 'public', 'dist-export.zip'), zip)
-    // O Vite copia public/ para dist/ ANTES deste gancho rodar (no exit do
-    // processo), então o ZIP também é gravado dentro de dist/ para ser servido
-    // como estático no build publicado.
-    fs.writeFileSync(path.join(distDir, 'dist-export.zip'), zip)
     console.log(
-      `[zip-source] dist-export.zip gerado em public/ e dist/: ${entries.length} arquivos, ${(zip.length / 1024).toFixed(1)} KB`,
+      `[zip-source] public/dist-export.zip gerado a partir de dist/: ${entries.length} arquivos, ${(zip.length / 1024).toFixed(1)} KB`,
     )
     return { entries: entries.length, bytes: zip.length }
   } catch (err) {
@@ -236,19 +236,10 @@ function generateDistZip() {
   }
 }
 
-// Agenda a geração dos ZIPs para o fim do processo (após o build do Vite ter
-// escrito a dist). Chamado do tailwind.config.ts; executa uma única vez.
-function generateSiteZipOnExit() {
-  if (globalThis.__siteZipOnExit) return
-  globalThis.__siteZipOnExit = true
-  process.on('exit', () => {
-    generateSiteZip()
-    generateDistZip()
-  })
-}
+module.exports = { generateSiteZip, generateDistZip }
 
-module.exports = { generateSiteZip, generateDistZip, generateSiteZipOnExit }
-
+// Execução manual, após `npm run build`: atualiza public/dist-export.zip
+// (e public/site-export.zip). Commitar os dois arquivos depois.
 if (require.main === module) {
   generateSiteZip()
   generateDistZip()

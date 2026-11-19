@@ -186,15 +186,15 @@ export default function Index() {
       <TableOfContents />
 
       {/* REPEATED CTA BANNER 1 */}
-      <section className="py-12 bg-stone-900 text-stone-50 border-t-2 border-b-2 border-stone-900">
+      <section className="py-12 bg-amber-50 text-stone-900 border-t-2 border-b-2 border-stone-900">
         <div className="max-w-4xl mx-auto px-4 text-center space-y-4">
           <Badge className="bg-amber-400 text-stone-900 font-bold uppercase tracking-wider text-xs hover:bg-amber-400">
             Paso a paso, a tu ritmo
           </Badge>
-          <h2 className="text-2xl sm:text-3xl font-black text-white">
+          <h2 className="text-2xl sm:text-3xl font-black text-stone-900">
             ¿Y si cada tema entrara en una sola página?
           </h2>
-          <p className="text-stone-300 text-sm max-w-2xl mx-auto">
+          <p className="text-stone-700 text-sm max-w-2xl mx-auto">
             En lugar de esperar a que la angustia desaparezca por sí sola, sigue el método: una
             semana para el cuerpo, una para el discurso y una para hablar ante los demás.
           </p>
@@ -263,18 +263,18 @@ export default function Index() {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-stone-950 text-stone-400 py-10 text-xs border-t border-stone-800">
+      <footer className="bg-stone-100 text-stone-600 py-10 text-xs border-t border-stone-200">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-between gap-4 text-center">
           <div>
-            <span className="font-bold text-stone-200 block text-sm">
+            <span className="font-bold text-stone-900 block text-sm">
               Habla en público con más confianza
             </span>
-            <span className="text-stone-500 text-[11px]">
+            <span className="text-stone-600 text-[11px]">
               El plan práctico de 21 días · Guía en PDF, audiobook y fichas de trabajo.
             </span>
           </div>
 
-          <div className="text-[11px] text-stone-500">
+          <div className="text-[11px] text-stone-600">
             <p>Todos los derechos reservados © {new Date().getFullYear()}</p>
             <p className="mt-0.5">Entrega digital instantánea por Hotmart.</p>
           </div>

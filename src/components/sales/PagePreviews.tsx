@@ -12,7 +12,7 @@ interface PagePreviewsProps {
 
 export const PagePreviews: React.FC<PagePreviewsProps> = ({ onSelectCta }) => {
   return (
-    <section id="previa" className="py-20 bg-white border-t border-stone-200">
+    <section id="previa" className="py-20 bg-stone-900 border-t border-stone-800">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Heading */}
         <div className="text-center space-y-3 max-w-2xl mx-auto">
@@ -20,10 +20,10 @@ export const PagePreviews: React.FC<PagePreviewsProps> = ({ onSelectCta }) => {
             <Sparkles className="w-3 h-3 text-amber-600" />
             Así es por dentro
           </span>
-          <h2 className="text-3xl sm:text-4xl font-black text-stone-900 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
             Páginas reales del material
           </h2>
-          <p className="text-sm sm:text-base text-stone-600 leading-relaxed">
+          <p className="text-sm sm:text-base text-stone-300 leading-relaxed">
             Nada de promesas vacías: mira directamente cómo se ve la guía por dentro y cómo llega a
             ti, junto con el audiobook completo.
           </p>

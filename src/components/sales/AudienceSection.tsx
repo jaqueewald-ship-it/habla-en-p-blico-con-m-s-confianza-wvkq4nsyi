@@ -17,7 +17,7 @@ export const AudienceSection: React.FC = () => {
   }
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-stone-900">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <Badge
@@ -26,10 +26,10 @@ export const AudienceSection: React.FC = () => {
           >
             ¿Es este material para ti?
           </Badge>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-stone-900 tracking-tight leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
             Diseñado para quien necesita comunicar con serenidad y claridad
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-stone-600 font-normal">
+          <p className="mt-4 text-base sm:text-lg text-stone-300 font-normal">
             No necesitas ser un orador profesional ni aspirar a dar charlas TED. Si tienes que
             hablar y quieres que no te tiemble la voz, este método es para ti.
           </p>

@@ -7,7 +7,7 @@ import { BookOpen, Check, Layers, ChevronRight } from 'lucide-react'
 
 export const TableOfContents: React.FC = () => {
   return (
-    <section id="temario" className="py-20 bg-stone-50 border-t border-stone-200">
+    <section id="temario" className="py-20 bg-stone-900 border-t border-stone-800">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <Badge
@@ -16,10 +16,10 @@ export const TableOfContents: React.FC = () => {
           >
             Índice completo y detallado
           </Badge>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-stone-900 tracking-tight leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
             Echa un vistazo a las 7 partes y los 38 capítulos del plan
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-stone-600 font-normal">
+          <p className="mt-4 text-base sm:text-lg text-stone-300 font-normal">
             47 páginas organizadas de lo pequeño a lo grande, diseñadas para que cualquier persona
             pueda avanzar a su ritmo.
           </p>

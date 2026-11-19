@@ -9,7 +9,7 @@ interface GuaranteeSectionProps {
 
 export const GuaranteeSection: React.FC<GuaranteeSectionProps> = ({ onOpenCheckout }) => {
   return (
-    <section id="garantia" className="py-20 bg-stone-50 border-t border-stone-200">
+    <section id="garantia" className="py-20 bg-stone-900 border-t border-stone-800">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white border-2 border-stone-800 rounded-2xl overflow-hidden shadow-[8px_8px_0px_0px_rgba(28,25,23,1)] grid grid-cols-1 lg:grid-cols-2 items-stretch">
           {/* Left: Guarantee badge & title */}

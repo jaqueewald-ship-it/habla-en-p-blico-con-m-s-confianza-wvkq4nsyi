@@ -30,9 +30,35 @@
 export const DRIVE_FOLDER_URL =
   'https://drive.google.com/drive/folders/1Jp6WiMXvp-cW5SLgvqkJGMX9wmRRHbDp'
 
-/** URL pública de thumbnail do Drive para um arquivo (sz = largura máx.) */
-export const driveImageUrl = (fileId: string, width = 1200): string =>
-  `https://drive.google.com/thumbnail?id=${fileId}&sz=w${width}`
+declare global {
+  interface Window {
+    /** Mapa fileId → caminho local, injetado pelo hostinger-kit.zip quando as capas dos bônus são embutidas */
+    __BONUS_COVER_FILES?: Record<string, string>
+  }
+}
+
+/**
+ * URL pública de thumbnail do Drive para um arquivo (sz = largura máx.).
+ * Se o hostinger-kit.zip embutiu a capa localmente (pasta bonus-covers/),
+ * um <script> no index.html injeta window.__BONUS_COVER_FILES e o site
+ * publicado usa a cópia local em vez do hotlink.
+ */
+export const driveImageUrl = (fileId: string, width = 1200): string => {
+  const local = typeof window !== 'undefined' ? window.__BONUS_COVER_FILES?.[fileId] : undefined
+  if (local) return local
+  return `https://drive.google.com/thumbnail?id=${fileId}&sz=w${width}`
+}
+
+/**
+ * Cadeia de candidatos de URL para uma imagem do Drive, do mais confiável ao
+ * alternativo. O endpoint /thumbnail às vezes para de carregar no navegador
+ * (bloqueio do Google); os candidatos seguintes contornam isso.
+ */
+export const driveImageCandidates = (fileId: string, width = 1200): string[] => [
+  `https://drive.google.com/thumbnail?id=${fileId}&sz=w${width}`,
+  `https://drive.usercontent.google.com/download?id=${fileId}&export=view`,
+  `https://lh3.googleusercontent.com/d/${fileId}=w${width}`,
+]
 
 /* ------------------------------------------------------------
  * Prévias "por dentro" — Portada, Introducción, Día 01

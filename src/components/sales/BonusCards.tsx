@@ -1,6 +1,7 @@
 import React from 'react'
 import { Gift, FileText } from 'lucide-react'
-import { DRIVE_BONUS_IMAGES, driveImageUrl } from '@/data/driveImages'
+import { DRIVE_BONUS_IMAGES } from '@/data/driveImages'
+import { DriveImage } from '@/components/sales/DriveImage'
 
 /**
  * Cards dos bônus dentro da seção da oferta final (#oferta).
@@ -68,11 +69,10 @@ export const BonusCards: React.FC = () => {
           >
             {/* Capa do bônus: imagem da pasta do Drive */}
             <div className="relative aspect-[3/4] bg-white">
-              <img
-                src={driveImageUrl(DRIVE_BONUS_IMAGES[bonus.number])}
+              <DriveImage
+                fileId={DRIVE_BONUS_IMAGES[bonus.number]}
                 alt={bonus.title}
                 className="w-full h-full object-cover object-top"
-                loading="lazy"
               />
               {/* Etiqueta REGALO sobre a capa */}
               <span className="absolute top-2.5 left-2.5 inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider bg-amber-400 text-stone-900 px-2 py-1 rounded border border-stone-900">

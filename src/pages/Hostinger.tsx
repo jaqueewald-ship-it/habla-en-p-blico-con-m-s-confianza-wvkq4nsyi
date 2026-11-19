@@ -69,8 +69,9 @@ export default function Hostinger() {
           <p className="text-sm text-stone-600 leading-relaxed">
             Monta e baixa um arquivo <strong>hostinger-kit.zip</strong> com o site compilado
             (index.html, assets/, .htaccess), as imagens e um leia-me com o passo a passo da
-            Hostinger. Após baixar, extraia o conteúdo na pasta <strong>public_html</strong> pelo
-            Gerenciador de Arquivos.
+            Hostinger. As capas dos 6 bônus são buscadas do Google Drive e embutidas na pasta{' '}
+            <strong>bonus-covers/</strong> do pacote. Após baixar, extraia o conteúdo na pasta{' '}
+            <strong>public_html</strong> pelo Gerenciador de Arquivos.
           </p>
 
           <Button
@@ -92,12 +93,43 @@ export default function Hostinger() {
           </Button>
 
           {state.phase === 'done' && (
-            <div className="flex items-start gap-2 bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-xs text-emerald-900">
-              <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
-              <span>
-                Pacote gerado com {state.result.fileCount} arquivos. Se o download não começou
-                sozinho, verifique os downloads do navegador.
-              </span>
+            <div className="space-y-3">
+              <div className="flex items-start gap-2 bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-xs text-emerald-900">
+                <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
+                <span>
+                  Pacote gerado com {state.result.fileCount} arquivos
+                  {state.result.embeddedCovers > 0
+                    ? `, incluindo ${state.result.embeddedCovers} capa(s) de bônus embutida(s) em bonus-covers/.`
+                    : '.'}{' '}
+                  Se o download não começou sozinho, verifique os downloads do navegador.
+                </span>
+              </div>
+
+              {state.result.coverFailures.length > 0 && (
+                <div className="flex items-start gap-2 bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-900">
+                  <TriangleAlert className="w-4 h-4 shrink-0 mt-0.5" />
+                  <div className="space-y-1">
+                    <p>
+                      <strong>
+                        {state.result.coverFailures.length} capa(s) de bônus não puderam ser
+                        buscadas do Google Drive
+                      </strong>{' '}
+                      (o Drive pode ter bloqueado o acesso ou a pasta não está mais pública). Para
+                      essas, o ZIP mantém o hotlink do Drive no site publicado: se o Drive voltar a
+                      servir as imagens, as capas voltam a aparecer na Hostinger sem novo pacote. Se
+                      preferir garanti-las localmente, compartilhe a pasta do Drive como
+                      &quot;qualquer pessoa com o link&quot; e gere o pacote de novo.
+                    </p>
+                    <ul className="list-disc list-inside">
+                      {state.result.coverFailures.map((f) => (
+                        <li key={f} className="font-mono">
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 

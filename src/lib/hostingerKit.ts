@@ -20,11 +20,21 @@
  *   3. Lista fixa de arquivos soltos da raiz (favicon, og-image…)
  *      que sempre existem em public/.
  *
- * Se algum arquivo falhar, a página avisa na tela quais faltaram
+ * As capas dos 6 bônus são HOTLINKS da pasta do Google Drive (não são
+ * assets do build) — sem elas o site publicado na Hostinger ficaria
+ * sem as capas. Elas são buscadas no navegador e embutidas na pasta
+ * bonus-covers/ do ZIP; um <script> gravado no index.html do pacote
+ * injeta window.__BONUS_COVER_FILES, e o driveImageUrl do site usa a
+ * cópia local em vez do hotlink. Se alguma capa não puder ser baixada
+ * do Drive, o kit segue com hotlinks para essa capa e a página
+ * avisa na tela (o aviso não bloqueia o download).
+ *
+ * Se um arquivo DEPLOY falhar, a página avisa na tela quais faltaram
  * em vez de gerar um ZIP quebrado.
  * ============================================================
  */
 import JSZip from 'jszip'
+import { DRIVE_BONUS_IMAGES } from '@/data/driveImages'
 
 /** Manifesto gravado no build pelo gancho em scripts/zip-source.cjs */
 const MANIFEST_PATH = 'file-manifest.json'
@@ -48,6 +58,10 @@ export interface KitResult {
   ok: boolean
   failed: string[]
   fileCount: number
+  /** Capas dos bônus buscadas do Drive e embutidas em bonus-covers/ */
+  embeddedCovers: number
+  /** Capas que NÃO puderam ser buscadas do Drive (seguem como hotlink) */
+  coverFailures: string[]
 }
 
 /** Conteúdo do leia-me de deploy (em português, passo a passo da Hostinger) */
@@ -220,6 +234,82 @@ async function collectDeployFiles(html: string): Promise<string[]> {
   return Array.from(files).sort()
 }
 
+/** Extensão pelo content-type, para gravar bonus-covers/bono-01.jpg etc. */
+function extFromType(type: string): string {
+  if (type.includes('png')) return 'png'
+  if (type.includes('webp')) return 'webp'
+  if (type.includes('gif')) return 'gif'
+  if (type.includes('svg')) return 'svg'
+  if (type.includes('jpeg')) return 'jpg'
+  return 'jpg'
+}
+
+/**
+ * Busca uma capa de bônus do Drive no navegador (o endpoint de
+ * thumbnail só responde quando o cookie do Google está presente).
+ * Tenta cada candidato; devolve Blob ou null se todos falharem.
+ */
+async function fetchBonusCover(fileId: string): Promise<Blob | null> {
+  const candidates = [
+    `https://drive.google.com/thumbnail?id=${fileId}&sz=w1200`,
+    `https://drive.usercontent.google.com/download?id=${fileId}&export=view`,
+    `https://lh3.googleusercontent.com/d/${fileId}=w1200`,
+  ]
+  for (const src of candidates) {
+    try {
+      const res = await fetch(src, { mode: 'cors' })
+      if (!res.ok) continue
+      const blob = await res.blob()
+      // Google às vezes responde 200 com uma página HTML de login
+      if (blob.size === 0 || blob.type.includes('html')) continue
+      if (!blob.type.startsWith('image/') && !blob.type.startsWith('application/octet-stream'))
+        continue
+      return blob
+    } catch {
+      // CORS/rede → tenta o próximo candidato
+    }
+  }
+  return null
+}
+
+/**
+ * Baixa as capas dos bônus e as embute no ZIP (bonus-covers/), além de
+ * gravar o <script> de injeção no index.html. Devolve quantas entraram
+ * e a lista das que ficaram de fora (para aviso na tela).
+ */
+async function embedBonusCovers(
+  zip: JSZip,
+  indexHtml: string,
+): Promise<{
+  embeddedCovers: number
+  coverFailures: string[]
+  html: string
+}> {
+  const coverMap: Record<string, string> = {}
+  const failures: string[] = []
+  for (const [bonusNum, fileId] of Object.entries(DRIVE_BONUS_IMAGES)) {
+    const blob = await fetchBonusCover(fileId)
+    if (!blob) {
+      failures.push(`bonus-covers/bono-${bonusNum} (capa do Drive não acessível)`)
+      continue
+    }
+    const name = `bonus-covers/bono-${bonusNum}.${extFromType(blob.type)}`
+    zip.file(name, blob)
+    coverMap[fileId] = name
+  }
+  if (Object.keys(coverMap).length === 0)
+    return { embeddedCovers: 0, coverFailures: failures, html: indexHtml }
+  const script = `<script>window.__BONUS_COVER_FILES=${JSON.stringify(coverMap)};</script>`
+  const withHead = /<\/head>/i.test(indexHtml)
+    ? indexHtml.replace(/<\/head>/i, `${script}</head>`)
+    : `${script}${indexHtml}`
+  return {
+    embeddedCovers: Object.keys(coverMap).length,
+    coverFailures: failures,
+    html: withHead,
+  }
+}
+
 /**
  * Monta o hostinger-kit.zip e devolve o Blob pronto para download.
  * Arquivos que falharem voltam em `failed` — o chamador decide
@@ -232,10 +322,15 @@ export async function buildHostingerKit(): Promise<{ blob: Blob; result: KitResu
   if (!htmlRes.ok) {
     throw new Error(`index.html não acessível (HTTP ${htmlRes.status})`)
   }
-  const html = await htmlRes.text()
+  let html = await htmlRes.text()
 
   const failed: string[] = []
   const added = new Set<string>()
+
+  // 0. Capas dos bônus (hotlinks do Drive) → embutidas localmente no pacote
+  const coverResult = await embedBonusCovers(zip, html)
+  html = coverResult.html
+  const coverFailures = coverResult.coverFailures
   const addOrTrack = (name: string, data: Blob | string | null) => {
     if (data === null) {
       failed.push(name)
@@ -268,7 +363,10 @@ export async function buildHostingerKit(): Promise<{ blob: Blob; result: KitResu
   zip.file(README_PATH, buildDeployReadme())
 
   if (failed.length > 0) {
-    return { blob: new Blob(), result: { ok: false, failed, fileCount: 0 } }
+    return {
+      blob: new Blob(),
+      result: { ok: false, failed, fileCount: 0, embeddedCovers: 0, coverFailures: [] },
+    }
   }
 
   const blob = await zip.generateAsync({
@@ -278,7 +376,13 @@ export async function buildHostingerKit(): Promise<{ blob: Blob; result: KitResu
   })
   return {
     blob,
-    result: { ok: true, failed, fileCount: added.size + 2 },
+    result: {
+      ok: true,
+      failed,
+      fileCount: added.size + 2,
+      embeddedCovers: coverResult.embeddedCovers,
+      coverFailures,
+    },
   }
 }
 

@@ -21,8 +21,8 @@
  *      que sempre existem em public/.
  *
  * As capas dos 6 bônus são embutidas na pasta bonus-covers/ do ZIP
- * — NENHUMA vem do Google Drive. Bono 04–06 são assets do build
- * (import estático, nome hasheado em dist/assets/); Bono 01–03 são
+ * — NENHUMA vem do Google Drive. Bono 03–06 são assets do build
+ * (import estático, nome hasheado em dist/assets/); Bono 01–02 são
  * URLs fixas do storage público de anexos (Supabase), buscadas no
  * navegador e embutidas. Um <script> gravado no index.html do
  * pacote injeta window.__BONUS_COVER_FILES e o site publicado usa
@@ -257,7 +257,7 @@ function extFromType(type: string): string {
  * Nenhuma capa vem do Google Drive:
  *  - Bono 04–06: asset do build (dist/assets/, ou data: URI se o
  *    Vite embutiu <4 KB) — copiado do próprio deploy.
- *  - Bono 01–03: URL fixa do storage público de anexos (Supabase),
+ *  - Bono 01–02: URL fixa do storage público de anexos (Supabase),
  *    baixada no navegador e gravada no pacote.
  */
 async function embedBonusCovers(
@@ -352,7 +352,7 @@ export async function buildHostingerKit(): Promise<{ blob: Blob; result: KitResu
   const failed: string[] = []
   const added = new Set<string>()
 
-  // 0. Capas dos bônus: assets locais (Bono 04–06) + storage (Bono 01–03)
+  // 0. Capas dos bônus: assets locais (Bono 03–06) + storage (Bono 01–02)
   //    → embutidas localmente no pacote em bonus-covers/, sem Drive
   const coverResult = await embedBonusCovers(zip, html, fetchDeployFile)
   html = coverResult.html

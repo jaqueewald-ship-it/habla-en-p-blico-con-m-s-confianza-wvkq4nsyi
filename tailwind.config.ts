@@ -7,7 +7,9 @@ import aspectRatioPlugin from '@tailwindcss/aspect-ratio'
 import { generateSiteZip } from './scripts/zip-source.cjs'
 
 // Gera public/site-export.zip (código-fonte para hospedar na Hostinger) uma
-// única vez durante o build (v0.0.17: ZIP regenerado com o pixel da Syncar).
+// única vez durante o build (v0.0.26: ZIP regenerado com o pixel da Syncar,
+// imagens reais das páginas 10/21/44, checkout Hotmart, bônus com capas do
+// Drive, preço só na oferta final e garantia de 7 dias).
 // Import estático: o Tailwind carrega este config
 // via jiti (transpila o import para require, executado na carga do config) e
 // num carregador ESM real o import estático também roda antes do corpo.

@@ -20,26 +20,20 @@
  *   3. Lista fixa de arquivos soltos da raiz (favicon, og-image…)
  *      que sempre existem em public/.
  *
- * As capas dos 6 bônus são embutidas na pasta bonus-covers/ do ZIP
- * — NENHUMA vem do Google Drive. Bono 03–06 são assets do build
- * (import estático, nome hasheado em dist/assets/); Bono 01–02 são
- * URLs fixas do storage público de anexos (Supabase), buscadas no
- * navegador e embutidas. Um <script> gravado no index.html do
- * pacote injeta window.__BONUS_COVER_FILES e o site publicado usa
- * a cópia local em vez de qualquer hotlink. Se uma capa do storage
- * não puder ser baixada, o kit segue sem ela e a página avisa na
- * tela (o aviso não bloqueia o download).
+ * As 6 capas dos bônus são ASSETS LOCAIS (imports estáticos em
+ * src/data/bonusCoverImages.ts, emitidos em dist/assets/ ou embutidos
+ * como data: URI pelo Vite) e entram na pasta bonus-covers/ do ZIP
+ * copiadas do próprio deploy — NADA é baixado de fora (nem do Google
+ * Drive, nem de storage remoto). Um <script> gravado no index.html do
+ * pacote injeta window.__BONUS_COVER_FILES apontando para essas cópias
+ * locais, que passam a ter prioridade sobre os imports do bundle.
  *
  * Se um arquivo DEPLOY falhar, a página avisa na tela quais faltaram
  * em vez de gerar um ZIP quebrado.
  * ============================================================
  */
 import JSZip from 'jszip'
-import {
-  LOCAL_BONUS_COVER_IMAGES,
-  REMOTE_BONUS_COVER_IMAGES,
-  ALL_BONUS_COVER_NUMBERS,
-} from '@/data/bonusCoverImages'
+import { LOCAL_BONUS_COVER_IMAGES, ALL_BONUS_COVER_NUMBERS } from '@/data/bonusCoverImages'
 
 /** Manifesto gravado no build pelo gancho em scripts/zip-source.cjs */
 const MANIFEST_PATH = 'file-manifest.json'
@@ -65,7 +59,7 @@ export interface KitResult {
   fileCount: number
   /** Capas dos bônus embutidas em bonus-covers/ */
   embeddedCovers: number
-  /** Capas que NÃO puderam ser buscadas (seguem como URL remota) */
+  /** Capas que NÃO puderam ser copiadas do deploy */
   coverFailures: string[]
 }
 
@@ -80,6 +74,7 @@ Este ZIP contém o site JÁ COMPILADO, pronto para subir na Hostinger:
   - index.html        → página principal (fica na RAIZ do ZIP)
   - assets/           → JavaScript e CSS compilados, e as imagens do site
   - .htaccess         → regras de SPA (rotas caem no index.html)
+  - bonus-covers/     → capas dos 6 bônus, copiadas do próprio site
   - imagens do site   → favicon, og-image, previews, etc.
   - README-DEPLOY.txt → este arquivo
 
@@ -254,11 +249,9 @@ function extFromType(type: string): string {
  * <script> de injeção no index.html. Devolve quantas entraram e a
  * lista das que ficaram de fora (para aviso na tela).
  *
- * Nenhuma capa vem do Google Drive:
- *  - Bono 04–06: asset do build (dist/assets/, ou data: URI se o
- *    Vite embutiu <4 KB) — copiado do próprio deploy.
- *  - Bono 01–02: URL fixa do storage público de anexos (Supabase),
- *    baixada no navegador e gravada no pacote.
+ * TODAS as capas são assets locais do próprio build (dist/assets/
+ * com nome hasheado, ou data: URI se o Vite embutiu <4 KB) — nada é
+ * baixado de origem externa.
  */
 async function embedBonusCovers(
   zip: JSZip,
@@ -272,42 +265,24 @@ async function embedBonusCovers(
   const coverMap: Record<string, string> = {}
   const failures: string[] = []
 
-  const fetchUrlBlob = async (url: string): Promise<Blob | null> => {
-    try {
-      const res = await fetch(url, { mode: 'cors', cache: 'no-store' })
-      if (!res.ok) return null
-      const blob = await res.blob()
-      if (blob.size === 0) return null
-      if (!blob.type.startsWith('image/') && !blob.type.startsWith('application/octet-stream'))
-        return null
-      return blob
-    } catch {
-      return null
-    }
-  }
-
   for (const bonusNum of ALL_BONUS_COVER_NUMBERS) {
     const localUrl = LOCAL_BONUS_COVER_IMAGES[bonusNum]
-    const remoteUrl = REMOTE_BONUS_COVER_IMAGES[bonusNum]
-    let blob: Blob | null = null
-
-    if (localUrl) {
-      // Asset emitido pelo Vite (dist/assets/…) ou inlined como data: URI
-      // (imports < 4 KB o Vite embute em base64 no bundle — fetch resolve ambos)
-      const rel = localUrl.startsWith('/') ? localUrl.slice(1) : localUrl
-      blob = localRel_dataUri(localUrl) ? await fetchUrlBlob(localUrl) : await fetchAsset(rel)
-      if (!blob) {
-        failures.push(`bonus-covers/bono-${bonusNum} (asset local ${rel} não acessível)`)
-        continue
-      }
-    } else if (remoteUrl) {
-      blob = await fetchUrlBlob(remoteUrl)
-      if (!blob) {
-        failures.push(`bonus-covers/bono-${bonusNum} (capa remota ${remoteUrl} não acessível)`)
-        continue
-      }
-    } else {
+    if (!localUrl) {
       failures.push(`bonus-covers/bono-${bonusNum} (sem capa definida)`)
+      continue
+    }
+
+    // Asset emitido pelo Vite (assets/…) ou inlined como data: URI
+    // (imports < 4 KB o Vite embute em base64 no bundle — fetch resolve ambos)
+    let blob: Blob | null
+    if (localUrl.startsWith('data:')) {
+      blob = await fetchDataUri(localUrl)
+    } else {
+      const rel = localUrl.startsWith('/') ? localUrl.slice(1) : localUrl
+      blob = await fetchAsset(rel)
+    }
+    if (!blob) {
+      failures.push(`bonus-covers/bono-${bonusNum} (asset local ${localUrl} não acessível)`)
       continue
     }
 
@@ -330,9 +305,24 @@ async function embedBonusCovers(
   }
 }
 
-/** True quando a URL é um data: URI (Vite inlined o asset no bundle) */
-function localRel_dataUri(url: string): boolean {
-  return url.startsWith('data:')
+/** Converte um data: URI em Blob (capa inlined pelo Vite no bundle) */
+function fetchDataUri(dataUri: string): Blob | null {
+  const match = /^data:([^;,]+)?(;base64)?,(.*)$/s.exec(dataUri)
+  if (!match) return null
+  const mime = match[1] || 'application/octet-stream'
+  const isBase64 = Boolean(match[2])
+  const raw = match[3]
+  try {
+    if (isBase64) {
+      const bin = atob(raw)
+      const bytes = new Uint8Array(bin.length)
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i)
+      return new Blob([bytes], { type: mime })
+    }
+    return new Blob([decodeURIComponent(raw)], { type: mime })
+  } catch {
+    return null
+  }
 }
 
 /**
@@ -352,8 +342,8 @@ export async function buildHostingerKit(): Promise<{ blob: Blob; result: KitResu
   const failed: string[] = []
   const added = new Set<string>()
 
-  // 0. Capas dos bônus: assets locais (Bono 03–06) + storage (Bono 01–02)
-  //    → embutidas localmente no pacote em bonus-covers/, sem Drive
+  // 0. Capas dos bônus: assets locais do próprio build (Bono 01–06)
+  //    → copiadas do deploy para bonus-covers/ no pacote, sem origem externa
   const coverResult = await embedBonusCovers(zip, html, fetchDeployFile)
   html = coverResult.html
   const coverFailures = coverResult.coverFailures

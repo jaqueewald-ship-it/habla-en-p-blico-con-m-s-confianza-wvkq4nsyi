@@ -5,8 +5,9 @@
 Este ZIP contém o site JÁ COMPILADO, pronto para subir na Hostinger:
 
   - index.html        → página principal (fica na RAIZ do ZIP)
-  - assets/           → JavaScript e CSS compilados
+  - assets/           → JavaScript e CSS compilados, e as imagens do site
   - .htaccess         → regras de SPA (rotas caem no index.html)
+  - bonus-covers/     → capas dos 6 bônus, copiadas do próprio site
   - imagens do site   → favicon, og-image, previews, etc.
   - README-DEPLOY.txt → este arquivo
 

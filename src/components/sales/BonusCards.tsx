@@ -41,7 +41,7 @@ const BONUS_CARDS = [
   },
 ]
 
-/** Capa de um card: local do bundle. No site publicado via hostinger-kit.zip, a capa
+/** Capa de um card: local do bundle. No site publicado via hostinger-kit.zip, a cópia
  *  embutida em bonus-covers/ (window.__BONUS_COVER_FILES) tem prioridade. */
 const BonusCover: React.FC<{ number: string; alt: string }> = ({ number, alt }) => {
   const embedded = typeof window !== 'undefined' ? window.__BONUS_COVER_FILES?.[number] : undefined

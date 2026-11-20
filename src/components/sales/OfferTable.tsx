@@ -119,7 +119,7 @@ export const OfferTable: React.FC<OfferTableProps> = ({ onOpenCheckout }) => {
             </div>
           </div>
 
-          {/* Bônus 1-6: cards com capa real vinda do Google Drive (sem valores) */}
+          {/* Bônus 1-6: cards com capa real (asset local; sem valores) */}
           <div className="p-6 sm:p-10 border-t-2 border-stone-800">
             <BonusCards />
           </div>

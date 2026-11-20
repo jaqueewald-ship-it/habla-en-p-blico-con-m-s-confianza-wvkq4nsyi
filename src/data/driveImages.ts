@@ -102,9 +102,8 @@ export const DRIVE_PART_IMAGES: Record<number, string> = {
 
 /* ------------------------------------------------------------
  * Capas dos 6 bônus — não usadas: as 6 capas agora vêm de
- * src/data/bonusCoverImages.ts (local ou URL fixa do storage),
- * sem passar pelo Google Drive. Mantido apenas para referência
- * dos fileIds originais.
+ * src/data/bonusCoverImages.ts (assets locais), sem passar pelo
+ * Google Drive. Mantido apenas para referência dos fileIds.
  * ------------------------------------------------------------ */
 export const DRIVE_BONUS_IMAGES: Record<string, string> = {
   '01': '19wkV0bJsWeYP9GkZf8ExrrEjEFCFADeo',

@@ -69,8 +69,8 @@ export default function Hostinger() {
           <p className="text-sm text-stone-600 leading-relaxed">
             Monta e baixa um arquivo <strong>hostinger-kit.zip</strong> com o site compilado
             (index.html, assets/, .htaccess), as imagens e um leia-me com o passo a passo da
-            Hostinger. As capas dos 6 bônus são embutidas na pasta <strong>bonus-covers/</strong> do
-            pacote (Bono 04–06 do próprio build; Bono 01–03 baixadas de URL fixa e embutidas). Após
+            Hostinger. As capas dos 6 bônus são assets do próprio site e entram na pasta{' '}
+            <strong>bonus-covers/</strong> do pacote — nenhuma imagem vem de serviço externo. Após
             baixar, extraia o conteúdo na pasta <strong>public_html</strong> pelo Gerenciador de
             Arquivos.
           </p>
@@ -115,9 +115,9 @@ export default function Hostinger() {
                         {state.result.coverFailures.length} capa(s) de bônus não puderam ser
                         embutidas
                       </strong>{' '}
-                      (a origem da capa pode estar indisponível neste momento). Para essas, o site
+                      (o arquivo da capa não foi encontrado no build atual). Para essas, o site
                       publicado pode ficar sem a capa do card. Gere o pacote de novo mais tarde; se
-                      o problema persistir, verifique a origem da capa listada abaixo.
+                      o problema persistir, verifique a capa listada abaixo.
                     </p>
                     <ul className="list-disc list-inside">
                       {state.result.coverFailures.map((f) => (

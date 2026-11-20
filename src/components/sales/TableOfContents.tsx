@@ -2,19 +2,16 @@ import React, { useState, useEffect } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { BOOK_SECTIONS, SectionItem } from '@/data/productData'
 import { LOCAL_PART_IMAGES } from '@/data/partImages'
-import { DRIVE_PART_IMAGES, driveImageCandidates } from '@/data/driveImages'
 import { BookOpen, Layers, ChevronRight } from 'lucide-react'
 
-/** Ilustração resiliente: asset local → thumbnail do Drive → nada. Se TODAS
- *  as fontes falharem (ex.: asset não emitido no build, Drive bloqueado), o
- *  card cai no fallback do número, em vez de mostrar imagem quebrada. */
+/** Ilustração do card: asset local do bundle. Se o asset não existir
+ *  (ex.: parte sem ilustração anexada), o card cai no fallback do
+ *  número, em vez de mostrar imagem quebrada. */
 const PartImage: React.FC<{ partId: number; alt: string }> = ({ partId, alt }) => {
   const local = LOCAL_PART_IMAGES[partId]
   const candidates = React.useMemo<string[]>(() => {
     const list: string[] = []
     if (local) list.push(local)
-    const drive = DRIVE_PART_IMAGES[partId]
-    if (drive) list.push(...driveImageCandidates(drive, 800))
     return list
   }, [partId, local])
   const [idx, setIdx] = useState(0)
@@ -59,7 +56,7 @@ export const TableOfContents: React.FC = () => {
         {/* Grade das 7 partes */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           {BOOK_SECTIONS.map((sec: SectionItem) => {
-            const partImage = LOCAL_PART_IMAGES[sec.id] || DRIVE_PART_IMAGES[sec.id]
+            const partImage = LOCAL_PART_IMAGES[sec.id]
             return (
               <article
                 key={sec.id}

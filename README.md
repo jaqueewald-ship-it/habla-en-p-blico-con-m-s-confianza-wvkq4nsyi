@@ -130,13 +130,15 @@ npm run build
 
 Os arquivos otimizados serão gerados na pasta `dist/` e estarão prontos para deploy.
 
-### Atualizar os ZIPs do site (`public/dist-export.zip`)
+### Atualizar os ZIPs do site (`dist-export.zip` e `site-export.zip`)
 
-O ZIP do site compilado é um asset estático commitado em `public/`. Ele NÃO é gerado durante o build. Para atualizá-lo depois de mudar o site:
+O ZIP do site compilado (`dist/dist-export.zip`, com `index.html`, `assets/` e `.htaccess` na raiz do ZIP) é gerado AUTOMATICAMENTE no fim de cada build, pelo gancho no `tailwind.config.ts` (evento `exit`), que chama `generateDistZip()` de `scripts/zip-source.cjs`. Ele também grava `dist/file-manifest.json` (usado pela página `/#/hostinger`) e uma cópia em `pocketbase/hooks/files/dist-export.zip`.
+
+- `dist/dist-export.zip` — vai para o deploy junto com o `dist/` e é servido em `/dist-export.zip` do site publicado.
+- `pocketbase/hooks/files/dist-export.zip` — servida pela rota do backend `/backend/v1/download/dist-export` (com fallback 302 para a URL estática acima).
+
+Para regenerar só o `public/site-export.zip` (código-fonte + `dist/`), rode manualmente:
 
 ```bash
-npm run build
 node scripts/zip-source.cjs
 ```
-
-Depois, commite `public/dist-export.zip` (e `public/site-export.zip`, que o mesmo script regenera). O conteúdo do ZIP é o da pasta `dist/` gerada pelo build anterior, com `index.html`, `assets/` e `.htaccess` na raiz.

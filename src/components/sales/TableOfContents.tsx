@@ -33,17 +33,17 @@ export const TableOfContents: React.FC = () => {
                 key={sec.id}
                 className="flex flex-col overflow-hidden rounded-2xl bg-white shadow-lg shadow-black/20 ring-1 ring-stone-200"
               >
-                {/* Ilustração: largura total, altura automática (sem corte nem distorção) */}
-                <div className="relative bg-stone-100 border-b border-stone-200">
+                {/* Ilustração: recorte horizontal 16:9 da região ilustrada (topo da página), sem texto */}
+                <div className="relative aspect-[16/9] overflow-hidden bg-stone-100 border-b border-stone-200">
                   {partImage ? (
                     <img
                       src={partImage}
                       alt={sec.title}
-                      className="block w-full h-auto"
+                      className="absolute inset-0 h-full w-full object-cover object-top"
                       loading="lazy"
                     />
                   ) : (
-                    <div className="flex aspect-[4/3] items-center justify-center text-6xl font-black text-stone-300">
+                    <div className="absolute inset-0 flex items-center justify-center text-6xl font-black text-stone-300">
                       {sec.id}
                     </div>
                   )}

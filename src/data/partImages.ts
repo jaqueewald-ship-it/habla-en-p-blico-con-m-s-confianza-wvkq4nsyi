@@ -17,13 +17,16 @@
  * Chave = número da parte (1…7), valor = URL da ilustração.
  * ============================================================
  */
+import parte01 from '@/assets/parte01entenderelmiedo-e22d9.webp'
+import parte02 from '@/assets/parte02posturayrespiracion-94e88.webp'
+import parte03 from '@/assets/parte03estructuradeldiscurso-6ae23.webp'
 import parte07 from '@/assets/parte07plande21dias-77660.webp'
 
 /** Ilustrações LOCAIS do bundle (primárias) */
 export const LOCAL_PART_IMAGES: Record<number, string | undefined> = {
-  1: undefined, // Parte 1 — Entender el miedo (pendente: anexar imagem)
-  2: undefined, // Parte 2 — Postura y respiración (pendente: anexar imagem)
-  3: undefined, // Parte 3 — Estructura del discurso (pendente: anexar imagem)
+  1: parte01, // Parte 1 — Entender el miedo (pág. 04, "Antes de tomar la palabra")
+  2: parte02, // Parte 2 — Postura y respiración (pág. 08, "Apoyo cómodo de pie")
+  3: parte03, // Parte 3 — Estructura del discurso (pág. 10, "Del inicio al siguiente paso")
   4: undefined, // Parte 4 — La voz (pendente: anexar imagem)
   5: undefined, // Parte 5 — Mirada y gestos (pendente: anexar imagem)
   6: undefined, // Parte 6 — Preguntas del público (pendente: anexar imagem)

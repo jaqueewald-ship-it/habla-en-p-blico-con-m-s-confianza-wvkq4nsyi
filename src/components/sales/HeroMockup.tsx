@@ -11,6 +11,12 @@ export const HeroMockup: React.FC = () => {
         aria-hidden="true"
       />
 
+      {/* Badge flutuante acima do mockup (fora da imagem, sem sobrepor o livro) */}
+      <span className="relative z-10 mb-5 ml-3 flex w-fit items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-100/95 text-amber-900 border border-amber-300 backdrop-blur-sm">
+        <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+        Edición Completa Digital
+      </span>
+
       {/* Mockup principal: livro físico + smartphone com Audiolibro (imagem real) */}
       <figure className="relative">
         <img
@@ -20,12 +26,6 @@ export const HeroMockup: React.FC = () => {
           loading="eager"
           decoding="async"
         />
-
-        {/* Badge flutuante sobre o mockup */}
-        <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-100/95 text-amber-900 border border-amber-300 backdrop-blur-sm">
-          <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-          Edición Completa Digital
-        </span>
       </figure>
 
       {/* Nota de entrega (mantida do mockup anterior) */}

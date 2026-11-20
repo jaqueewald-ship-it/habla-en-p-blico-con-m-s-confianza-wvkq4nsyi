@@ -9,12 +9,14 @@ import aspectRatioPlugin from '@tailwindcss/aspect-ratio'
 // A chamada fica no evento 'exit' do processo: o Tailwind carrega esta config
 // ANTES de o Vite gravar dist/, então rodar agora empacotaria o build anterior.
 // @ts-ignore -- script CommonJS sem declaração de tipos
-import { generateDistZip } from './scripts/zip-source.cjs'
+import { generateDistZip, generateSiteZip } from './scripts/zip-source.cjs'
 
 declare const process: { once(event: 'exit', listener: () => void): unknown }
 
 process.once('exit', () => {
   generateDistZip()
+  // Código-fonte em public/site-export.zip (antes só era gerado manualmente).
+  generateSiteZip()
 })
 
 export default {

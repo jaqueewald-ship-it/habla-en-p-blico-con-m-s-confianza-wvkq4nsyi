@@ -2,7 +2,7 @@ import React from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { BOOK_SECTIONS, SectionItem } from '@/data/productData'
-import { DRIVE_PART_IMAGES, driveImageUrl } from '@/data/driveImages'
+import { LOCAL_PART_IMAGES } from '@/data/partImages'
 import { BookOpen, Check, Layers, ChevronRight } from 'lucide-react'
 
 export const TableOfContents: React.FC = () => {
@@ -27,64 +27,67 @@ export const TableOfContents: React.FC = () => {
 
         {/* List of 7 parts */}
         <div className="space-y-4">
-          {BOOK_SECTIONS.map((sec: SectionItem) => (
-            <div
-              key={sec.id}
-              className="bg-white border-2 border-stone-800 rounded-xl p-5 sm:p-6 shadow-[3px_3px_0px_0px_rgba(28,25,23,0.8)] transition-all hover:translate-x-1"
-            >
-              {/* Imagem da parte (Drive) */}
-              {DRIVE_PART_IMAGES[sec.id] ? (
-                <div className="relative aspect-[16/9] rounded-lg overflow-hidden border border-stone-200 mb-4 bg-stone-100">
-                  <img
-                    src={driveImageUrl(DRIVE_PART_IMAGES[sec.id])}
-                    alt={sec.title}
-                    className="w-full h-full object-cover object-top"
-                    loading="lazy"
-                  />
-                </div>
-              ) : null}
-
-              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 pb-4 border-b border-stone-100">
-                <div className="flex items-start gap-3.5">
-                  <div className="w-9 h-9 rounded-lg bg-stone-900 text-stone-50 flex items-center justify-center font-black text-sm shrink-0 mt-0.5">
-                    {sec.id}
+          {BOOK_SECTIONS.map((sec: SectionItem) => {
+            const partImage = LOCAL_PART_IMAGES[sec.id]
+            return (
+              <div
+                key={sec.id}
+                className="bg-white border-2 border-stone-800 rounded-xl p-5 sm:p-6 shadow-[3px_3px_0px_0px_rgba(28,25,23,0.8)] transition-all hover:translate-x-1"
+              >
+                {/* Ilustração da parte (asset local do bundle) */}
+                {partImage ? (
+                  <div className="relative aspect-[16/9] rounded-lg overflow-hidden border border-stone-200 mb-4 bg-white">
+                    <img
+                      src={partImage}
+                      alt={sec.title}
+                      className="w-full h-full object-contain"
+                      loading="lazy"
+                    />
                   </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold text-amber-700 uppercase tracking-wider">
-                        {sec.part}
-                      </span>
-                      <span className="text-xs text-stone-400 font-medium">·</span>
-                      <span className="text-xs font-semibold text-stone-500">{sec.pages}</span>
+                ) : null}
+
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 pb-4 border-b border-stone-100">
+                  <div className="flex items-start gap-3.5">
+                    <div className="w-9 h-9 rounded-lg bg-stone-900 text-stone-50 flex items-center justify-center font-black text-sm shrink-0 mt-0.5">
+                      {sec.id}
                     </div>
-                    <h3 className="text-lg sm:text-xl font-black text-stone-900 mt-0.5">
-                      {sec.title}
-                    </h3>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold text-amber-700 uppercase tracking-wider">
+                          {sec.part}
+                        </span>
+                        <span className="text-xs text-stone-400 font-medium">·</span>
+                        <span className="text-xs font-semibold text-stone-500">{sec.pages}</span>
+                      </div>
+                      <h3 className="text-lg sm:text-xl font-black text-stone-900 mt-0.5">
+                        {sec.title}
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+
+                <p className="text-xs sm:text-sm text-stone-600 mt-3 leading-relaxed">
+                  {sec.description}
+                </p>
+
+                {/* Subtopics bullet chips */}
+                <div className="mt-4 pt-3 border-t border-dashed border-stone-200">
+                  <div className="text-[11px] font-bold text-stone-700 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                    <Layers className="w-3.5 h-3.5 text-stone-400" />
+                    Capítulos incluidos:
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {sec.topics.map((t, idx) => (
+                      <div key={idx} className="flex items-center gap-2 text-xs text-stone-700">
+                        <ChevronRight className="w-3 h-3 text-amber-600 shrink-0" />
+                        <span>{t}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
-
-              <p className="text-xs sm:text-sm text-stone-600 mt-3 leading-relaxed">
-                {sec.description}
-              </p>
-
-              {/* Subtopics bullet chips */}
-              <div className="mt-4 pt-3 border-t border-dashed border-stone-200">
-                <div className="text-[11px] font-bold text-stone-700 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                  <Layers className="w-3.5 h-3.5 text-stone-400" />
-                  Capítulos incluidos:
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {sec.topics.map((t, idx) => (
-                    <div key={idx} className="flex items-center gap-2 text-xs text-stone-700">
-                      <ChevronRight className="w-3 h-3 text-amber-600 shrink-0" />
-                      <span>{t}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ))}
+            )
+          })}
 
           {/* Practical recap extra banner */}
           <div className="bg-amber-50 border-2 border-amber-300 rounded-xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4">

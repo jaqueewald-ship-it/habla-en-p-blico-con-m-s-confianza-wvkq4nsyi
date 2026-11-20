@@ -130,7 +130,7 @@ export const OfferTable: React.FC<OfferTableProps> = ({ onOpenCheckout }) => {
               <div>
                 <div className="flex items-baseline gap-2 mt-1">
                   <span className="text-stone-900 text-sm font-bold">Todo hoy por solo:</span>
-                  <span className="text-3xl sm:text-5xl font-black text-stone-900 tracking-tight">
+                  <span className="text-3xl sm:text-4xl lg:text-4xl font-black text-stone-900 tracking-tight whitespace-nowrap">
                     {PRICE.display}
                   </span>
                   <span className="text-xs text-stone-500 font-medium">

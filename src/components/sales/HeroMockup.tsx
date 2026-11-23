@@ -20,7 +20,7 @@ export const HeroMockup: React.FC = () => {
       {/* Mockup principal: livro físico + smartphone com Audiolibro (imagem real) */}
       <figure className="relative">
         <img
-          src={heroMockup}
+          src="/visual-edits/mockup-habla-gestos-audiolibro-transparente-35399990.webp"
           alt="Mockup con los libros Habla en público con más confianza y Gestos que construyen autoridad junto a un smartphone mostrando el reproductor del audiolibro en español"
           className="w-full h-auto drop-shadow-[0_18px_35px_rgba(28,25,23,0.25)]"
           loading="eager"

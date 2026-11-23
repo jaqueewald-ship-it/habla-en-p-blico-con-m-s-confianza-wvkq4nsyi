@@ -74,8 +74,8 @@ export default function ThankYou() {
 
           <p className="text-stone-600 text-sm sm:text-base max-w-xl mx-auto">
             Tu pago ha quedado confirmado con éxito. La propia Hotmart libera el acceso: descarga
-            allí la guía <strong>"Habla en público con más confianza"</strong> en PDF, el audiobook
-            y todos los materiales incluidos.
+            allí la guía <strong>"Habla en público con más confianza"</strong> en PDF (85 páginas),
+            el audiobook y todos los materiales incluidos.
           </p>
 
           {/* Buyer recap strip */}
@@ -145,7 +145,7 @@ export default function ThankYou() {
                     Guía "Habla en público con más confianza" (PDF)
                   </h3>
                   <Badge variant="outline" className="text-[10px] font-bold border-stone-300">
-                    PDF 47 págs.
+                    PDF 85 págs.
                   </Badge>
                 </div>
                 <p className="text-xs text-stone-600 mt-1">
@@ -162,14 +162,15 @@ export default function ThankYou() {
               <div className="flex-1">
                 <div className="flex items-center justify-between">
                   <h3 className="font-bold text-stone-900 text-sm">
-                    Audiobook Completo de Alta Fidelidad (MP3)
+                    Audiobook en español (reproductor en línea)
                   </h3>
                   <Badge variant="outline" className="text-[10px] font-bold border-stone-300">
                     Junto al producto
                   </Badge>
                 </div>
                 <p className="text-xs text-stone-600 mt-1">
-                  Narración completa de la guía con ejercicios guiados de respiración paso a paso.
+                  Narración completa de la guía, accesible desde el navegador en el reproductor en
+                  línea.
                 </p>
               </div>
             </div>

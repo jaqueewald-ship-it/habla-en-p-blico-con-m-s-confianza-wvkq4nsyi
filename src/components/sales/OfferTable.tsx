@@ -22,8 +22,9 @@ export const OfferTable: React.FC<OfferTableProps> = ({ onOpenCheckout }) => {
             Todo lo que te llevas hoy por solo {PRICE.display}
           </h2>
           <p className="mt-3 text-stone-600 text-sm sm:text-base">
-            El producto principal (guía PDF + audiobook) y los regalos exclusivos, con entrega
-            inmediata vía Hotmart. Todo por un único pago — sin suscripciones.
+            El producto principal (guía PDF + audiobook con material adicional de práctica) y los
+            regalos exclusivos, con entrega inmediata vía Hotmart. Todo por un único pago — sin
+            suscripciones.
           </p>
         </div>
 
@@ -62,7 +63,7 @@ export const OfferTable: React.FC<OfferTableProps> = ({ onOpenCheckout }) => {
                     Guía "Habla en público con más confianza" (PDF)
                   </span>
                   <span className="text-xs text-stone-500">
-                    47 páginas en 7 partes con esquemas claros
+                    85 páginas en 7 partes con esquemas claros
                   </span>
                 </div>
               </div>
@@ -83,13 +84,13 @@ export const OfferTable: React.FC<OfferTableProps> = ({ onOpenCheckout }) => {
                 <div>
                   <span className="font-bold text-stone-900 block flex items-center gap-2">
                     <Headphones className="w-4 h-4 text-sky-600" />
-                    Audiobook completo en MP3
+                    Audiobook en español
                     <span className="text-[10px] bg-sky-100 text-sky-800 font-bold px-1.5 py-0.2 rounded">
                       Junto al producto
                     </span>
                   </span>
                   <span className="text-xs text-stone-500">
-                    Narración en alta calidad para escuchar donde quieras
+                    Reproductor en línea desde el navegador, para escuchar donde quieras
                   </span>
                 </div>
               </div>

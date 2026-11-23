@@ -48,9 +48,10 @@ export const PRODUCT_DATA = {
       badge: 'Formato práctico',
     },
     {
-      title: 'PDF + Audiobook',
-      detail: 'La guía completa y su versión de audio para escuchar camino al trabajo.',
-      badge: 'Audio incluido',
+      title: 'Guía PDF + Audiobook',
+      detail:
+        'Guía ilustrada en PDF de 85 páginas y audiolibro en español, accesible mediante un reproductor en línea desde el navegador.',
+      badge: '85 páginas',
     },
     {
       title: 'Método práctico y honesto',
@@ -61,14 +62,11 @@ export const PRODUCT_DATA = {
 }
 
 /* ============================================================
- * PRÉVIAS REAIS DO MATERIAL — 3 páginas do PDF do produto
- * ------------------------------------------------------------
- * Coloque os arquivos em `public/previews/` com os nomes
- * abaixo (páginas extraídas do PDF "Guia_Habla_con_mas_
- * confianza_PREMIUM"). Enquanto os arquivos não existirem,
- * o componente exibe um placeholder ilustrado no lugar.
+ * PRÉVIAS "POR DENTRO" — agora vivem em PagePreviews.tsx como
+ * assets locais (as 2 páginas anexadas pelo autor). Esta lista
+ * antiga de /previews/*.jpg ficou obsoleta e NÃO é mais usada.
  * ============================================================ */
-export const REAL_PAGE_PREVIEWS: PreviewImage[] = [
+const REAL_PAGE_PREVIEWS_UNUSED: PreviewImage[] = [
   {
     id: 'page-1',
     src: '/previews/pagina-1.jpg',
@@ -286,7 +284,7 @@ export const COMPARISON_DIFF = {
 export const FAQ_ITEMS = [
   {
     q: '¿Cómo y cuándo recibiré el material?',
-    a: 'El acceso es inmediato tras completar tu compra en Hotmart. Después del pago, la propia Hotmart te libera la entrega: descargas directamente la guía en PDF en alta resolución, el audiobook completo en MP3 y los cuadernos de plantillas, todo desde tu área de compras de Hotmart.',
+    a: 'El acceso es inmediato tras completar tu compra en Hotmart. Después del pago, la propia Hotmart te libera la entrega: descargas directamente la guía en PDF de 85 páginas en alta resolución y los cuadernos de plantillas; el audiobook completo se escucha desde el reproductor en línea en el navegador, todo desde tu área de compras de Hotmart.',
   },
   {
     q: '¿El pago es único o tiene suscripciones mensuales?',

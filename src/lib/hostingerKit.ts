@@ -50,6 +50,18 @@ export const SITE_IMAGE_FILES = [
   'skip.png',
 ] as const
 
+/**
+ * Amostras "por dentro" (2 páginas anexadas pelo autor) e o mockup da hero:
+ * assets locais importados estaticamente; no pacote entram como imagens do
+ * site pela varredura de /assets/* nos bundles — esta lista é a rede de
+ * segurança caso algum fique fora do manifesto/da varredura (ex.: inline).
+ */
+export const CORE_SITE_ASSETS = [
+  'mockupherohablagestosterracota-9a39e.webp',
+  'pagina21guiaestructuraentrespartes-b509f.webp',
+  'pagina09gestoslasmanosenunareunion-0e873.webp',
+] as const
+
 /** Caminho do leia-me gerado dentro do ZIP */
 export const README_PATH = 'README-DEPLOY.txt'
 
@@ -373,6 +385,19 @@ export async function buildHostingerKit(): Promise<{ blob: Blob; result: KitResu
   for (const p of SITE_IMAGE_FILES) {
     if (added.has(p) || failed.includes(p)) continue
     addOrTrack(p, await fetchDeployFile(p))
+  }
+
+  // 4b. Rede de segurança: mockup da hero + as 2 amostras "por dentro".
+  //     Se o Vite as emitiu com nome hasheado, o manifesto/varredura de
+  //     bundles já as trouxe; aqui tentamos o caminho base do asset
+  //     (sem hash) só por garantia — falha silenciosa não bloqueia o kit.
+  for (const baseName of CORE_SITE_ASSETS) {
+    if (Array.from(added).some((p) => p.startsWith('assets/') && p.includes(baseName))) continue
+    const blob = await fetchDeployFile(`assets/${baseName}`)
+    if (blob) {
+      added.add(`assets/${baseName}`)
+      zip.file(`assets/${baseName}`, blob)
+    }
   }
 
   // 5. leia-me de deploy

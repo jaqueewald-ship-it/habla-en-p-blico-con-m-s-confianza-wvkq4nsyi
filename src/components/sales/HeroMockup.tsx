@@ -1,6 +1,6 @@
 import React from 'react'
 import { Sparkles } from 'lucide-react'
-import heroMockup from '@/assets/livro-e-smartphone-com-audiolivro-d985d.png'
+import heroMockup from '@/assets/mockupherohablagestosterracota-9a39e.webp'
 
 export const HeroMockup: React.FC = () => {
   return (
@@ -21,16 +21,17 @@ export const HeroMockup: React.FC = () => {
       <figure className="relative">
         <img
           src={heroMockup}
-          alt="Libro físico Habla en público con más confianza junto a un smartphone mostrando el audiolibro en español con botón Reproducir"
+          alt="Mockup con los libros Habla en público con más confianza y Gestos que construyen autoridad junto a un smartphone mostrando el reproductor del audiolibro en español"
           className="w-full h-auto drop-shadow-[0_18px_35px_rgba(28,25,23,0.25)]"
           loading="eager"
           decoding="async"
         />
       </figure>
 
-      {/* Nota de entrega (mantida do mockup anterior) */}
+      {/* Nota de entrega: PDF é download; audiolibro é reprodutor em linha */}
       <p className="mt-5 text-center text-[11px] font-medium text-stone-500">
-        Descarga inmediata tras la compra · Compatible con PC, móvil y tablet
+        PDF de 85 páginas descargable inmediatamente · Audiolibro desde el navegador · Compatible
+        con PC, móvil y tablet
       </p>
     </div>
   )

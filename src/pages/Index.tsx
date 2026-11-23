@@ -30,7 +30,7 @@ export default function Index() {
           <span className="inline-flex items-center gap-1 bg-amber-400 text-stone-900 px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider">
             Oferta Especial
           </span>
-          <span>Guía PDF + Audiobook incluido, acceso digital vitalicio</span>
+          <span>Guía PDF de 85 páginas + Audiobook incluido, acceso digital vitalicio</span>
           <button
             onClick={handleBuyClick}
             className="underline underline-offset-2 hover:text-amber-300 ml-1 text-[11px] font-bold"
@@ -143,7 +143,7 @@ export default function Index() {
                 </span>
                 <span className="flex items-center gap-1.5">
                   <BookOpen className="w-3.5 h-3.5 text-amber-600" />
-                  Guía PDF HD
+                  Guía PDF de 85 páginas
                 </span>
                 <span className="flex items-center gap-1.5">
                   <Headphones className="w-3.5 h-3.5 text-sky-600" />
@@ -153,7 +153,8 @@ export default function Index() {
             </div>
 
             {/* Right Mockup */}
-            <div className="lg:col-span-5">
+            {/* Mockup da hero: junto ao texto no desktop; abaixo, centrado, no mobile */}
+            <div className="lg:col-span-5 order-first lg:order-none">
               <HeroMockup />
             </div>
           </div>
@@ -192,11 +193,11 @@ export default function Index() {
             Paso a paso, a tu ritmo
           </Badge>
           <h2 className="text-2xl sm:text-3xl font-black text-stone-900">
-            ¿Y si cada tema entrara en una sola página?
+            Un recorrido en 3 semanas, paso a paso
           </h2>
           <p className="text-stone-700 text-sm max-w-2xl mx-auto">
-            En lugar de esperar a que la angustia desaparezca por sí sola, sigue el método: una
-            semana para el cuerpo, una para el discurso y una para hablar ante los demás.
+            En lugar de esperar a que la angustia desaparezca por sí sola, sigue el plan: una semana
+            para el cuerpo, una para el discurso y una para hablar ante los demás.
           </p>
           <div className="pt-2">
             <Button
@@ -270,7 +271,8 @@ export default function Index() {
               Habla en público con más confianza
             </span>
             <span className="text-stone-600 text-[11px]">
-              El plan práctico de 21 días · Guía en PDF, audiobook y fichas de trabajo.
+              El plan práctico de 21 días · Guía en PDF de 85 páginas, audiobook y fichas de
+              trabajo.
             </span>
           </div>
 

@@ -1,37 +1,75 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Badge } from '@/components/ui/badge'
-import { BOOK_SECTIONS, SectionItem } from '@/data/productData'
-import { LOCAL_PART_IMAGES } from '@/data/partImages'
-import { BookOpen, Layers, ChevronRight } from 'lucide-react'
+import {
+  BookOpen,
+  Wind,
+  ListOrdered,
+  Mic,
+  Eye,
+  MessageCircleQuestion,
+  CalendarCheck,
+  Users,
+} from 'lucide-react'
 
-/** Ilustração do card: asset local do bundle. Se o asset não existir
- *  (ex.: parte sem ilustração anexada), o card cai no fallback do
- *  número, em vez de mostrar imagem quebrada. */
-const PartImage: React.FC<{ partId: number; alt: string }> = ({ partId, alt }) => {
-  const local = LOCAL_PART_IMAGES[partId]
-  const candidates = React.useMemo<string[]>(() => {
-    const list: string[] = []
-    if (local) list.push(local)
-    return list
-  }, [partId, local])
-  const [idx, setIdx] = useState(0)
+/**
+ * Seção "LAS 7 PARTES DEL RECORRIDO" — reformulada a pedido do autor:
+ * sete cards BREVES com ícones (sem páginas escaneadas do PDF),
+ * agrupamento visual por semana (Semana 1: 1–2 · Semana 2: 3–5 ·
+ * Semana 3: 6–7) e destaque do material adicional na parte 5.
+ * Os textos exatos abaixo foram ditados pelo autor em espanhol.
+ */
+const PARTS: { id: number; title: string; description: string; icon: React.ElementType }[] = [
+  {
+    id: 1,
+    title: 'Comprende tus nervios',
+    description: 'Reconoce cómo reaccionas al hablar y define tu punto de partida.',
+    icon: BookOpen,
+  },
+  {
+    id: 2,
+    title: 'Regula la respiración y el cuerpo',
+    description: 'Practica la respiración y la postura antes de comunicar tu mensaje.',
+    icon: Wind,
+  },
+  {
+    id: 3,
+    title: 'Organiza tu discurso',
+    description: 'Ordena tus ideas con una apertura, un desarrollo y un cierre.',
+    icon: ListOrdered,
+  },
+  {
+    id: 4,
+    title: 'Entrena tu voz',
+    description: 'Trabaja el volumen, las pausas, la entonación y la dicción.',
+    icon: Mic,
+  },
+  {
+    id: 5,
+    title: 'Practica la mirada y los gestos',
+    description: 'Explora cómo usar las manos, la postura y el contacto visual al hablar.',
+    icon: Eye,
+  },
+  {
+    id: 6,
+    title: 'Prepárate para situaciones concretas',
+    description: 'Practica cómo responder preguntas y desenvolverte en distintos contextos.',
+    icon: MessageCircleQuestion,
+  },
+  {
+    id: 7,
+    title: 'Integra lo aprendido en 21 días',
+    description: 'Avanza con ejercicios graduales y aplica la práctica a tu rutina.',
+    icon: CalendarCheck,
+  },
+]
 
-  useEffect(() => {
-    setIdx(0)
-  }, [partId])
+const WEEKS: { label: string; parts: number[] }[] = [
+  { label: 'Semana 1', parts: [1, 2] },
+  { label: 'Semana 2', parts: [3, 4, 5] },
+  { label: 'Semana 3', parts: [6, 7] },
+]
 
-  if (candidates.length === 0) return null
-  if (idx >= candidates.length) return null
-  return (
-    <img
-      src={candidates[idx]}
-      alt={alt}
-      className="absolute inset-0 h-full w-full object-cover object-top"
-      loading="lazy"
-      onError={() => setIdx((i) => i + 1)}
-    />
-  )
-}
+const weekOfPart = (id: number): string => WEEKS.find((w) => w.parts.includes(id))?.label ?? ''
 
 export const TableOfContents: React.FC = () => {
   return (
@@ -42,93 +80,82 @@ export const TableOfContents: React.FC = () => {
             variant="outline"
             className="mb-3 px-3.5 py-1 text-xs uppercase tracking-wider font-bold bg-white text-stone-800 border-stone-300"
           >
-            Índice completo y detallado
+            Índice del recorrido
           </Badge>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
-            Echa un vistazo a las 7 partes y los 38 capítulos del plan
+            LAS 7 PARTES DEL RECORRIDO
           </h2>
           <p className="mt-4 text-base sm:text-lg text-stone-300 font-normal">
-            47 páginas organizadas de lo pequeño a lo grande, diseñadas para que cualquier persona
-            pueda avanzar a su ritmo.
+            Un plan progresivo de 21 días para comprender tus nervios, preparar tus ideas y
+            practicar cómo comunicarte ante otras personas.
           </p>
         </div>
 
-        {/* Grade das 7 partes */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-          {BOOK_SECTIONS.map((sec: SectionItem) => {
-            const partImage = LOCAL_PART_IMAGES[sec.id]
+        {/* Rótulos das semanas: progressão visual do plano */}
+        <div className="mb-10 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-4xl mx-auto">
+          {WEEKS.map((week) => (
+            <div
+              key={week.label}
+              className="flex items-center justify-center gap-2 rounded-xl border border-stone-700 bg-stone-800/60 px-4 py-3"
+            >
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-amber-400 text-xs font-black text-stone-900">
+                {week.parts.length}
+              </span>
+              <span className="text-sm font-black text-white tracking-wide">{week.label}</span>
+              <span className="text-xs font-semibold text-stone-400">
+                partes {week.parts.join(' y ')}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* Grade das 7 partes: cards breves com ícones */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
+          {PARTS.map((part) => {
+            const Icon = part.icon
             return (
               <article
-                key={sec.id}
-                className="flex flex-col overflow-hidden rounded-2xl bg-white shadow-lg shadow-black/20 ring-1 ring-stone-200"
+                key={part.id}
+                className="flex flex-col rounded-2xl bg-white p-5 sm:p-6 shadow-lg shadow-black/20 ring-1 ring-stone-200"
               >
-                {/* Ilustração: recorte horizontal 16:9 da região ilustrada (topo da página), sem texto */}
-                <div className="relative aspect-[16/9] overflow-hidden bg-stone-100 border-b border-stone-200">
-                  {partImage ? (
-                    <PartImage partId={sec.id} alt={sec.title} />
-                  ) : (
-                    <div className="absolute inset-0 flex items-center justify-center text-6xl font-black text-stone-300">
-                      {sec.id}
-                    </div>
-                  )}
-                  {/* Número da parte em destaque */}
-                  <div className="absolute top-3 left-3 flex h-11 w-11 items-center justify-center rounded-full bg-amber-400 text-stone-900 font-black text-lg shadow-md ring-2 ring-white">
-                    {sec.id}
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-100 border border-amber-300">
+                    <Icon className="w-6 h-6 text-amber-800" aria-hidden="true" />
                   </div>
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-stone-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-stone-600">
+                    Parte {part.id}
+                  </span>
                 </div>
-
-                <div className="flex flex-1 flex-col p-5 sm:p-6">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-xs font-bold text-amber-700 uppercase tracking-wider">
-                      {sec.part}
-                    </span>
-                    <span className="text-xs text-stone-400 font-medium">·</span>
-                    <span className="text-xs font-semibold text-stone-500">{sec.pages}</span>
-                  </div>
-                  <h3 className="mt-1 text-xl sm:text-2xl font-black text-stone-900 leading-tight">
-                    {sec.title}
-                  </h3>
-                  <p className="mt-3 text-sm text-stone-600 leading-relaxed">{sec.description}</p>
-
-                  {/* Capítulos */}
-                  <div className="mt-5 pt-4 border-t border-dashed border-stone-200">
-                    <div className="text-[11px] font-bold text-stone-700 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                      <Layers className="w-3.5 h-3.5 text-stone-400" />
-                      Capítulos incluidos:
-                    </div>
-                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                      {sec.topics.map((t, idx) => (
-                        <li key={idx} className="flex items-start gap-2 text-xs text-stone-700">
-                          <ChevronRight className="w-3 h-3 mt-0.5 text-amber-600 shrink-0" />
-                          <span>{t}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
+                <h3 className="mt-4 text-lg sm:text-xl font-black text-stone-900 leading-tight">
+                  {part.title}
+                </h3>
+                <p className="mt-2 text-sm text-stone-600 leading-relaxed">{part.description}</p>
+                <span className="mt-4 text-[10px] font-bold uppercase tracking-wider text-amber-700">
+                  {weekOfPart(part.id)}
+                </span>
               </article>
             )
           })}
         </div>
 
-        {/* Practical recap extra banner */}
-        <div className="mt-8 bg-amber-50 border-2 border-amber-300 rounded-xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-amber-200 text-amber-900 flex items-center justify-center shrink-0">
-              <BookOpen className="w-5 h-5 text-amber-800" />
-            </div>
-            <div>
-              <h4 className="font-bold text-stone-900 text-sm">
-                Ponte a prueba: 28 preguntas con soluciones
-              </h4>
-              <p className="text-xs text-stone-600 mt-0.5">
-                Autoevaluación al final del libro, resumen de todo el plan en una sola página y
-                referencias bibliográficas.
-              </p>
-            </div>
+        {/* Destaque: material adicional que acompanha o recorrido (parte 5).
+            Não é bono, não é oitava parte, não é produto separado. */}
+        <div className="mt-8 rounded-2xl bg-amber-50 border-2 border-amber-300 p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-200 border border-amber-400 shrink-0">
+            <Users className="w-6 h-6 text-amber-900" aria-hidden="true" />
           </div>
-          <span className="text-xs font-bold text-amber-900 bg-amber-200/70 px-3 py-1.5 rounded-md shrink-0">
-            pp. 42–47 incluidas
+          <div>
+            <h4 className="font-black text-stone-900 text-base sm:text-lg">
+              Material adicional para acompañar tu práctica
+            </h4>
+            <p className="text-sm text-stone-700 leading-relaxed mt-1">
+              <strong>Gestos que construyen autoridad:</strong> 20 comparaciones A/B y 5
+              simulaciones para practicar la postura, las manos, la mirada y la voz en situaciones
+              concretas.
+            </p>
+          </div>
+          <span className="sm:ml-auto shrink-0 inline-flex items-center gap-1.5 rounded-full bg-amber-200/80 px-3 py-1.5 text-[10px] font-black uppercase tracking-wider text-amber-900 border border-amber-400">
+            Acompaña la parte 5
           </span>
         </div>
       </div>

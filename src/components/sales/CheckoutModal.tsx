@@ -93,7 +93,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({ open, onClose, onS
             <div className="flex items-center justify-between">
               <span className="text-stone-600 flex items-center gap-2">
                 <Sparkles className="w-3.5 h-3.5 text-sky-600" />
-                Audiobook completo (MP3) — junto al producto
+                Audiobook en español — reproductor en línea
               </span>
               <span className="font-bold text-emerald-700">Incluido</span>
             </div>

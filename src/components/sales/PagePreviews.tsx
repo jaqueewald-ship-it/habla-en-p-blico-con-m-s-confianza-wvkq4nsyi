@@ -1,27 +1,35 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { BookOpen, Headphones, Sparkles, ZoomIn } from 'lucide-react'
-import page10 from '@/assets/habla-pagina-10-d5e6f.webp'
-import page21 from '@/assets/habla-pagina-21-e3829.webp'
-import page44 from '@/assets/habla-pagina-44-3bd72.webp'
+import { BookOpen, Sparkles, ZoomIn, X } from 'lucide-react'
+import sampleEstructura from '@/assets/pagina21guiaestructuraentrespartes-b509f.webp'
+import sampleManos from '@/assets/pagina09gestoslasmanosenunareunion-0e873.webp'
 
 interface PagePreviewsProps {
   onSelectCta: () => void
 }
 
-// Prévias "por dentro": 3 páginas REAIS do guia, exportadas como IMAGEM
-// (o render em runtime via pdf.js ficava em branco). Páginas 10, 21 e 44 —
-// a legenda usa o NOME REAL da parte à qual cada página pertence:
-//   - p. 10  → Parte 2 · La respiración y el cuerpo
-//   - p. 21  → Parte 4 · La voz y su presencia
-//   - p. 44  → Parte 7 · El plan de los 21 días
-const PREVIEW_PAGES: { id: string; pageNumber: number; src: string; caption: string }[] = [
-  { id: 'pdf-p10', pageNumber: 10, src: page10, caption: 'Parte 2 · La respiración y el cuerpo' },
-  { id: 'pdf-p21', pageNumber: 21, src: page21, caption: 'Parte 4 · La voz y su presencia' },
-  { id: 'pdf-p44', pageNumber: 44, src: page44, caption: 'Parte 7 · El plan de los 21 días' },
+// Amostras "por dentro": as DUAS páginas anexadas pelo autor, e somente elas
+// (não duplicar na seção das 7 partes).
+//   - Guia principal, p. 21: "La estructura en tres partes"
+//   - Material adicional, p. 05: "Las manos en una reunión"
+const SAMPLE_PAGES: { id: string; src: string; source: string; caption: string }[] = [
+  {
+    id: 'sample-estructura',
+    src: sampleEstructura,
+    source: 'Guía principal · pág. 21',
+    caption: 'La estructura en tres partes',
+  },
+  {
+    id: 'sample-manos',
+    src: sampleManos,
+    source: 'Material adicional · pág. 05',
+    caption: 'Las manos en una reunión',
+  },
 ]
 
 export const PagePreviews: React.FC<PagePreviewsProps> = ({ onSelectCta }) => {
+  const [zoomed, setZoomed] = useState<{ src: string; caption: string } | null>(null)
+
   return (
     <section id="previa" className="py-20 bg-stone-900 border-t border-stone-800">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -35,73 +43,56 @@ export const PagePreviews: React.FC<PagePreviewsProps> = ({ onSelectCta }) => {
             Páginas reales del material
           </h2>
           <p className="text-sm sm:text-base text-stone-300 leading-relaxed">
-            Nada de promesas vacías: mira directamente cómo se ve la guía por dentro y cómo llega a
-            ti, junto con el audiobook completo.
+            Nada de promesas vacías: mira directamente cómo se ve la guía por dentro y cómo se
+            integra el material adicional que acompaña tu práctica.
           </p>
         </div>
 
-        {/* 3 páginas reais do PDF + capa do audiobook */}
-        <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
-          {PREVIEW_PAGES.map((page) => (
+        {/* As duas amostras anexadas, com opção de ampliar */}
+        <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-3xl mx-auto items-stretch">
+          {SAMPLE_PAGES.map((page) => (
             <figure
               key={page.id}
               className="group relative bg-white border-2 border-stone-800 rounded-xl overflow-hidden shadow-[5px_5px_0px_0px_rgba(28,25,23,0.85)] hover:shadow-[7px_7px_0px_0px_rgba(28,25,23,1)] transition-shadow"
             >
-              <div className="relative aspect-[3/4] bg-white p-2">
-                <div className="relative w-full h-full flex items-center justify-center">
-                  <img
-                    src={page.src}
-                    alt={`Página ${page.pageNumber} de la guía: ${page.caption}`}
-                    width={1200}
-                    height={1600}
-                    className="max-w-full max-h-full object-contain"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-3 pointer-events-none">
-                  <span className="inline-flex items-center gap-1 text-[10px] font-bold text-white bg-stone-900/80 px-2 py-1 rounded">
-                    <ZoomIn className="w-3 h-3" />
-                    Página {page.pageNumber}
+              <button
+                type="button"
+                onClick={() => setZoomed({ src: page.src, caption: page.caption })}
+                className="block w-full cursor-zoom-in bg-white p-2 text-left"
+                aria-label={`Ampliar página: ${page.caption}`}
+              >
+                <img
+                  src={page.src}
+                  alt={`Página de muestra: ${page.caption}`}
+                  width={1200}
+                  height={1600}
+                  className="w-full h-auto object-contain"
+                  loading="lazy"
+                />
+              </button>
+              <figcaption className="p-3 text-[11px] font-semibold text-stone-600 border-t-2 border-stone-800 bg-stone-50 flex items-center justify-between gap-2">
+                <span>
+                  <span className="block text-[10px] uppercase tracking-wider text-stone-400 font-bold">
+                    {page.source}
                   </span>
-                </div>
-              </div>
-              <figcaption className="p-3 text-[11px] font-semibold text-stone-600 border-t-2 border-stone-800 bg-stone-50">
-                {page.caption}
+                  {page.caption}
+                </span>
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-stone-700 bg-stone-200 px-2 py-1 rounded shrink-0">
+                  <ZoomIn className="w-3 h-3" />
+                  Ampliar
+                </span>
               </figcaption>
             </figure>
           ))}
-
-          {/* Audiobook cover — capa do app (fundo escuro, âmbar) */}
-          <figure className="group relative bg-stone-900 border-2 border-stone-800 rounded-xl overflow-hidden shadow-[5px_5px_0px_0px_rgba(28,25,23,0.85)] hover:shadow-[7px_7px_0px_0px_rgba(28,25,23,1)] transition-shadow text-white">
-            <div className="relative aspect-[3/4] bg-stone-900">
-              <img
-                src="/previews/audiobook.svg"
-                alt="Audiobook: Habla en público con más confianza"
-                width={600}
-                height={800}
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-stone-900/70 via-transparent to-transparent pointer-events-none" />
-              <div className="absolute bottom-3 left-3 right-3 pointer-events-none">
-                <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider bg-amber-400 text-stone-900 px-2 py-1 rounded">
-                  <Headphones className="w-3 h-3" />
-                  Audiobook MP3
-                </span>
-              </div>
-            </div>
-            <figcaption className="p-3 text-[11px] font-semibold bg-amber-50 text-stone-900 border-t-2 border-stone-800">
-              Audiobook completo · narración de toda la guía
-            </figcaption>
-          </figure>
         </div>
 
-        {/* Note: audiobook is part of the main product, NOT a bonus */}
+        {/* Nota: audiobook acessível pelo navegador, não é bônus */}
         <div className="mt-8 max-w-2xl mx-auto flex items-start gap-3 bg-sky-50 border border-sky-200 rounded-xl p-4">
-          <Headphones className="w-5 h-5 text-sky-600 shrink-0 mt-0.5" />
+          <BookOpen className="w-5 h-5 text-sky-600 shrink-0 mt-0.5" />
           <p className="text-xs text-sky-900 leading-relaxed">
-            <strong>El audiobook viene con la guía:</strong> al comprar, recibes juntos el PDF y el
-            audiobook completo — no son productos separados ni regalos aparte.
+            <strong>Audiobook incluido:</strong> se escucha en español desde un reproductor en
+            línea, directamente en el navegador — viene junto con la guía de 85 páginas, sin
+            descargas ni productos aparte.
           </p>
         </div>
 
@@ -117,6 +108,39 @@ export const PagePreviews: React.FC<PagePreviewsProps> = ({ onSelectCta }) => {
           </Button>
         </div>
       </div>
+
+      {/* Lightbox de ampliação */}
+      {zoomed && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-stone-900/90 backdrop-blur-sm p-4"
+          onClick={() => setZoomed(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Página ampliada: ${zoomed.caption}`}
+        >
+          <button
+            type="button"
+            onClick={() => setZoomed(null)}
+            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center text-stone-800 transition-colors"
+            aria-label="Cerrar página ampliada"
+          >
+            <X className="w-5 h-5" />
+          </button>
+          <figure
+            className="max-w-3xl w-full max-h-[90vh] flex flex-col items-center gap-3"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={zoomed.src}
+              alt={`Página ampliada: ${zoomed.caption}`}
+              className="max-h-[78vh] w-auto max-w-full object-contain rounded-lg bg-white shadow-2xl"
+            />
+            <figcaption className="text-xs font-semibold text-stone-200">
+              {zoomed.caption}
+            </figcaption>
+          </figure>
+        </div>
+      )}
     </section>
   )
 }

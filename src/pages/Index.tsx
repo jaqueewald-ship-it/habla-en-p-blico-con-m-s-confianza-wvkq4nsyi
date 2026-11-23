@@ -11,6 +11,7 @@ import { ComparisonSection } from '@/components/sales/ComparisonSection'
 import { TableOfContents } from '@/components/sales/TableOfContents'
 import { AdditionalMaterialSection } from '@/components/sales/AdditionalMaterialSection'
 import { OfferTable } from '@/components/sales/OfferTable'
+import { BonusCards } from '@/components/sales/BonusCards'
 import { AudienceSection } from '@/components/sales/AudienceSection'
 import { GuaranteeSection } from '@/components/sales/GuaranteeSection'
 import { FaqSection } from '@/components/sales/FaqSection'
@@ -224,7 +225,14 @@ export default function Index() {
       {/* AUDIENCE SECTION: FOR WHOM */}
       <AudienceSection />
 
-      {/* OFFER TABLE & PRICING (aqui aparecem os bônus e o preço) */}
+      {/* REGALOS INCLUIDOS: seção dos 6 bônus com capas, ANTES da oferta */}
+      <section className="py-20 bg-stone-100 border-t-2 border-stone-800">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <BonusCards />
+        </div>
+      </section>
+
+      {/* OFFER TABLE & PRICING (valores riscados, total e preço) */}
       <OfferTable onOpenCheckout={handleBuyClick} />
 
       {/* GUARANTEE 7 DAYS */}

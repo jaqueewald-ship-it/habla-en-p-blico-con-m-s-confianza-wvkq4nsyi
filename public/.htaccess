@@ -11,6 +11,8 @@ Options -MultiViews
   RewriteEngine On
   RewriteBase /
   RewriteRule ^index\.html$ - [L]
+  # Arquivos .zip (ex.: /download/dist-export.zip) nunca caem no index.html
+  RewriteRule \.zip$ - [L]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule . /index.html [L]

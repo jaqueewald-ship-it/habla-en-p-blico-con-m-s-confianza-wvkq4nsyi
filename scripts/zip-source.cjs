@@ -217,8 +217,11 @@ function generateSiteZip() {
 // ZIP, sem pasta "dist" embrulhando). Gravado em dist/dist-export.zip e numa cópia
 // em pocketbase/hooks/files/dist-export.zip (servida pela rota do backend
 // /backend/v1/download/dist-export). Sem dist/index.html, não gera nada.
+// dist/download/dist-export.zip é a cópia servida como asset estático comum
+// (/download/dist-export.zip), sem depender do deploy root nem de rota do backend.
 const DIST_ZIP_TARGETS = [
   path.join(ROOT, 'dist', 'dist-export.zip'),
+  path.join(ROOT, 'dist', 'download', 'dist-export.zip'),
   path.join(ROOT, 'pocketbase', 'hooks', 'files', 'dist-export.zip'),
 ]
 
@@ -238,7 +241,9 @@ function generateDistZip() {
       .map((f) => f.rel)
       .filter(
         (rel) =>
-          rel !== 'file-manifest.json' && rel !== 'dist-export.zip' && rel !== 'site-export.zip',
+          rel !== 'file-manifest.json' &&
+          !rel.endsWith('dist-export.zip') &&
+          rel !== 'site-export.zip',
       )
     fs.writeFileSync(
       path.join(distDir, 'file-manifest.json'),

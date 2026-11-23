@@ -75,23 +75,41 @@ export default function Hostinger() {
             Arquivos.
           </p>
 
-          <Button
-            onClick={handleGenerate}
-            disabled={state.phase === 'building'}
-            className="w-full sm:w-auto bg-stone-900 hover:bg-stone-800 text-white font-bold"
-          >
-            {state.phase === 'building' ? (
-              <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Montando o pacote...
-              </>
-            ) : (
-              <>
-                <Download className="w-4 h-4 mr-2" />
-                Gerar e baixar pacote
-              </>
-            )}
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Button
+              onClick={handleGenerate}
+              disabled={state.phase === 'building'}
+              className="w-full sm:w-auto bg-stone-900 hover:bg-stone-800 text-white font-bold"
+            >
+              {state.phase === 'building' ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Montando o pacote...
+                </>
+              ) : (
+                <>
+                  <Download className="w-4 h-4 mr-2" />
+                  Gerar e baixar pacote
+                </>
+              )}
+            </Button>
+
+            <Button
+              asChild
+              variant="outline"
+              className="w-full sm:w-auto border-stone-300 text-stone-900 font-bold"
+            >
+              <a href="/download/dist-export.zip" download="dist-export.zip">
+                <FileArchive className="w-4 h-4 mr-2" />
+                Baixar dist-export.zip (build do servidor)
+              </a>
+            </Button>
+          </div>
+          <p className="text-xs text-stone-500 leading-relaxed">
+            Dois caminhos: o botão principal monta o hostinger-kit.zip no próprio navegador; o
+            alternativo baixa o dist-export.zip gerado pelo build de produção no servidor, sem
+            montar nada.
+          </p>
 
           {state.phase === 'done' && (
             <div className="space-y-3">

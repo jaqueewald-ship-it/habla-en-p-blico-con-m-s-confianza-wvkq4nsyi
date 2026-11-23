@@ -1,6 +1,6 @@
 ====================================================================
  HOSTINGER-KIT — GUIA DE PUBLICAÇÃO (mundodeguias.com)
- Versão do site: 0.0.69
+ Versão do site: 0.0.70
 ====================================================================
 
 Este ZIP contém o site JÁ COMPILADO, pronto para subir na Hostinger:
@@ -63,4 +63,16 @@ Isso roda o build de produção e regenera hostinger-kit.zip.
 
 Ou, pela página do próprio site: acesse /#/hostinger e clique em
 "Gerar e baixar pacote" (funciona direto no navegador, sem Node).
+
+--------------------------------------------------------------------
+ DOIS CAMINHOS DE DOWNLOAD NA PÁGINA /#/hostinger
+--------------------------------------------------------------------
+1. Principal — "Gerar e baixar pacote": monta o hostinger-kit.zip
+   no navegador (com capas dos bônus e leia-me).
+
+2. Alternativo — "Baixar dist-export.zip (build do servidor)":
+   baixa https://<seu-site>/download/dist-export.zip, o ZIP gerado
+   pelo build de produção (index.html, assets/, .htaccess na raiz).
+   Use-o se o botão principal falhar. O caminho /download/ é um
+   arquivo estático comum: não passa pelas regras de SPA.
 ====================================================================

@@ -132,13 +132,20 @@ o index.html, que assume a navegação:
 --------------------------------------------------------------------
  GERAR O PACOTE LOCALMENTE (opcional, exige Node.js)
 --------------------------------------------------------------------
-Na raiz do projeto:
-
-    npm install
-    node scripts/build-hostinger.mjs
-
 Isso roda o build de produção e gera hostinger-kit.zip com o
 mesmo conteúdo deste arquivo.
+
+--------------------------------------------------------------------
+ DOIS CAMINHOS DE DOWNLOAD NA PÁGINA /#/hostinger
+--------------------------------------------------------------------
+1. Principal — "Gerar e baixar pacote": monta o hostinger-kit.zip
+   no navegador (com capas dos bônus e leia-me).
+
+2. Alternativo — "Baixar dist-export.zip (build do servidor)":
+   baixa https://<seu-site>/download/dist-export.zip, o ZIP gerado
+   pelo build de produção (index.html, assets/, .htaccess na raiz).
+   Use-o se o botão principal falhar. O caminho /download/ é um
+   arquivo estático comum: não passa pelas regras de SPA.
 ====================================================================
 `
 }

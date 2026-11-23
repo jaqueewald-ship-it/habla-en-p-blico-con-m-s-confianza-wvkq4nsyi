@@ -9,6 +9,7 @@ import { HeroMockup } from '@/components/sales/HeroMockup'
 import { PagePreviews } from '@/components/sales/PagePreviews'
 import { ComparisonSection } from '@/components/sales/ComparisonSection'
 import { TableOfContents } from '@/components/sales/TableOfContents'
+import { AdditionalMaterialSection } from '@/components/sales/AdditionalMaterialSection'
 import { OfferTable } from '@/components/sales/OfferTable'
 import { AudienceSection } from '@/components/sales/AudienceSection'
 import { GuaranteeSection } from '@/components/sales/GuaranteeSection'
@@ -105,8 +106,14 @@ export default function Index() {
               </h1>
 
               <p className="text-lg sm:text-xl font-medium text-stone-700 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                Un plan práctico de <strong>21 días</strong> para organizar tus ideas, entrenar tu
-                voz y aprender a manejar los nervios sin quedarte en blanco.
+                Una guía ilustrada con un plan práctico de 21 días, acompañada por un audiolibro en
+                español y el material adicional 'Gestos que construyen autoridad', integrado al
+                recorrido.
+              </p>
+
+              <p className="text-sm sm:text-base font-semibold text-stone-800 leading-relaxed max-w-xl mx-auto lg:mx-0 border-l-4 border-amber-400 pl-4">
+                Guía principal + audiolibro en español desde el navegador + atlas visual de gestos,
+                postura, mirada y voz.
               </p>
 
               <p className="text-sm sm:text-base text-stone-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
@@ -154,7 +161,7 @@ export default function Index() {
 
             {/* Right Mockup */}
             {/* Mockup da hero: junto ao texto no desktop; abaixo, centrado, no mobile */}
-            <div className="lg:col-span-5 order-first lg:order-none">
+            <div className="lg:col-span-5">
               <HeroMockup />
             </div>
           </div>
@@ -185,6 +192,9 @@ export default function Index() {
 
       {/* TABLE OF CONTENTS - 7 PARTS */}
       <TableOfContents />
+
+      {/* MATERIAL ADICIONAL: nova dobra própria (depois das 7 partes, antes da oferta) */}
+      <AdditionalMaterialSection onOpenCheckout={handleBuyClick} />
 
       {/* REPEATED CTA BANNER 1 */}
       <section className="py-12 bg-amber-50 text-stone-900 border-t-2 border-b-2 border-stone-900">

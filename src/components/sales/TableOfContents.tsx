@@ -1,6 +1,5 @@
 import React from 'react'
 import { Badge } from '@/components/ui/badge'
-import { Users } from 'lucide-react'
 import parte01 from '@/assets/parte01entenderelmiedo-e22d9.webp'
 import parte02 from '@/assets/parte02posturayrespiracion-94e88.webp'
 import parte03 from '@/assets/parte03estructuradeldiscurso-6ae23.webp'
@@ -8,13 +7,15 @@ import parte04 from '@/assets/parte04lavoz-0d74d.webp'
 import parte05 from '@/assets/parte05miradaygestos-c25d2.webp'
 import parte06 from '@/assets/parte06preguntasdelpublico-24494.webp'
 import parte07 from '@/assets/parte07plande21dias-77660.webp'
+import atlasMuestra from '@/assets/gestosqueconstruyenautoridadmuestrawebmovimiento-1-e1d72.webp'
 
 /**
- * Seção "LAS 7 PARTES DEL RECORRIDO" — reformulada a pedido do autor:
- * sete cards com a IMAGEM ORIGINAL de cada parte (apresentação com
- * etiqueta PARTE 0X, anexada pelo autor), agrupamento visual por semana
- * (Semana 1: 1–2 · Semana 2: 3–5 · Semana 3: 6–7) e destaque do material
- * adicional na parte 5.
+ * Seção das 7 partes — sete cards com a IMAGEM ORIGINAL de cada parte
+ * (apresentação com etiqueta PARTE 0X, anexada pelo autor), agrupamento
+ * visual por semana (Semana 1: 1–2 · Semana 2: 3–5 · Semana 3: 6–7) e,
+ * logo após os cards, um bloco visual separado para o MATERIAL ADICIONAL
+ * incluído ("Gestos que construyen autoridad"). O material adicional NÃO é
+ * bono, NÃO é oitava parte e NÃO pertence à parte 5.
  * Os textos exatos abaixo foram ditados pelo autor em espanhol.
  */
 const PARTS: { id: number; title: string; description: string; image: string; alt: string }[] = [
@@ -89,7 +90,7 @@ export const TableOfContents: React.FC = () => {
             Índice del recorrido
           </Badge>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
-            LAS 7 PARTES DEL RECORRIDO
+            Conoce las 7 partes de la guía y el material adicional incluido
           </h2>
           <p className="mt-4 text-base sm:text-lg text-stone-300 font-normal">
             Un plan progresivo de 21 días para comprender tus nervios, preparar tus ideas y
@@ -148,25 +149,34 @@ export const TableOfContents: React.FC = () => {
           ))}
         </div>
 
-        {/* Destaque: material adicional que acompanha o recorrido (parte 5).
-            Não é bono, não é oitava parte, não é produto separado. */}
-        <div className="mt-8 rounded-2xl bg-amber-50 border-2 border-amber-300 p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-200 border border-amber-400 shrink-0">
-            <Users className="w-6 h-6 text-amber-900" aria-hidden="true" />
+        {/* Bloco visual separado: MATERIAL ADICIONAL INCLUIDO.
+            Não é bono, não é oitava parte, não se mistura com a parte 5. */}
+        <div className="mt-8 rounded-2xl bg-white p-5 sm:p-6 shadow-lg shadow-black/20 ring-1 ring-stone-200">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 items-center">
+            <figure className="overflow-hidden rounded-xl border border-stone-200 bg-stone-50 max-w-sm md:max-w-none mx-auto">
+              <img
+                src={atlasMuestra}
+                alt="Página de muestra del atlas Gestos que construyen autoridad: comparación entre caminar mientras se habla y detenerse antes de presentar una decisión."
+                className="w-full h-auto block max-h-[520px] object-contain mx-auto"
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+            <div>
+              <span className="inline-flex items-center rounded-full bg-amber-400 px-3 py-1 text-[10px] font-black uppercase tracking-wider text-stone-900 border border-stone-800">
+                Material adicional incluido
+              </span>
+              <h3 className="mt-3 text-xl sm:text-2xl font-black text-stone-900 leading-tight">
+                Gestos que construyen autoridad
+              </h3>
+              <p className="mt-3 text-sm sm:text-base text-stone-600 leading-relaxed">
+                Un atlas visual con 20 comparaciones A/B y 5 simulaciones para practicar gestos,
+                postura, mirada y voz en reuniones, presentaciones, entrevistas y videollamadas.
+                Compara distintas formas de comunicar una misma idea y observa qué opción te resulta
+                más natural para cada situación.
+              </p>
+            </div>
           </div>
-          <div>
-            <h4 className="font-black text-stone-900 text-base sm:text-lg">
-              Material adicional para acompañar tu práctica
-            </h4>
-            <p className="text-sm text-stone-700 leading-relaxed mt-1">
-              <strong>Gestos que construyen autoridad:</strong> 20 comparaciones A/B y 5
-              simulaciones para practicar la postura, las manos, la mirada y la voz en situaciones
-              concretas.
-            </p>
-          </div>
-          <span className="sm:ml-auto shrink-0 inline-flex items-center gap-1.5 rounded-full bg-amber-200/80 px-3 py-1.5 text-[10px] font-black uppercase tracking-wider text-amber-900 border border-amber-400">
-            Acompaña la parte 5
-          </span>
         </div>
       </div>
     </section>

@@ -40,7 +40,8 @@ export const OfferTable: React.FC<OfferTableProps> = ({ onOpenCheckout }) => {
                 Habla en público con más confianza
               </h3>
               <p className="text-xs text-stone-400 mt-1">
-                Guía PDF + Audiobook + materiales de apoyo
+                Guía PDF + audiobook + material adicional "Gestos que construyen autoridad" + 6
+                bonos digitales
               </p>
             </div>
             <div className="sm:text-right shrink-0">
@@ -117,6 +118,29 @@ export const OfferTable: React.FC<OfferTableProps> = ({ onOpenCheckout }) => {
                 </div>
               </div>
               <div className="text-right shrink-0 ml-4 font-bold text-emerald-700">Incluido</div>
+            </div>
+          </div>
+
+          {/* Linha própria do material adicional (NÃO é bônus): antes da lista de bônus */}
+          <div className="p-4 sm:p-5 flex items-center justify-between gap-4 border-t-2 border-stone-800 hover:bg-stone-50 transition-colors">
+            <div className="flex items-start gap-3">
+              <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
+                <Check className="w-3.5 h-3.5 stroke-[2.5]" />
+              </span>
+              <div>
+                <span className="font-bold text-stone-900 block text-[11px] sm:text-xs uppercase tracking-wider">
+                  Material adicional del producto principal
+                </span>
+                <span className="text-xs text-stone-500">
+                  Gestos que construyen autoridad — atlas visual con 20 comparaciones A/B y 5
+                  simulaciones para practicar gestos, postura, mirada y voz.
+                </span>
+              </div>
+            </div>
+            <div className="text-right shrink-0 ml-4">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 text-xs font-bold border border-emerald-200">
+                Incluido
+              </span>
             </div>
           </div>
 

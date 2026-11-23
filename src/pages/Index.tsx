@@ -226,7 +226,7 @@ export default function Index() {
       <AudienceSection />
 
       {/* REGALOS INCLUIDOS: seção dos 6 bônus com capas, ANTES da oferta (compacta) */}
-      <section className="py-10 sm:py-14 bg-stone-100 border-t-2 border-stone-800">
+      <section className="py-6 sm:py-8 bg-stone-100 border-t-2 border-stone-800">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <BonusCards />
         </div>

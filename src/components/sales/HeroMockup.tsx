@@ -17,10 +17,12 @@ export const HeroMockup: React.FC = () => {
         Edición Completa Digital
       </span>
 
-      {/* Mockup principal: livro físico + smartphone com Audiolibro (imagem real) */}
+      {/* Mockup principal: livro físico + smartphone com Audiolibro (imagem real,
+          import estático para o Vite empacotar em dist/assets — o caminho
+          /visual-edits/ de public/ não ia no deploy e a imagem ficava sem carregar) */}
       <figure className="relative">
         <img
-          src="/visual-edits/mockup-habla-gestos-audiolibro-transparente-35399990.webp"
+          src={heroMockup}
           alt="Mockup con los libros Habla en público con más confianza y Gestos que construyen autoridad junto a un smartphone mostrando el reproductor del audiolibro en español"
           className="w-full h-auto drop-shadow-[0_18px_35px_rgba(28,25,23,0.25)]"
           loading="eager"

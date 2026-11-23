@@ -54,24 +54,24 @@ const BonusCover: React.FC<{ number: string; alt: string }> = ({ number, alt }) 
 
 export const BonusCards: React.FC = () => {
   return (
-    <div className="mt-14">
+    <div>
       {/* Heading do bloco de bônus */}
-      <div className="text-center space-y-2 max-w-2xl mx-auto mb-10">
+      <div className="text-center space-y-1.5 max-w-2xl mx-auto mb-5 sm:mb-6">
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-900 border border-amber-300">
           <Gift className="w-3 h-3 text-amber-600" />
           Regalos incluidos
         </span>
-        <h3 className="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight">
+        <h3 className="text-xl sm:text-2xl font-black text-stone-900 tracking-tight">
           Regalos exclusivos, incluidos en tu compra
         </h3>
-        <p className="text-sm text-stone-600 leading-relaxed">
+        <p className="text-[13px] sm:text-sm text-stone-600 leading-relaxed">
           Guías prácticas que llegan junto al producto principal, por la Hotmart, sin coste
           adicional.
         </p>
       </div>
 
       {/* Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 items-stretch">
         {BONUS_CARDS.map((bonus) => (
           <figure
             key={bonus.number}
@@ -88,15 +88,15 @@ export const BonusCards: React.FC = () => {
             </div>
 
             {/* Título + descrição */}
-            <figcaption className="p-4 border-t-2 border-stone-800 bg-stone-50 flex-1 flex flex-col">
-              <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-amber-700 mb-1.5">
+            <figcaption className="p-3 border-t-2 border-stone-800 bg-stone-50 flex-1 flex flex-col">
+              <span className="inline-flex items-center gap-1 text-[9px] font-bold uppercase tracking-wider text-amber-700 mb-1">
                 <FileText className="w-3 h-3" />
                 Bono {bonus.number}
               </span>
-              <span className="text-sm font-black text-stone-900 leading-snug block">
+              <span className="text-xs sm:text-[13px] font-black text-stone-900 leading-snug block">
                 {bonus.title}
               </span>
-              <span className="text-xs text-stone-600 leading-relaxed mt-1.5 block">
+              <span className="text-[11px] text-stone-600 leading-snug mt-1 block hidden sm:block">
                 {bonus.description}
               </span>
             </figcaption>
@@ -105,7 +105,7 @@ export const BonusCards: React.FC = () => {
       </div>
 
       {/* Nota: regalo, sem valor individual */}
-      <p className="mt-6 text-center text-xs text-stone-500">
+      <p className="mt-4 text-center text-[11px] text-stone-500">
         Los regalos vienen incluidos con tu compra — no se venden por separado.
       </p>
     </div>

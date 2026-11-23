@@ -8,7 +8,7 @@ import { getBonusCoverUrl } from '@/data/bonusCoverImages'
  * — todas as capas são assets locais, nenhuma usa URL externa.
  * Sem valor individual: os bônus são sempre "REGALO" incluído — o preço só aparece no total.
  */
-const BONUS_CARDS = [
+export const BONUS_CARDS = [
   {
     number: '01',
     title: 'Cuaderno de 21 días',

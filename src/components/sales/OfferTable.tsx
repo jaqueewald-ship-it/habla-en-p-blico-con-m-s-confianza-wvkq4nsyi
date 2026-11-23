@@ -42,19 +42,20 @@ const OfferRow: React.FC<{
   strike?: number
   tone?: 'included' | 'gift'
 }> = ({ title, detail, right, strike, tone = 'included' }) => (
-  <div className="px-3 py-2 sm:px-4 flex items-center justify-between gap-2 hover:bg-stone-50 transition-colors">
-    <div className="flex items-start gap-2 min-w-0">
+  <div className="px-3 py-1.5 sm:px-4 flex items-center justify-between gap-2 hover:bg-stone-50 transition-colors">
+    <div className="flex items-center gap-2 min-w-0">
       <span
-        className={`w-3.5 h-3.5 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${
+        className={`w-3 h-3 rounded-full flex items-center justify-center shrink-0 ${
           tone === 'gift' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'
         }`}
       >
-        <Check className="w-2.5 h-2.5 stroke-[2.5]" />
+        <Check className="w-2 h-2 stroke-[2.5]" />
       </span>
-      <div className="min-w-0">
-        <span className="font-bold text-stone-900 block text-[12.5px] leading-snug">{title}</span>
+      {/* Nome e detalhe na mesma linha quando couber (quebra só se faltar espaço) */}
+      <div className="min-w-0 leading-snug">
+        <span className="font-bold text-stone-900 text-[12px] leading-snug">{title}</span>
         {detail ? (
-          <span className="text-[11px] text-stone-500 leading-snug block">{detail}</span>
+          <span className="text-[10.5px] text-stone-500 leading-snug"> · {detail}</span>
         ) : null}
       </div>
     </div>
@@ -95,7 +96,7 @@ export const OfferTable: React.FC<OfferTableProps> = ({ onOpenCheckout }) => {
           {/* Coluna da lista de itens */}
           <div className="min-w-0">
             {/* Header */}
-            <div className="px-3 py-3 sm:px-4 bg-stone-900 text-stone-50 border-b-2 border-stone-800">
+            <div className="px-3 py-2 sm:px-4 bg-stone-900 text-stone-50 border-b-2 border-stone-800">
               <span className="text-amber-400 font-bold uppercase tracking-wider text-[10px]">
                 Pack Completo Digital
               </span>
@@ -130,8 +131,8 @@ export const OfferTable: React.FC<OfferTableProps> = ({ onOpenCheckout }) => {
                 strike={FICTITIOUS_VALUES.audiobook}
                 right={<IncludedPill />}
                 title={
-                  <span className="flex items-center gap-1.5 flex-wrap">
-                    <Headphones className="w-3.5 h-3.5 text-sky-600 shrink-0" />
+                  <span className="inline-flex items-center gap-1.5 flex-wrap">
+                    <Headphones className="w-3 h-3 text-sky-600 shrink-0" />
                     Audiobook en español
                     <span className="text-[9px] bg-sky-100 text-sky-800 font-bold px-1.5 py-0.5 rounded uppercase tracking-wide">
                       Junto al producto

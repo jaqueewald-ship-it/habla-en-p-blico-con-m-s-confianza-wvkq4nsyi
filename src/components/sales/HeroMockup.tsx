@@ -1,13 +1,13 @@
 import React from 'react'
 import { Sparkles } from 'lucide-react'
-import heroMockup from '@/assets/mockupherohablagestosterracota-9a39e.webp'
+import heroMockup from '@/assets/mockup-produto-fundo-transparente-5d22d.webp'
 
 export const HeroMockup: React.FC = () => {
   return (
     <div className="relative mx-auto max-w-md lg:max-w-lg">
-      {/* Background soft glow (valoriza o recorte transparente da imagem) */}
+      {/* Background soft glow (valoriza o recorte transparente da imagem e ecoa o verde-escuro do mockup) */}
       <div
-        className="absolute -inset-6 rounded-[2.5rem] bg-gradient-to-r from-amber-200/50 via-orange-100/40 to-amber-100/50 blur-2xl -z-10"
+        className="absolute -inset-6 rounded-[2.5rem] bg-gradient-to-r from-emerald-200/45 via-stone-100/40 to-emerald-100/45 blur-2xl -z-10"
         aria-hidden="true"
       />
 
@@ -17,9 +17,10 @@ export const HeroMockup: React.FC = () => {
         Edición Completa Digital
       </span>
 
-      {/* Mockup principal: livro físico + smartphone com Audiolibro (imagem real,
-          import estático para o Vite empacotar em dist/assets — o caminho
-          /visual-edits/ de public/ não ia no deploy e a imagem ficava sem carregar) */}
+      {/* Mockup principal: livro físico + livro de gestos + smartphone com Audiolibro
+          (versão com fundo verde-escuro enviada pelo usuário; import estático para
+          o Vite empacotar em dist/assets — o caminho /visual-edits/ de public/
+          não ia no deploy e a imagem ficava sem carregar) */}
       <figure className="relative">
         <img
           src={heroMockup}

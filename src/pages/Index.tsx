@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { ShieldCheck, Sparkles, Lock, ArrowRight, Headphones, BookOpen } from 'lucide-react'
@@ -297,14 +297,6 @@ export default function Index() {
           <div className="text-[11px] text-stone-600">
             <p>Todos los derechos reservados © {new Date().getFullYear()}</p>
             <p className="mt-0.5">Entrega digital instantánea por Hotmart.</p>
-            <p className="mt-1">
-              <Link
-                to="/hostinger"
-                className="text-stone-400 hover:text-stone-600 transition-colors"
-              >
-                Hostinger
-              </Link>
-            </p>
           </div>
         </div>
       </footer>

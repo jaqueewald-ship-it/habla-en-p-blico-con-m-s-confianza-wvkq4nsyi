@@ -27,11 +27,10 @@ export const openHotmartCheckout = (): boolean => {
   return true
 }
 
-/** Preço exibido no site inteiro (em dólares, formato espanhol).
- *  O espaço antes do "$" é inquebrável (\u00A0): garante que o símbolo
- *  nunca caia sozinho para a linha de baixo em fontes grandes. */
+/** Preço exibido no site inteiro, em dólares americanos: "US$ 9.90".
+ *  O espaço após "US$" é inquebrável (\u00A0): o valor nunca cai para a linha de baixo. */
 export const PRICE = {
   amount: 9.9,
-  display: '9,90\u00A0$',
+  display: 'US$\u00A09.90',
   currencyLabel: 'USD',
 } as const

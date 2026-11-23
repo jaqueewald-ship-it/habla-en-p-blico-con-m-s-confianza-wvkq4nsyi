@@ -19,8 +19,8 @@ const FICTITIOUS_VALUES = {
   bono: 9.9,
 } as const
 
-/** Formato do site: vírgula decimal e espaço inquebrável antes do $ */
-const formatUsd = (value: number): string => `${value.toFixed(2).replace('.', ',')}\u00A0$`
+/** Formato do site, igual ao preço: "US$ 19.90" (espaço inquebrável) */
+const formatUsd = (value: number): string => `US$\u00A0${value.toFixed(2)}`
 
 const TOTAL_FICTITIOUS =
   FICTITIOUS_VALUES.guia +
@@ -200,40 +200,38 @@ export const OfferTable: React.FC<OfferTableProps> = ({ onOpenCheckout }) => {
             ))}
           </div>
 
-          {/* Total & Price Bar */}
+          {/* Total & Price Bar: preço ACIMA do botão, empilhado e centralizado */}
           <div className="p-6 sm:p-8 bg-stone-50 border-t-2 border-stone-800">
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-              <div className="text-center sm:text-left">
-                <div className="flex flex-wrap items-baseline justify-center sm:justify-start gap-x-3 gap-y-2 mt-1">
-                  <span className="text-stone-600 text-sm font-medium whitespace-nowrap">
-                    Valor total:
-                    <span className="line-through text-stone-400 ml-1.5 font-bold whitespace-nowrap">
-                      {formatUsd(TOTAL_FICTITIOUS)}
-                    </span>
+            <div className="flex flex-col items-center text-center gap-6">
+              <div className="flex flex-col items-center gap-1">
+                <span className="text-stone-600 text-sm font-medium whitespace-nowrap">
+                  Valor total:
+                  <span className="line-through text-stone-400 ml-1.5 font-bold whitespace-nowrap">
+                    {formatUsd(TOTAL_FICTITIOUS)}
                   </span>
-                  <span className="text-stone-900 text-sm font-bold whitespace-nowrap">
-                    Todo hoy por solo:
-                  </span>
-                  <span className="inline-block px-3 py-1 rounded-lg bg-amber-400 border-2 border-stone-900 text-4xl sm:text-5xl font-black text-stone-900 tracking-tight leading-none whitespace-nowrap">
-                    {PRICE.display}
-                  </span>
-                </div>
-                <div className="text-xs text-stone-500 font-medium mt-2">
-                  (pago único, sin suscripción)
-                </div>
-                <div className="text-xs text-emerald-700 font-bold mt-1">
+                </span>
+                <span className="text-stone-700 text-xs font-black uppercase tracking-wider mt-2">
+                  PRECIO DE HOY
+                </span>
+                <span className="inline-block px-4 py-1.5 rounded-lg bg-amber-400 border-2 border-stone-900 text-4xl sm:text-5xl font-black text-stone-900 tracking-tight leading-none whitespace-nowrap">
+                  {PRICE.display}
+                </span>
+                <span className="text-sm text-stone-700 font-semibold mt-1">
+                  Pago único · sin suscripción
+                </span>
+                <span className="text-xs text-emerald-700 font-bold mt-1">
                   Guía PDF + Audiobook + regalos, un solo precio
-                </div>
+                </span>
               </div>
 
-              <div className="w-full sm:w-auto">
+              <div className="w-full sm:w-auto sm:min-w-[22rem] max-w-md">
                 <Button
                   onClick={onOpenCheckout}
                   size="lg"
-                  className="w-full sm:w-auto px-8 py-6 text-base font-black bg-amber-400 hover:bg-amber-300 text-stone-900 border-2 border-stone-900 rounded-xl shadow-[4px_4px_0px_0px_rgba(28,25,23,1)] transition-transform active:translate-x-0.5 active:translate-y-0.5"
+                  className="w-full h-auto min-h-12 whitespace-normal px-5 sm:px-8 py-3.5 text-sm sm:text-base leading-tight text-center font-black bg-amber-400 hover:bg-amber-300 text-stone-900 border-2 border-stone-900 rounded-xl shadow-[4px_4px_0px_0px_rgba(28,25,23,1)] transition-transform active:translate-x-0.5 active:translate-y-0.5"
                 >
-                  <span>SÍ, QUIERO EL PLAN DE 21 DÍAS POR {PRICE.display}</span>
-                  <ArrowRight className="w-5 h-5 ml-2" />
+                  <span className="text-balance">SÍ, QUIERO EL PLAN DE 21 DÍAS</span>
+                  <ArrowRight className="w-5 h-5 ml-2 shrink-0" />
                 </Button>
               </div>
             </div>

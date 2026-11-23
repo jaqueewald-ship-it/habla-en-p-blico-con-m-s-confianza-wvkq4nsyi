@@ -128,7 +128,7 @@ export default function Index() {
                 <Button
                   onClick={handleBuyClick}
                   size="lg"
-                  className="w-full sm:w-auto px-8 py-6 text-base font-black bg-amber-400 hover:bg-amber-300 text-stone-900 border-2 border-stone-900 rounded-xl shadow-[4px_4px_0px_0px_rgba(28,25,23,1)] transition-transform active:translate-x-0.5 active:translate-y-0.5"
+                  className="w-full sm:w-auto h-auto min-h-12 whitespace-normal px-6 sm:px-8 py-3.5 text-sm sm:text-base leading-tight text-center font-black bg-amber-400 hover:bg-amber-300 text-stone-900 border-2 border-stone-900 rounded-xl shadow-[4px_4px_0px_0px_rgba(28,25,23,1)] transition-transform active:translate-x-0.5 active:translate-y-0.5"
                 >
                   <span>QUIERO EL PLAN DE LOS 21 DÍAS</span>
                   <ArrowRight className="w-5 h-5 ml-2" />
@@ -267,7 +267,7 @@ export default function Index() {
             <Button
               onClick={handleBuyClick}
               size="lg"
-              className="w-full sm:w-auto px-10 py-6 text-base font-black bg-amber-400 hover:bg-amber-300 text-stone-900 border-2 border-stone-900 rounded-xl shadow-[4px_4px_0px_0px_rgba(255,255,255,0.9)]"
+              className="w-full sm:w-auto h-auto min-h-12 whitespace-normal px-6 sm:px-10 py-3.5 text-sm sm:text-base leading-tight text-center font-black bg-amber-400 hover:bg-amber-300 text-stone-900 border-2 border-stone-900 rounded-xl shadow-[4px_4px_0px_0px_rgba(255,255,255,0.9)]"
             >
               SÍ, QUIERO HABLAR EN PÚBLICO CON MÁS CONFIANZA
             </Button>

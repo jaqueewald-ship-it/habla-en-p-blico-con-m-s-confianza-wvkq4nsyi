@@ -1,5 +1,6 @@
 ====================================================================
  HOSTINGER-KIT — GUIA DE PUBLICAÇÃO (mundodeguias.com)
+ Versão do site: 0.0.67
 ====================================================================
 
 Este ZIP contém o site JÁ COMPILADO, pronto para subir na Hostinger:

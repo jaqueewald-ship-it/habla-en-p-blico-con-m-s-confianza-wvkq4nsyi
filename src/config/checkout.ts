@@ -31,7 +31,7 @@ export const openHotmartCheckout = (): boolean => {
  *  O espaço antes do "$" é inquebrável (\u00A0): garante que o símbolo
  *  nunca caia sozinho para a linha de baixo em fontes grandes. */
 export const PRICE = {
-  amount: 6.9,
-  display: '6,90\u00A0$',
+  amount: 9.9,
+  display: '9,90\u00A0$',
   currencyLabel: 'USD',
 } as const

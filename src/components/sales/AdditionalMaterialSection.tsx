@@ -1,7 +1,6 @@
 import React from 'react'
 import { ArrowRight, BookOpen, Eye, Hand, Mic, Route } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import additionalMockup from '@/assets/mockupherohablagestosterracota-9a39e.webp'
 
 interface AdditionalMaterialSectionProps {
   onOpenCheckout: () => void
@@ -12,7 +11,7 @@ interface AdditionalMaterialSectionProps {
  * Posição: depois de "LAS 7 PARTES DEL RECORRIDO", antes da oferta.
  * Regras do projeto:
  *  - NUNCA é bono, order bump nem produto separado: faz parte do material principal.
- *  - Usa o mockup terracota anexado pelo autor, sem recortes.
+ *  - Apresentação apenas em TEXTO (sem mockup/imagens), como pedido pelo autor.
  *  - Os textos exatos abaixo foram ditados pelo autor em espanhol.
  */
 const BULLET_POINTS: { icon: React.ElementType; text: string }[] = [
@@ -58,29 +57,10 @@ export const AdditionalMaterialSection: React.FC<AdditionalMaterialSectionProps>
           </p>
         </div>
 
-        {/* Corpo: mockup terracota (sem recortes) + pontos do material */}
-        <div className="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
-          {/* Mockup: lado a lado no desktop; abaixo no mobile, centrado */}
-          <div className="lg:col-span-5">
-            <div className="relative mx-auto max-w-xs sm:max-w-sm lg:max-w-md">
-              <div
-                className="absolute -inset-6 rounded-[2.5rem] bg-gradient-to-r from-amber-200/50 via-orange-100/40 to-amber-100/50 blur-2xl -z-10"
-                aria-hidden="true"
-              />
-              <figure className="relative">
-                <img
-                  src={additionalMockup}
-                  alt="Mockup con la guía principal, el smartphone con el reproductor del audiolibro en español y el material adicional 'Gestos que construyen autoridad' con la cubierta terracota"
-                  className="w-full h-auto drop-shadow-[0_18px_35px_rgba(28,25,23,0.25)]"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </figure>
-            </div>
-          </div>
-
+        {/* Corpo: apenas texto — sem mockup/imagens nesta dobra */}
+        <div className="mt-12 max-w-3xl mx-auto">
           {/* Pontos do material */}
-          <div className="lg:col-span-7">
+          <div>
             <h3 className="text-xl sm:text-2xl font-black text-stone-900 tracking-tight">
               ¿Qué encontrarás en este material?
             </h3>

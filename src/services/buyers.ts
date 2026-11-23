@@ -22,7 +22,7 @@ export const buyersService = {
       name: data.name.trim(),
       email: data.email.trim().toLowerCase(),
       purchase_date: new Date().toISOString(),
-      amount: data.amount ?? 6.9,
+      amount: data.amount ?? 9.9,
       currency: data.currency ?? 'USD',
     })
     return record

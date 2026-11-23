@@ -1,65 +1,71 @@
 import React from 'react'
 import { Badge } from '@/components/ui/badge'
-import {
-  BookOpen,
-  Wind,
-  ListOrdered,
-  Mic,
-  Eye,
-  MessageCircleQuestion,
-  CalendarCheck,
-  Users,
-} from 'lucide-react'
+import { Users } from 'lucide-react'
+import parte01 from '@/assets/parte01entenderelmiedo-e22d9.webp'
+import parte02 from '@/assets/parte02posturayrespiracion-94e88.webp'
+import parte03 from '@/assets/parte03estructuradeldiscurso-6ae23.webp'
+import parte04 from '@/assets/parte04lavoz-0d74d.webp'
+import parte05 from '@/assets/parte05miradaygestos-c25d2.webp'
+import parte06 from '@/assets/parte06preguntasdelpublico-24494.webp'
+import parte07 from '@/assets/parte07plande21dias-77660.webp'
 
 /**
  * Seção "LAS 7 PARTES DEL RECORRIDO" — reformulada a pedido do autor:
- * sete cards BREVES com ícones (sem páginas escaneadas do PDF),
- * agrupamento visual por semana (Semana 1: 1–2 · Semana 2: 3–5 ·
- * Semana 3: 6–7) e destaque do material adicional na parte 5.
+ * sete cards com a IMAGEM ORIGINAL de cada parte (apresentação com
+ * etiqueta PARTE 0X, anexada pelo autor), agrupamento visual por semana
+ * (Semana 1: 1–2 · Semana 2: 3–5 · Semana 3: 6–7) e destaque do material
+ * adicional na parte 5.
  * Os textos exatos abaixo foram ditados pelo autor em espanhol.
  */
-const PARTS: { id: number; title: string; description: string; icon: React.ElementType }[] = [
+const PARTS: { id: number; title: string; description: string; image: string; alt: string }[] = [
   {
     id: 1,
     title: 'Comprende tus nervios',
     description: 'Reconoce cómo reaccionas al hablar y define tu punto de partida.',
-    icon: BookOpen,
+    image: parte01,
+    alt: 'Página original de la guía: Parte 1, Entender el miedo',
   },
   {
     id: 2,
     title: 'Regula la respiración y el cuerpo',
     description: 'Practica la respiración y la postura antes de comunicar tu mensaje.',
-    icon: Wind,
+    image: parte02,
+    alt: 'Página original de la guía: Parte 2, Postura y respiración',
   },
   {
     id: 3,
     title: 'Organiza tu discurso',
     description: 'Ordena tus ideas con una apertura, un desarrollo y un cierre.',
-    icon: ListOrdered,
+    image: parte03,
+    alt: 'Página original de la guía: Parte 3, Estructura del discurso',
   },
   {
     id: 4,
     title: 'Entrena tu voz',
     description: 'Trabaja el volumen, las pausas, la entonación y la dicción.',
-    icon: Mic,
+    image: parte04,
+    alt: 'Página original de la guía: Parte 4, La voz',
   },
   {
     id: 5,
     title: 'Practica la mirada y los gestos',
     description: 'Explora cómo usar las manos, la postura y el contacto visual al hablar.',
-    icon: Eye,
+    image: parte05,
+    alt: 'Página original de la guía: Parte 5, Mirada y gestos',
   },
   {
     id: 6,
     title: 'Prepárate para situaciones concretas',
     description: 'Practica cómo responder preguntas y desenvolverte en distintos contextos.',
-    icon: MessageCircleQuestion,
+    image: parte06,
+    alt: 'Página original de la guía: Parte 6, Preguntas del público',
   },
   {
     id: 7,
     title: 'Integra lo aprendido en 21 días',
     description: 'Avanza con ejercicios graduales y aplica la práctica a tu rutina.',
-    icon: CalendarCheck,
+    image: parte07,
+    alt: 'Página original de la guía: Parte 7, Plan de 21 días (pág. 25)',
   },
 ]
 
@@ -109,33 +115,37 @@ export const TableOfContents: React.FC = () => {
           ))}
         </div>
 
-        {/* Grade das 7 partes: cards breves com ícones */}
+        {/* Grade das 7 partes: cards com a imagem original de cada parte */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
-          {PARTS.map((part) => {
-            const Icon = part.icon
-            return (
-              <article
-                key={part.id}
-                className="flex flex-col rounded-2xl bg-white p-5 sm:p-6 shadow-lg shadow-black/20 ring-1 ring-stone-200"
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-100 border border-amber-300">
-                    <Icon className="w-6 h-6 text-amber-800" aria-hidden="true" />
-                  </div>
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-stone-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-stone-600">
-                    Parte {part.id}
-                  </span>
-                </div>
-                <h3 className="mt-4 text-lg sm:text-xl font-black text-stone-900 leading-tight">
+          {PARTS.map((part) => (
+            <article
+              key={part.id}
+              className="flex flex-col rounded-2xl bg-white p-4 sm:p-5 shadow-lg shadow-black/20 ring-1 ring-stone-200"
+            >
+              {/* Imagem original da parte (apresentação com etiqueta PARTE 0X) */}
+              <figure className="overflow-hidden rounded-xl border border-stone-200 bg-stone-50">
+                <img
+                  src={part.image}
+                  alt={part.alt}
+                  className="w-full h-auto block"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
+              <div className="flex items-start justify-between gap-3 mt-4">
+                <h3 className="text-lg sm:text-xl font-black text-stone-900 leading-tight">
                   {part.title}
                 </h3>
-                <p className="mt-2 text-sm text-stone-600 leading-relaxed">{part.description}</p>
-                <span className="mt-4 text-[10px] font-bold uppercase tracking-wider text-amber-700">
-                  {weekOfPart(part.id)}
+                <span className="shrink-0 inline-flex items-center rounded-full bg-stone-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-stone-600">
+                  Parte {part.id}
                 </span>
-              </article>
-            )
-          })}
+              </div>
+              <p className="mt-2 text-sm text-stone-600 leading-relaxed">{part.description}</p>
+              <span className="mt-4 text-[10px] font-bold uppercase tracking-wider text-amber-700">
+                {weekOfPart(part.id)}
+              </span>
+            </article>
+          ))}
         </div>
 
         {/* Destaque: material adicional que acompanha o recorrido (parte 5).
